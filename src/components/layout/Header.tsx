@@ -10,6 +10,18 @@ import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui/Button';
 import { usePathname } from 'next/navigation';
 
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import Image from 'next/image';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ShoppingCart, Menu, X, Search, User } from 'lucide-react';
+import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants';
+import { useCartStore } from '@/store/cartStore';
+import { Button } from '@/components/ui/Button';
+import { usePathname } from 'next/navigation';
+
 export function Header() {
     const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
@@ -19,6 +31,7 @@ export function Header() {
 
     // Only show cart count after hydration to avoid mismatch
     const cartItemCount = mounted ? getTotalItems() : 0;
+    const isHomePage = pathname === '/';
 
     useEffect(() => {
         setMounted(true);
@@ -37,6 +50,12 @@ export function Header() {
         return null;
     }
 
+    // Determine header style state
+    // If on homepage: transparent when at top, white/blurred when scrolled
+    // If NOT on homepage: ALWAYS white/blurred (to be visible against potentially white backgrounds)
+    // OR we could just say: if !isHomePage || isScrolled
+    const showSolidHeader = !isHomePage || isScrolled;
+
     return (
         <>
             <motion.header
@@ -44,7 +63,7 @@ export function Header() {
                 animate={{ y: 0 }}
                 className={`
           fixed top-0 left-0 right-0 z-50 transition-all duration-300
-          ${isScrolled
+          ${showSolidHeader
                         ? 'bg-white/95 backdrop-blur-md shadow-md py-3'
                         : 'bg-transparent py-5'
                     }
@@ -73,7 +92,7 @@ export function Header() {
                                     href={item.href}
                                     className={`
                     font-medium transition-colors relative group
-                    ${isScrolled
+                    ${showSolidHeader
                                             ? 'text-[var(--color-text)] hover:text-[var(--color-primary)]'
                                             : 'text-white/90 hover:text-white'
                                         }
@@ -82,7 +101,7 @@ export function Header() {
                                     {item.label}
                                     <span className={`
                     absolute -bottom-1 left-0 w-0 h-0.5 transition-all group-hover:w-full
-                    ${isScrolled ? 'bg-[var(--color-primary)]' : 'bg-white'}
+                    ${showSolidHeader ? 'bg-[var(--color-primary)]' : 'bg-white'}
                   `} />
                                 </Link>
                             ))}
@@ -94,7 +113,7 @@ export function Header() {
                             <button
                                 className={`
                   p-2 rounded-lg transition-colors hidden md:block
-                  ${isScrolled
+                  ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white'
                                     }
@@ -109,7 +128,7 @@ export function Header() {
                                 href="/account"
                                 className={`
                   p-2 rounded-lg transition-colors hidden md:block
-                  ${isScrolled
+                  ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white'
                                     }
@@ -124,7 +143,7 @@ export function Header() {
                                 onClick={openCart}
                                 className={`
                   p-2 rounded-lg transition-colors relative
-                  ${isScrolled
+                  ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white'
                                     }
@@ -145,7 +164,7 @@ export function Header() {
 
                             {/* Shop Now Button - Desktop */}
                             <Link href="/products" className="hidden lg:block">
-                                <Button variant={isScrolled ? 'primary' : 'accent'} size="sm">
+                                <Button variant={showSolidHeader ? 'primary' : 'accent'} size="sm">
                                     Shop Now
                                 </Button>
                             </Link>
@@ -155,7 +174,7 @@ export function Header() {
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                 className={`
                   p-2 rounded-lg transition-colors lg:hidden
-                  ${isScrolled
+                  ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white'
                                     }
