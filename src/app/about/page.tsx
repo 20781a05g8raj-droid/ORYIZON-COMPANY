@@ -8,18 +8,29 @@ import { Button } from '@/components/ui/Button';
 import { CERTIFICATIONS } from '@/lib/constants';
 
 export default function AboutPage() {
+    const [leaves, setLeaves] = React.useState<Array<{ left: string; top: string; duration: number; delay: number }>>([]);
+
+    React.useEffect(() => {
+        setLeaves([...Array(15)].map(() => ({
+            left: `${Math.random() * 100}%`,
+            top: `${Math.random() * 100}%`,
+            duration: 5 + Math.random() * 5,
+            delay: Math.random() * 2
+        })));
+    }, []);
+
     return (
         <div className="min-h-screen pt-24">
             {/* Hero Section */}
             <section className="bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] py-20 relative overflow-hidden">
                 <div className="absolute inset-0 opacity-10">
-                    {[...Array(15)].map((_, i) => (
+                    {leaves.map((leaf, i) => (
                         <motion.div
                             key={i}
                             animate={{ y: [-20, 20, -20], rotate: [0, 10, 0] }}
-                            transition={{ duration: 5 + Math.random() * 5, repeat: Infinity, delay: Math.random() * 2 }}
+                            transition={{ duration: leaf.duration, repeat: Infinity, delay: leaf.delay }}
                             className="absolute text-6xl"
-                            style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%` }}
+                            style={{ left: leaf.left, top: leaf.top }}
                         >
                             🍃
                         </motion.div>

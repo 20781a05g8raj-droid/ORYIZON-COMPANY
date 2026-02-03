@@ -33,7 +33,7 @@ export function HeroSection() {
                 {floatingLeaves.map((leaf, i) => (
                     <div
                         key={i}
-                        className="leaf text-6xl absolute"
+                        className="leaf text-3xl md:text-6xl absolute"
                         style={{
                             left: `${leaf.left}%`,
                             top: `${leaf.top}%`,
