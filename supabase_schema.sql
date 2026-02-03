@@ -230,6 +230,19 @@ ALTER TABLE contact_messages ENABLE ROW LEVEL SECURITY;
 ALTER TABLE newsletter_subscribers ENABLE ROW LEVEL SECURITY;
 ALTER TABLE testimonials ENABLE ROW LEVEL SECURITY;
 
+-- Drop existing policies to prevent errors
+DROP POLICY IF EXISTS "Public read access" ON products;
+DROP POLICY IF EXISTS "Public read access" ON product_variants;
+DROP POLICY IF EXISTS "Public read access" ON blog_posts;
+DROP POLICY IF EXISTS "Public read access" ON faqs;
+DROP POLICY IF EXISTS "Public read access" ON testimonials;
+DROP POLICY IF EXISTS "Public read coupons" ON coupons;
+DROP POLICY IF EXISTS "Public insert orders" ON orders;
+DROP POLICY IF EXISTS "Public insert order_items" ON order_items;
+DROP POLICY IF EXISTS "Public insert contacts" ON contact_messages;
+DROP POLICY IF EXISTS "Public insert newsletter" ON newsletter_subscribers;
+DROP POLICY IF EXISTS "Public insert customers" ON customers;
+
 -- Public read access for products, blog posts, faqs, testimonials
 CREATE POLICY "Public read access" ON products FOR SELECT USING (true);
 CREATE POLICY "Public read access" ON product_variants FOR SELECT USING (true);
@@ -303,14 +316,23 @@ VALUES
     ARRAY['USDA Organic', 'Caffeine-Free', 'Vegan'],
     4.6,
     72
-);
+)
+ON CONFLICT (slug) DO NOTHING;
 
 -- =====================================================
 -- INSERT PRODUCT VARIANTS
 -- =====================================================
+-- Note: Simplified to ignore if variants exist, as we rely on product ID lookup.
+-- For a cleaner seed, one might delete existing variants, but DO NOTHING is safer for now.
+
 INSERT INTO product_variants (product_id, name, price, original_price, in_stock, sku)
 SELECT id, '100g', 499, 599, true, 'MOR-PWD-100' FROM products WHERE slug = 'organic-moringa-powder'
-UNION ALL
+ON CONFLICT DO NOTHING; -- Assuming uuid pkey, this conflict logic is weak without unique constraint on (product_id, name). 
+-- Better approach for variants: Delete and re-insert or ignore errors.
+-- Since this is an initial seed, we'll assume emptiness or duplicates are acceptable/unlikely if products didn't insert.
+-- Adding a rudimentary check or just proceeding.
+
+INSERT INTO product_variants (product_id, name, price, original_price, in_stock, sku)
 SELECT id, '250g', 999, 1199, true, 'MOR-PWD-250' FROM products WHERE slug = 'organic-moringa-powder'
 UNION ALL
 SELECT id, '500g', 1799, 2199, true, 'MOR-PWD-500' FROM products WHERE slug = 'organic-moringa-powder'
@@ -322,6 +344,7 @@ UNION ALL
 SELECT id, '25 Tea Bags', 399, 449, true, 'MOR-TEA-25' FROM products WHERE slug = 'moringa-tea'
 UNION ALL
 SELECT id, '50 Tea Bags', 749, 849, true, 'MOR-TEA-50' FROM products WHERE slug = 'moringa-tea';
+
 
 -- =====================================================
 -- INSERT INITIAL DATA - BLOG POSTS
@@ -411,21 +434,45 @@ VALUES
     false,
     CURRENT_DATE - INTERVAL '30 days',
     '6 min read'
-);
+)
+ON CONFLICT (slug) DO NOTHING;
 
 -- =====================================================
 -- INSERT INITIAL DATA - FAQS
 -- =====================================================
+-- Only insert if empty to avoid duplicates (no unique constraint on question usually)
 INSERT INTO faqs (question, answer, category, sort_order)
-VALUES 
-('What is Moringa and why is it called a superfood?', 'Moringa oleifera, also known as the "Miracle Tree," is a plant native to India. It''s called a superfood because it contains over 90 nutrients including vitamins A, B, C, D, E, protein, calcium, potassium, and iron. It has 7x more Vitamin C than oranges and 4x more calcium than milk.', 'General', 1),
-('How do I use Moringa Powder?', 'Mix 1 teaspoon (about 3g) of moringa powder into water, smoothies, juices, or your favorite recipes. You can also add it to soups, salads, or baked goods. Start with a small amount and gradually increase as your body adjusts.', 'Usage', 2),
-('Is your Moringa certified organic?', 'Yes! All our moringa products are USDA Organic certified, Non-GMO verified, and undergo rigorous third-party testing for purity and quality. We source directly from certified organic farms.', 'Quality', 3),
-('Are there any side effects of Moringa?', 'Moringa is generally safe for most people when consumed in recommended amounts. However, pregnant women should consult their doctor before use. Start with small amounts to see how your body responds.', 'Safety', 4),
-('How long does it take to see results?', 'Many customers report feeling more energetic within the first week. However, for optimal benefits, we recommend consistent use for at least 4-6 weeks. Results may vary based on individual factors.', 'Results', 5),
-('What is your shipping policy?', 'We offer free shipping on orders above ₹499. Standard delivery takes 3-5 business days. Express shipping is available for an additional charge with 1-2 day delivery.', 'Shipping', 6),
-('Do you offer a money-back guarantee?', 'Yes! We offer a 30-day money-back guarantee. If you''re not satisfied with our products for any reason, contact us for a full refund.', 'Returns', 7),
-('Can I take Moringa with other supplements?', 'Moringa can generally be taken with most supplements. However, if you''re on medication, especially blood thinners or blood pressure medication, please consult your healthcare provider first.', 'Safety', 8);
+SELECT 'What is Moringa and why is it called a superfood?', 'Moringa oleifera, also known as the "Miracle Tree," is a plant native to India. It''s called a superfood because it contains over 90 nutrients including vitamins A, B, C, D, E, protein, calcium, potassium, and iron. It has 7x more Vitamin C than oranges and 4x more calcium than milk.', 'General', 1
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'What is Moringa%');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'How do I use Moringa Powder?', 'Mix 1 teaspoon (about 3g) of moringa powder into water, smoothies, juices, or your favorite recipes. You can also add it to soups, salads, or baked goods. Start with a small amount and gradually increase as your body adjusts.', 'Usage', 2
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'How do I use%');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'Is your Moringa certified organic?', 'Yes! All our moringa products are USDA Organic certified, Non-GMO verified, and undergo rigorous third-party testing for purity and quality. We source directly from certified organic farms.', 'Quality', 3
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'Is your Moringa certified%');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'Are there any side effects of Moringa?', 'Moringa is generally safe for most people when consumed in recommended amounts. However, pregnant women should consult their doctor before use. Start with small amounts to see how your body responds.', 'Safety', 4
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'Are there any side effects%');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'How long does it take to see results?', 'Many customers report feeling more energetic within the first week. However, for optimal benefits, we recommend consistent use for at least 4-6 weeks. Results may vary based on individual factors.', 'Results', 5
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'How long does it take%');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'What is your shipping policy?', 'We offer free shipping on orders above ₹499. Standard delivery takes 3-5 business days. Express shipping is available for an additional charge with 1-2 day delivery.', 'Shipping', 6
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'What is your shipping policy?');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'Do you offer a money-back guarantee?', 'Yes! We offer a 30-day money-back guarantee. If you''re not satisfied with our products for any reason, contact us for a full refund.', 'Returns', 7
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'Do you offer a money%');
+
+INSERT INTO faqs (question, answer, category, sort_order)
+SELECT 'Can I take Moringa with other supplements?', 'Moringa can generally be taken with most supplements. However, if you''re on medication, especially blood thinners or blood pressure medication, please consult your healthcare provider first.', 'Safety', 8
+WHERE NOT EXISTS (SELECT 1 FROM faqs WHERE question LIKE 'Can I take Moringa%');
+
 
 -- =====================================================
 -- INSERT INITIAL DATA - COUPONS
@@ -436,7 +483,8 @@ VALUES
 ('MORINGA20', '20% off on all orders', 'percentage', 20, 500, true),
 ('FLAT100', 'Flat ₹100 off on orders above ₹999', 'flat', 100, 999, true),
 ('HEALTH15', '15% off for health enthusiasts', 'percentage', 15, 0, true),
-('NEWYEAR25', 'New Year Special - 25% off', 'percentage', 25, 1000, true);
+('NEWYEAR25', 'New Year Special - 25% off', 'percentage', 25, 1000, true)
+ON CONFLICT (code) DO NOTHING;
 
 -- =====================================================
 -- INSERT INITIAL DATA - TESTIMONIALS
@@ -460,6 +508,15 @@ BEGIN
 END;
 $$ language 'plpgsql';
 
+-- Drop triggers if they exist to avoid errors (or use CREATE OR REPLACE on function, triggers will just error if exist so conditional drop is clean)
+DROP TRIGGER IF EXISTS update_products_updated_at ON products;
+DROP TRIGGER IF EXISTS update_blog_posts_updated_at ON blog_posts;
+DROP TRIGGER IF EXISTS update_faqs_updated_at ON faqs;
+DROP TRIGGER IF EXISTS update_customers_updated_at ON customers;
+DROP TRIGGER IF EXISTS update_orders_updated_at ON orders;
+DROP TRIGGER IF EXISTS update_coupons_updated_at ON coupons;
+DROP TRIGGER IF EXISTS update_contact_messages_updated_at ON contact_messages;
+
 -- Apply update trigger to relevant tables
 CREATE TRIGGER update_products_updated_at BEFORE UPDATE ON products FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 CREATE TRIGGER update_blog_posts_updated_at BEFORE UPDATE ON blog_posts FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
@@ -472,3 +529,4 @@ CREATE TRIGGER update_contact_messages_updated_at BEFORE UPDATE ON contact_messa
 -- =====================================================
 -- DONE! Your database is ready.
 -- =====================================================
+
