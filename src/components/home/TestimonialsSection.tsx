@@ -1,21 +1,54 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
-import { ChevronLeft, ChevronRight, Star, Quote } from 'lucide-react';
-import { testimonials } from '@/data/testimonials';
+import { ChevronLeft, ChevronRight, Star, Quote, Loader2 } from 'lucide-react';
+import { getFeaturedTestimonials } from '@/lib/api/testimonials';
+import { Testimonial } from '@/types/database';
 
 export function TestimonialsSection() {
+    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        async function fetchTestimonials() {
+            try {
+                const data = await getFeaturedTestimonials();
+                setTestimonials(data);
+            } catch (error) {
+                console.error('Failed to fetch testimonials:', error);
+            } finally {
+                setLoading(false);
+            }
+        }
+        fetchTestimonials();
+    }, []);
 
     const nextTestimonial = () => {
+        if (testimonials.length === 0) return;
         setCurrentIndex((prev) => (prev + 1) % testimonials.length);
     };
 
     const prevTestimonial = () => {
+        if (testimonials.length === 0) return;
         setCurrentIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length);
     };
+
+    if (loading) {
+        return (
+            <section style={{ padding: '5rem 0', backgroundColor: '#FBF9F4' }}>
+                <div className="flex justify-center items-center h-96">
+                    <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                </div>
+            </section>
+        );
+    }
+
+    if (testimonials.length === 0) return null;
+
+    const currentTestimonial = testimonials[currentIndex];
 
     return (
         <section style={{ padding: '5rem 0', backgroundColor: '#FBF9F4' }} suppressHydrationWarning>
@@ -87,7 +120,7 @@ export function TestimonialsSection() {
                                         <Star
                                             key={i}
                                             size={24}
-                                            fill={i < testimonials[currentIndex].rating ? 'currentColor' : 'none'}
+                                            fill={i < currentTestimonial.rating ? 'currentColor' : 'none'}
                                         />
                                     ))}
                                 </div>
@@ -101,7 +134,7 @@ export function TestimonialsSection() {
                                     fontStyle: 'italic',
                                     lineHeight: 1.6
                                 }}>
-                                    &ldquo;{testimonials[currentIndex].content}&rdquo;
+                                    &ldquo;{currentTestimonial.comment}&rdquo;
                                 </p>
 
                                 {/* Author */}
@@ -119,27 +152,27 @@ export function TestimonialsSection() {
                                         overflow: 'hidden',
                                         position: 'relative'
                                     }} suppressHydrationWarning>
-                                        {testimonials[currentIndex].avatar ? (
+                                        {currentTestimonial.image ? (
                                             <Image
-                                                src={testimonials[currentIndex].avatar}
-                                                alt={testimonials[currentIndex].name}
+                                                src={currentTestimonial.image}
+                                                alt={currentTestimonial.name}
                                                 fill
                                                 className="object-cover"
                                             />
                                         ) : (
-                                            testimonials[currentIndex].name.charAt(0)
+                                            currentTestimonial.name.charAt(0)
                                         )}
                                     </div>
                                     <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.125rem', fontWeight: 600 }}>
-                                        {testimonials[currentIndex].name}
+                                        {currentTestimonial.name}
                                     </p>
                                     <p style={{ color: '#666666' }}>
-                                        {testimonials[currentIndex].location}
+                                        {currentTestimonial.location}
                                     </p>
-                                    {testimonials[currentIndex].productUsed && (
-                                        <p style={{ fontSize: '0.875rem', color: '#2D5016', marginTop: '0.25rem' }}>
-                                            Purchased: {testimonials[currentIndex].productUsed}
-                                        </p>
+                                    {currentTestimonial.verified && (
+                                        <div className="flex items-center justify-center gap-1 mt-1 text-emerald-600 text-sm">
+                                            <span>✓ Verified Purchase</span>
+                                        </div>
                                     )}
                                 </div>
                             </motion.div>
