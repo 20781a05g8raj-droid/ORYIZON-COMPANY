@@ -50,7 +50,7 @@ export async function getSetting(key: string): Promise<any | null> {
         return null;
     }
 
-    return data?.value || null;
+    return (data as any)?.value || null;
 }
 
 // Get all settings
