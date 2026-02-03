@@ -10,18 +10,6 @@ import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui/Button';
 import { usePathname } from 'next/navigation';
 
-'use client';
-
-import React, { useState, useEffect } from 'react';
-import Link from 'next/link';
-import Image from 'next/image';
-import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, Search, User } from 'lucide-react';
-import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants';
-import { useCartStore } from '@/store/cartStore';
-import { Button } from '@/components/ui/Button';
-import { usePathname } from 'next/navigation';
-
 export function Header() {
     const pathname = usePathname();
     const [isScrolled, setIsScrolled] = useState(false);
