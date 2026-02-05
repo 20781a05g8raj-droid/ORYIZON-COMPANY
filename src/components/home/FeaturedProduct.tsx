@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star, ShoppingCart, ArrowRight, Loader2 } from 'lucide-react';
+import { getAllProducts as getLocalProducts } from '@/data/products';
 import { getFeaturedProducts } from '@/lib/api/products';
 import { formatPrice, calculateDiscount } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
@@ -18,9 +19,32 @@ export function FeaturedProduct() {
     useEffect(() => {
         async function fetchFeatured() {
             try {
+                // 1. Fetch API Products (Database)
                 const products = await getFeaturedProducts();
+
                 if (products && products.length > 0) {
-                    setProduct(products[0]);
+                    const apiProduct = products[0];
+
+                    // 2. Fetch Local Products (Filesystem Images)
+                    const localProducts = getLocalProducts();
+                    const localMatch = localProducts.find(p => p.slug === apiProduct.slug);
+
+                    // 3. Merge: Use API for data, but Local for Images if available
+                    let finalProduct = apiProduct;
+                    if (localMatch && localMatch.images && localMatch.images.length > 0) {
+                        finalProduct = {
+                            ...apiProduct,
+                            images: localMatch.images
+                        };
+                    } else if (apiProduct.images) {
+                        // Fallback sanitization for DB-only images
+                        finalProduct = {
+                            ...apiProduct,
+                            images: apiProduct.images.map(img => img.replace(/ /g, '-'))
+                        };
+                    }
+
+                    setProduct(finalProduct);
                 }
             } catch (error) {
                 console.error('Failed to fetch featured product:', error);
