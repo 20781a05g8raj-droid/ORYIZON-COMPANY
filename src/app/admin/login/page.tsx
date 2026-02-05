@@ -99,7 +99,7 @@ export default function AdminLoginPage() {
 
             <div className="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden border border-gray-100" suppressHydrationWarning>
                 {/* Header */}
-                <div className="bg-[#2D5016] p-8 text-center relative overflow-hidden">
+                <div className="bg-[#2D5016] p-8 text-center relative overflow-hidden" suppressHydrationWarning>
                     <div className="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')]"></div>
                     <div className="relative z-10">
                         <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-sm">
@@ -111,7 +111,7 @@ export default function AdminLoginPage() {
                 </div>
 
                 {/* Form */}
-                <div className="p-8">
+                <div className="p-8" suppressHydrationWarning>
                     <form onSubmit={handleLogin} className="space-y-6">
                         <div className="space-y-2">
                             <label className="text-sm font-medium text-gray-700 ml-1">Email Address</label>
@@ -125,7 +125,7 @@ export default function AdminLoginPage() {
                                     value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className="block w-full pl-10 pr-3 py-3 border border-gray-200 rounded-xl leading-5 bg-gray-50 placeholder-gray-400 focus:outline-none focus:bg-white focus:ring-2 focus:ring-[#2D5016]/20 focus:border-[#2D5016] transition-all duration-200"
-                                    placeholder="admin@oryizon.com"
+                                    placeholder="admin@example.com"
                                     autoComplete="off"
                                 />
                             </div>

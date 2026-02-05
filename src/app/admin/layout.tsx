@@ -51,7 +51,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     if (isUnauthorized) {
         return (
-            <div className="min-h-screen flex items-center justify-center bg-white text-black font-bold text-3xl">
+            <div className="min-h-screen flex items-center justify-center bg-white text-black font-bold text-3xl" suppressHydrationWarning>
                 KUCH NAHI HAI BAHI
             </div>
         );
