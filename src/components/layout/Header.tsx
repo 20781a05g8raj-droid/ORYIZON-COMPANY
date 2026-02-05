@@ -56,12 +56,13 @@ export function Header() {
                         : 'bg-transparent py-5'
                     }
         `}
+                suppressHydrationWarning
             >
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center justify-between">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+                    <div className="flex items-center justify-between" suppressHydrationWarning>
                         {/* Logo */}
                         <Link href="/" className="flex items-center gap-2">
-                            <div className="relative w-32 h-10 md:w-40 md:h-12">
+                            <div className="relative w-32 h-10 md:w-40 md:h-12" suppressHydrationWarning>
                                 <Image
                                     src="/images/oryizon-logo.png"
                                     alt={SITE_CONFIG.name}
