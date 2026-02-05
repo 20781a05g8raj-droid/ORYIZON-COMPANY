@@ -1,7 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import React, { useState, useEffect } from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Loader2 } from 'lucide-react';
 import { AdminSidebar, AdminTopbar } from '@/components/admin/AdminLayout';
@@ -9,22 +9,29 @@ import { AdminSidebar, AdminTopbar } from '@/components/admin/AdminLayout';
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
     const [loading, setLoading] = useState(true);
+    const [isUnauthorized, setIsUnauthorized] = useState(false);
     const router = useRouter();
+    const pathname = usePathname();
 
-    React.useEffect(() => {
+    useEffect(() => {
         const checkAdmin = async () => {
             const { data: { session } } = await supabase.auth.getSession();
+            const isAdmin = session?.user?.email === 'admin@oryizon.com';
 
-            if (!session) {
-                // Middleware handles this, but safe to have
-                router.push('/admin/login');
+            // Case 1: Login Page
+            if (pathname === '/admin/login') {
+                if (isAdmin) {
+                    router.push('/admin');
+                    return;
+                }
+                setLoading(false);
                 return;
             }
 
-            // STRICT Check: Only allow allowlisted admin email
-            // In a real app, you'd check a 'role' in public.users or metadata
-            if (session.user.email !== 'admin@oryizon.com') {
-                router.push('/'); // Redirect unauthorized users to home
+            // Case 2: Protected Admin Pages
+            if (!isAdmin) {
+                setIsUnauthorized(true);
+                setLoading(false);
                 return;
             }
 
@@ -32,7 +39,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
         };
 
         checkAdmin();
-    }, [router]);
+    }, [router, pathname]);
 
     if (loading) {
         return (
@@ -40,6 +47,19 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
                 <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
             </div>
         );
+    }
+
+    if (isUnauthorized) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-white text-black font-bold text-3xl">
+                KUCH NAHI HAI BAHI
+            </div>
+        );
+    }
+
+    // Don't show admin sidebar/layout on login page
+    if (pathname === '/admin/login') {
+        return <>{children}</>;
     }
 
     return (

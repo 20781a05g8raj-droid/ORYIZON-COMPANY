@@ -55,7 +55,7 @@ export default function RootLayout({
         <ClientToaster />
         <Header />
         <CartDrawer />
-        <main>{children}</main>
+        <main suppressHydrationWarning>{children}</main>
         <Footer />
       </body>
     </html>

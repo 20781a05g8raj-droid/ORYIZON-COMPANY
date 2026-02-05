@@ -1,17 +1,20 @@
 'use client';
 
+// ... imports
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
 import { Mail, Lock, ArrowRight, Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
+import SignUpAlertModal from '@/components/auth/SignUpAlertModal';
 
 export default function LoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showSignUpAlert, setShowSignUpAlert] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,7 +33,13 @@ export default function LoginPage() {
             router.refresh();
         } catch (error: any) {
             console.error('Login error:', error);
-            toast.error(error.message || 'Failed to login');
+
+            // Check for specific error message regarding invalid credentials
+            if (error.message === 'Invalid login credentials') {
+                setShowSignUpAlert(true);
+            } else {
+                toast.error(error.message || 'Failed to login');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -38,6 +47,8 @@ export default function LoginPage() {
 
     return (
         <div className="min-h-screen pt-24 pb-12 bg-[#FBF9F4] flex items-center justify-center p-4" suppressHydrationWarning>
+            <SignUpAlertModal isOpen={showSignUpAlert} onClose={() => setShowSignUpAlert(false)} />
+
             <div className="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden border border-gray-100" suppressHydrationWarning>
                 <div className="p-8 text-center" suppressHydrationWarning>
                     <h1 className="text-3xl font-bold text-[#2D5016] font-heading mb-2">Welcome Back</h1>
@@ -118,3 +129,4 @@ export default function LoginPage() {
         </div>
     );
 }
+

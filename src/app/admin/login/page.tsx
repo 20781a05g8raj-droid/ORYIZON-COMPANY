@@ -3,14 +3,66 @@
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { Lock, Mail, ArrowRight, Loader } from 'lucide-react';
+import { Lock, Mail, ArrowRight, Loader, UserPlus, X } from 'lucide-react';
 import toast from 'react-hot-toast';
+import { motion, AnimatePresence } from 'framer-motion';
+
+function SignUpAlertModal({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) {
+    return (
+        <AnimatePresence>
+            {isOpen && (
+                <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9, y: 20 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.9, y: 20 }}
+                        transition={{ type: "spring", duration: 0.5 }}
+                        className="bg-white rounded-2xl shadow-2xl max-w-sm w-full overflow-hidden relative"
+                    >
+                        <button
+                            onClick={onClose}
+                            className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 transition-colors"
+                        >
+                            <X size={20} />
+                        </button>
+
+                        <div className="bg-gradient-to-br from-[#2D5016] to-[#1A3009] p-6 text-center">
+                            <motion.div
+                                initial={{ rotate: -10, scale: 0.8 }}
+                                animate={{ rotate: 0, scale: 1 }}
+                                transition={{ delay: 0.2, type: "spring" }}
+                                className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4 backdrop-blur-md"
+                            >
+                                <UserPlus className="text-white" size={32} />
+                            </motion.div>
+                            <h3 className="text-xl font-bold text-white mb-1">Account Required</h3>
+                        </div>
+
+                        <div className="p-6 text-center">
+                            <p className="text-gray-600 mb-6 text-lg">
+                                Please <span className="font-bold text-[#2D5016]">Sign Up</span> to access the admin portal.
+                            </p>
+
+                            <button
+                                onClick={onClose}
+                                className="w-full py-3 px-4 bg-[#2D5016] text-white rounded-xl font-medium hover:bg-[#1a300d] transition-colors shadow-lg shadow-[#2D5016]/20"
+                            >
+                                Got it
+                            </button>
+                        </div>
+                    </motion.div>
+                </div>
+            )}
+        </AnimatePresence>
+    );
+}
 
 export default function AdminLoginPage() {
     const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [isLoading, setIsLoading] = useState(false);
+    const [showSignUpAlert, setShowSignUpAlert] = useState(false);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -29,7 +81,13 @@ export default function AdminLoginPage() {
             router.refresh();
         } catch (error: any) {
             console.error('Login error:', error);
-            toast.error(error.message || 'Failed to login');
+
+            // Check for invalid credentials error
+            if (error.message === 'Invalid login credentials') {
+                setShowSignUpAlert(true);
+            } else {
+                toast.error(error.message || 'Failed to login');
+            }
         } finally {
             setIsLoading(false);
         }
@@ -37,6 +95,8 @@ export default function AdminLoginPage() {
 
     return (
         <div className="min-h-screen bg-[#FBF9F4] flex items-center justify-center p-4" suppressHydrationWarning>
+            <SignUpAlertModal isOpen={showSignUpAlert} onClose={() => setShowSignUpAlert(false)} />
+
             <div className="bg-white max-w-md w-full rounded-2xl shadow-xl overflow-hidden border border-gray-100" suppressHydrationWarning>
                 {/* Header */}
                 <div className="bg-[#2D5016] p-8 text-center relative overflow-hidden">
