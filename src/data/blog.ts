@@ -9,6 +9,9 @@ export const blogPosts: BlogPost[] = [
         content: `
 <h2 class="font-heading text-2xl font-semibold mb-4">What is Moringa Powder?</h2>
 <p class="mb-6">Moringa oleifera, widely known as the "Miracle Tree," is native to the Indian subcontinent and has been a cornerstone of Ayurvedic medicine for thousands of years. But what makes it so special?</p>
+
+<img src="/images/blog/moringa-intro.png" alt="Moringa Powder Spoon" class="w-full h-auto rounded-xl my-6 shadow-md" />
+
 <p class="mb-6">It's a nutritional powerhouse. When comparing <strong>Moringa powder vs. other superfoods</strong>, the numbers are staggering: it contains <strong>7x more Vitamin C than oranges</strong> and <strong>15x more Potassium than bananas</strong>.</p>
 
 <div class="bg-[var(--color-cream)] p-6 rounded-xl my-8 border border-[var(--color-secondary)]/30">
@@ -71,6 +74,9 @@ export const blogPosts: BlogPost[] = [
 </div>
 
 <h2 class="font-heading text-2xl font-semibold mb-4 mt-10">Nutrient Comparison Chart</h2>
+
+<img src="/images/blog/moringa-comparison.png" alt="Moringa Nutrient Comparison" class="w-full h-auto rounded-xl my-6 shadow-md" />
+
 <div class="overflow-x-auto my-6">
     <table class="w-full text-left border-collapse">
         <thead>
@@ -102,6 +108,9 @@ export const blogPosts: BlogPost[] = [
 
 <h2 class="font-heading text-2xl font-semibold mb-4 mt-10">How to Use it?</h2>
 <p class="mb-6">Start small. Add 1 teaspoon (approx 3-5g) to your morning routine. It has a spinach-like earthy taste.</p>
+
+<img src="/images/blog/moringa-usage.png" alt="Moringa Lifestyle and Usage" class="w-full h-auto rounded-xl my-6 shadow-md" />
+
 <ul class="list-disc pl-5 space-y-2 mb-6">
     <li><strong>Smoothies:</strong> Blend with banana, spinach, and apple.</li>
     <li><strong>Tea:</strong> Steeping in hot water with honey and lemon.</li>
@@ -125,7 +134,7 @@ export const blogPosts: BlogPost[] = [
 <h2 class="font-heading text-2xl font-semibold mb-4">Conclusion</h2>
 <p class="mb-6">Nature often holds the best cures. Moringa isn't just a trend; it's a time-tested superfood. By incorporating this simple green powder into your daily diet, you invest in your long-term vitality. Start your wellness journey with <strong>ORYIZON</strong> today.</p>
         `,
-        image: '/images/products/product-4.png',
+        image: '/images/blog/moringa-hero.png',
         author: 'Dr. Priya Sharma',
         date: 'January 28, 2026',
         readTime: '5 min read',
