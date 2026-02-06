@@ -30,7 +30,7 @@ export default function BlogPostPage() {
         .slice(0, 3);
 
     return (
-        <div className="min-h-screen pt-24">
+        <div className="min-h-screen pt-24" suppressHydrationWarning>
             {/* Hero */}
             <section className="bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] py-16">
                 <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -99,76 +99,83 @@ export default function BlogPostPage() {
                             </p>
 
                             {/* Rendered content would go here - for now, sample content */}
-                            <div className="text-[var(--color-text)]">
-                                <h2 className="font-heading text-2xl font-semibold mb-4">Introduction</h2>
-                                <p className="mb-6">
-                                    Moringa oleifera, often called the &quot;miracle tree,&quot; has been used for centuries
-                                    in traditional medicine across Africa and Asia. Today, modern science is
-                                    beginning to validate what ancient practitioners knew all along – Moringa
-                                    is a nutritional powerhouse.
-                                </p>
-
-                                <h2 className="font-heading text-2xl font-semibold mb-4">The Nutritional Profile</h2>
-                                <p className="mb-6">
-                                    Gram for gram, Moringa leaves contain more vitamin C than oranges, more
-                                    calcium than milk, more vitamin A than carrots, and more iron than spinach.
-                                    This remarkable nutritional density makes it one of the most valuable
-                                    plant-based supplements available.
-                                </p>
-
-                                <div className="bg-[var(--color-cream)] p-6 rounded-xl my-8">
-                                    <h3 className="font-heading text-xl font-semibold mb-3">Key Nutrients in Moringa</h3>
-                                    <ul className="space-y-2">
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--color-primary)]">✓</span>
-                                            <span>7× more Vitamin C than oranges</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--color-primary)]">✓</span>
-                                            <span>4× more Calcium than milk</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--color-primary)]">✓</span>
-                                            <span>3× more Iron than spinach</span>
-                                        </li>
-                                        <li className="flex items-start gap-2">
-                                            <span className="text-[var(--color-primary)]">✓</span>
-                                            <span>2× more Protein than yogurt</span>
-                                        </li>
-                                    </ul>
-                                </div>
-
-                                <h2 className="font-heading text-2xl font-semibold mb-4">Health Benefits</h2>
-                                <p className="mb-6">
-                                    Regular consumption of Moringa has been associated with numerous health
-                                    benefits including improved energy levels, better digestive health,
-                                    enhanced immune function, and support for healthy blood sugar levels.
-                                </p>
-
-                                <h2 className="font-heading text-2xl font-semibold mb-4">How to Incorporate Moringa</h2>
-                                <p className="mb-6">
-                                    The easiest way to add Moringa to your diet is through high-quality
-                                    Moringa powder. Simply add 1-2 teaspoons to smoothies, juices, or water.
-                                    You can also mix it into soups, salads, or baked goods.
-                                </p>
-
-                                <div className="bg-[var(--color-primary)] text-white p-6 rounded-xl my-8">
-                                    <h3 className="font-heading text-xl font-semibold mb-3">Ready to Try?</h3>
-                                    <p className="mb-4 text-white/90">
-                                        Experience the benefits of premium organic Moringa powder.
+                            {post.content ? (
+                                <div
+                                    className="text-[var(--color-text)] blog-content"
+                                    dangerouslySetInnerHTML={{ __html: post.content }}
+                                />
+                            ) : (
+                                <div className="text-[var(--color-text)]">
+                                    <h2 className="font-heading text-2xl font-semibold mb-4">Introduction</h2>
+                                    <p className="mb-6">
+                                        Moringa oleifera, often called the &quot;miracle tree,&quot; has been used for centuries
+                                        in traditional medicine across Africa and Asia. Today, modern science is
+                                        beginning to validate what ancient practitioners knew all along – Moringa
+                                        is a nutritional powerhouse.
                                     </p>
-                                    <Link href="/products">
-                                        <Button variant="accent">Shop Moringa Powder</Button>
-                                    </Link>
-                                </div>
 
-                                <h2 className="font-heading text-2xl font-semibold mb-4">Conclusion</h2>
-                                <p className="mb-6">
-                                    With its exceptional nutritional profile and versatility, Moringa deserves
-                                    a place in everyone&apos;s wellness routine. Start with a small amount and
-                                    gradually increase as your body adjusts to this powerful superfood.
-                                </p>
-                            </div>
+                                    <h2 className="font-heading text-2xl font-semibold mb-4">The Nutritional Profile</h2>
+                                    <p className="mb-6">
+                                        Gram for gram, Moringa leaves contain more vitamin C than oranges, more
+                                        calcium than milk, more vitamin A than carrots, and more iron than spinach.
+                                        This remarkable nutritional density makes it one of the most valuable
+                                        plant-based supplements available.
+                                    </p>
+
+                                    <div className="bg-[var(--color-cream)] p-6 rounded-xl my-8">
+                                        <h3 className="font-heading text-xl font-semibold mb-3">Key Nutrients in Moringa</h3>
+                                        <ul className="space-y-2">
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-[var(--color-primary)]">✓</span>
+                                                <span>7× more Vitamin C than oranges</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-[var(--color-primary)]">✓</span>
+                                                <span>4× more Calcium than milk</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-[var(--color-primary)]">✓</span>
+                                                <span>3× more Iron than spinach</span>
+                                            </li>
+                                            <li className="flex items-start gap-2">
+                                                <span className="text-[var(--color-primary)]">✓</span>
+                                                <span>2× more Protein than yogurt</span>
+                                            </li>
+                                        </ul>
+                                    </div>
+
+                                    <h2 className="font-heading text-2xl font-semibold mb-4">Health Benefits</h2>
+                                    <p className="mb-6">
+                                        Regular consumption of Moringa has been associated with numerous health
+                                        benefits including improved energy levels, better digestive health,
+                                        enhanced immune function, and support for healthy blood sugar levels.
+                                    </p>
+
+                                    <h2 className="font-heading text-2xl font-semibold mb-4">How to Incorporate Moringa</h2>
+                                    <p className="mb-6">
+                                        The easiest way to add Moringa to your diet is through high-quality
+                                        Moringa powder. Simply add 1-2 teaspoons to smoothies, juices, or water.
+                                        You can also mix it into soups, salads, or baked goods.
+                                    </p>
+
+                                    <div className="bg-[var(--color-primary)] text-white p-6 rounded-xl my-8">
+                                        <h3 className="font-heading text-xl font-semibold mb-3">Ready to Try?</h3>
+                                        <p className="mb-4 text-white/90">
+                                            Experience the benefits of premium organic Moringa powder.
+                                        </p>
+                                        <Link href="/products">
+                                            <Button variant="accent">Shop Moringa Powder</Button>
+                                        </Link>
+                                    </div>
+
+                                    <h2 className="font-heading text-2xl font-semibold mb-4">Conclusion</h2>
+                                    <p className="mb-6">
+                                        With its exceptional nutritional profile and versatility, Moringa deserves
+                                        a place in everyone&apos;s wellness routine. Start with a small amount and
+                                        gradually increase as your body adjusts to this powerful superfood.
+                                    </p>
+                                </div>
+                            )}
 
                             {/* Tags */}
                             <div className="flex flex-wrap gap-2 mt-8 pt-8 border-t">
