@@ -12,16 +12,61 @@ export default function AccountPage() {
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const getUser = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
+        let mounted = true;
+
+        // Listen for auth changes
+        const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+            if (event === 'SIGNED_OUT') {
                 router.push('/login');
                 return;
             }
-            setUser(session.user);
-            setLoading(false);
+            if (session && mounted) {
+                setUser(session.user);
+                setLoading(false);
+            }
+        });
+
+        const checkSession = async () => {
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+
+                if (error) throw error;
+
+                if (!session) {
+                    // Small delay to allow OAuth processing to finish if redirecting
+                    setTimeout(() => {
+                        if (mounted && !user) {
+                            router.push('/login');
+                        }
+                    }, 1500);
+                    return;
+                }
+
+                if (mounted) {
+                    setUser(session.user);
+                    setLoading(false);
+                }
+            } catch (error) {
+                console.error('Session check error:', error);
+                if (mounted) router.push('/login');
+            }
         };
-        getUser();
+
+        checkSession();
+
+        // Safety timeout: if still loading after 5 seconds, attempt to redirect or show error
+        const timeout = setTimeout(() => {
+            if (loading && mounted) {
+                console.warn('Login session detection timed out');
+                router.push('/login');
+            }
+        }, 5000);
+
+        return () => {
+            mounted = false;
+            subscription.unsubscribe();
+            clearTimeout(timeout);
+        };
     }, [router]);
 
     const handleLogout = async () => {
