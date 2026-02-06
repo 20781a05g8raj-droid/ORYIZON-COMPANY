@@ -5,33 +5,16 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Loader2 } from 'lucide-react';
-import { getBlogPosts, getBlogCategories } from '@/lib/api/blog';
+import { blogPosts, getBlogCategories } from '@/data/blog';
 import { Button } from '@/components/ui/Button';
-import type { BlogPost } from '@/types/database';
+import type { BlogPost } from '@/types';
 
 export default function BlogPage() {
-    const [posts, setPosts] = useState<BlogPost[]>([]);
-    const [categories, setCategories] = useState<string[]>([]);
-    const [loading, setLoading] = useState(true);
     const [selectedCategory, setSelectedCategory] = useState('All');
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const [postsData, categoriesData] = await Promise.all([
-                    getBlogPosts(),
-                    getBlogCategories()
-                ]);
-                setPosts(postsData);
-                setCategories(categoriesData);
-            } catch (error) {
-                console.error('Failed to fetch blog data:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchData();
-    }, []);
+    // Use local data directly
+    const posts = blogPosts;
+    const categories = getBlogCategories();
 
     const filteredPosts = selectedCategory === 'All'
         ? posts
@@ -39,14 +22,6 @@ export default function BlogPage() {
 
     const featuredPost = filteredPosts[0];
     const recentPosts = filteredPosts.slice(1);
-
-    if (loading) {
-        return (
-            <div className="min-h-screen pt-24 flex items-center justify-center">
-                <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
-            </div>
-        );
-    }
 
     return (
         <div className="min-h-screen pt-24">
@@ -78,8 +53,8 @@ export default function BlogPage() {
                         <button
                             onClick={() => setSelectedCategory('All')}
                             className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === 'All'
-                                    ? 'bg-[var(--color-primary)] text-white'
-                                    : 'bg-[var(--color-secondary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary)] hover:text-white'
+                                ? 'bg-[var(--color-primary)] text-white'
+                                : 'bg-[var(--color-secondary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary)] hover:text-white'
                                 }`}
                         >
                             All Posts
@@ -89,8 +64,8 @@ export default function BlogPage() {
                                 key={category}
                                 onClick={() => setSelectedCategory(category)}
                                 className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === category
-                                        ? 'bg-[var(--color-primary)] text-white'
-                                        : 'bg-[var(--color-secondary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary)] hover:text-white'
+                                    ? 'bg-[var(--color-primary)] text-white'
+                                    : 'bg-[var(--color-secondary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary)] hover:text-white'
                                     }`}
                             >
                                 {category}
@@ -153,7 +128,7 @@ export default function BlogPage() {
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <Clock size={16} />
-                                                {featuredPost.read_time}
+                                                {featuredPost.readTime}
                                             </span>
                                         </div>
                                         <Link href={`/blog/${featuredPost.slug}`}>
@@ -219,7 +194,7 @@ export default function BlogPage() {
                                                     </span>
                                                     <span className="flex items-center gap-1">
                                                         <Clock size={14} />
-                                                        {post.read_time}
+                                                        {post.readTime}
                                                     </span>
                                                 </div>
                                             </div>
