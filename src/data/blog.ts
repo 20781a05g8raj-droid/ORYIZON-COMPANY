@@ -125,7 +125,7 @@ export const blogPosts: BlogPost[] = [
 <h2 class="font-heading text-2xl font-semibold mb-4">Conclusion</h2>
 <p class="mb-6">Nature often holds the best cures. Moringa isn't just a trend; it's a time-tested superfood. By incorporating this simple green powder into your daily diet, you invest in your long-term vitality. Start your wellness journey with <strong>ORYIZON</strong> today.</p>
         `,
-        image: '/Product/product 4.png',
+        image: '/images/products/product-4.png',
         author: 'Dr. Priya Sharma',
         date: 'January 28, 2026',
         readTime: '5 min read',
