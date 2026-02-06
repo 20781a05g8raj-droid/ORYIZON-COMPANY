@@ -75,7 +75,7 @@ export const blogPosts: BlogPost[] = [
     <table class="w-full text-left border-collapse">
         <thead>
             <tr class="bg-[var(--color-primary)] text-white">
-                <th class="p-3 rounded-tl-lg">NutrientSource</th>
+                <th class="p-3 rounded-tl-lg">Nutrient Source</th>
                 <th class="p-3 rounded-tr-lg">Moringa Advantage</th>
             </tr>
         </thead>
@@ -125,7 +125,7 @@ export const blogPosts: BlogPost[] = [
 <h2 class="font-heading text-2xl font-semibold mb-4">Conclusion</h2>
 <p class="mb-6">Nature often holds the best cures. Moringa isn't just a trend; it's a time-tested superfood. By incorporating this simple green powder into your daily diet, you invest in your long-term vitality. Start your wellness journey with <strong>ORYIZON</strong> today.</p>
         `,
-        image: '/images/blog/blog-1.jpg',
+        image: '/Product/product 4.png',
         author: 'Dr. Priya Sharma',
         date: 'January 28, 2026',
         readTime: '5 min read',
@@ -139,7 +139,7 @@ export const blogPosts: BlogPost[] = [
         title: 'How to Include Moringa in Your Daily Diet',
         slug: 'moringa-daily-diet-guide',
         excerpt: 'Simple and delicious ways to add Moringa powder to your everyday meals. From smoothies to soups, discover creative recipes.',
-        content: '',
+        content: '<p>Moringa is versatile. You can add it to smoothies, use it as a tea, or sprinkle it on salads. <strong>More recipes coming soon!</strong></p>',
         image: '/images/blog/blog-2.jpg',
         author: 'Chef Rahul Mehta',
         date: 'January 25, 2026',
@@ -154,7 +154,7 @@ export const blogPosts: BlogPost[] = [
         title: 'Moringa vs. Spirulina: Which Superfood is Better?',
         slug: 'moringa-vs-spirulina-comparison',
         excerpt: 'A comprehensive comparison between two of the most popular superfoods. Find out which one suits your health goals better.',
-        content: '',
+        content: '<p>Both superfoods have their benefits. Moringa is better for... <strong>Full analysis loading...</strong></p>',
         image: '/images/blog/blog-3.jpg',
         author: 'Dr. Priya Sharma',
         date: 'January 20, 2026',
@@ -169,7 +169,7 @@ export const blogPosts: BlogPost[] = [
         title: 'The Science Behind Moringa: What Research Says',
         slug: 'moringa-scientific-research',
         excerpt: 'Explore the latest scientific studies on Moringa and its proven health benefits backed by research.',
-        content: '',
+        content: '<p>Scientific studies show... <strong>Detailed review arriving shortly.</strong></p>',
         image: '/images/blog/blog-4.jpg',
         author: 'Research Team',
         date: 'January 15, 2026',
@@ -184,7 +184,7 @@ export const blogPosts: BlogPost[] = [
         title: 'Moringa for Skin and Hair: Natural Beauty Secret',
         slug: 'moringa-skin-hair-benefits',
         excerpt: 'Learn how Moringa can transform your skin and hair health naturally. Tips for using Moringa in your beauty routine.',
-        content: '',
+        content: '<p>For glowing skin... <strong>Beauty secrets revealed soon.</strong></p>',
         image: '/images/blog/blog-5.jpg',
         author: 'Anjali Gupta',
         date: 'January 10, 2026',
@@ -199,7 +199,7 @@ export const blogPosts: BlogPost[] = [
         title: 'Boost Your Immunity with Moringa This Season',
         slug: 'moringa-immunity-boost',
         excerpt: 'Strengthen your immune system naturally with the power of Moringa. Perfect tips for staying healthy year-round.',
-        content: '',
+        content: '<p>Immunity is key... <strong>Stay tuned for immunity tips.</strong></p>',
         image: '/images/blog/blog-6.jpg',
         author: 'Dr. Priya Sharma',
         date: 'January 5, 2026',
