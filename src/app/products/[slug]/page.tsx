@@ -161,32 +161,32 @@ export default function ProductPage() {
     ];
 
     return (
-        <div className="min-h-screen pt-24 bg-white" suppressHydrationWarning>
-            {/* Breadcrumb */}
-            <div className="bg-[var(--color-cream)] py-4" suppressHydrationWarning>
+        <div className="min-h-screen pt-20 md:pt-24 bg-white" suppressHydrationWarning>
+            {/* Breadcrumb - More compact on mobile */}
+            <div className="bg-[var(--color-cream)]/50 py-3 md:py-4 border-b border-[var(--color-secondary)]/30" suppressHydrationWarning>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="flex items-center gap-2 text-sm text-[var(--color-text-light)]">
-                        <Link href="/" className="hover:text-[var(--color-primary)]">Home</Link>
-                        <span>/</span>
-                        <Link href="/products" className="hover:text-[var(--color-primary)]">Products</Link>
-                        <span>/</span>
-                        <span className="text-[var(--color-text)]">{product.name}</span>
+                    <div className="flex items-center gap-2 text-[10px] md:text-xs uppercase tracking-widest font-bold text-[var(--color-text-light)] overflow-x-auto whitespace-nowrap scrollbar-hide">
+                        <Link href="/" className="hover:text-[var(--color-primary)] transition-colors">Home</Link>
+                        <span className="opacity-30">/</span>
+                        <Link href="/products" className="hover:text-[var(--color-primary)] transition-colors">Products</Link>
+                        <span className="opacity-30">/</span>
+                        <span className="text-[var(--color-primary)] truncate">{product.name}</span>
                     </div>
                 </div>
             </div>
 
             {/* Product Section */}
-            <section className="py-8 md:py-12" suppressHydrationWarning>
+            <section className="py-6 md:py-16" suppressHydrationWarning>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
-                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12" suppressHydrationWarning>
+                    <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start" suppressHydrationWarning>
                         {/* Image Gallery */}
-                        <div suppressHydrationWarning className="space-y-4">
+                        <div suppressHydrationWarning className="space-y-4 md:space-y-6">
                             {/* Main Image */}
                             <motion.div
                                 key={activeImage}
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                className="aspect-square bg-[var(--color-cream)] rounded-2xl overflow-hidden relative"
+                                initial={{ opacity: 0, scale: 0.98 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                className="aspect-[4/5] md:aspect-square bg-[var(--color-cream)] rounded-3xl md:rounded-[2.5rem] overflow-hidden relative shadow-2xl shadow-black/5 group"
                                 suppressHydrationWarning
                             >
                                 {images[activeImage] ? (
@@ -194,48 +194,54 @@ export default function ProductPage() {
                                         src={images[activeImage]}
                                         alt={product.name}
                                         fill
-                                        className="object-cover"
+                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
                                         priority
                                     />
                                 ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center">
-                                        <span className="text-7xl md:text-9xl">🌿</span>
+                                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--color-cream)] to-white">
+                                        <span className="text-8xl md:text-9xl animate-spin-slow">🌿</span>
                                     </div>
                                 )}
 
                                 {/* Badges */}
-                                <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col gap-2">
+                                <div className="absolute top-4 left-4 md:top-6 md:left-6 flex flex-col gap-2 z-10">
                                     {discount > 0 && (
-                                        <Badge variant="accent" size="sm" className="md:size-md">{discount}% OFF</Badge>
+                                        <Badge variant="accent" size="md" className="shadow-lg backdrop-blur-md">
+                                            {discount}% OFF
+                                        </Badge>
                                     )}
                                     {product.featured && (
-                                        <Badge variant="success" size="sm" className="md:size-md">⭐ Best Seller</Badge>
+                                        <Badge variant="success" size="md" className="shadow-lg backdrop-blur-md">
+                                            ⭐ Best Seller
+                                        </Badge>
                                     )}
                                 </div>
                             </motion.div>
 
                             {/* Thumbnails */}
                             {images.length > 1 && (
-                                <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-hide">
+                                <div className="flex gap-3 md:gap-4 overflow-x-auto pb-4 pt-2 -mx-4 px-4 sm:mx-0 sm:px-0 scrollbar-hide">
                                     {images.map((image, index) => (
-                                        <button
+                                        <motion.button
                                             key={index}
+                                            whileHover={{ y: -2 }}
+                                            whileTap={{ scale: 0.95 }}
                                             onClick={() => setActiveImage(index)}
-                                            className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-colors ${activeImage === index
-                                                ? 'border-[var(--color-primary)]'
-                                                : 'border-transparent'
+                                            className={`flex-shrink-0 w-20 h-20 md:w-24 md:h-24 rounded-2xl overflow-hidden border-2 transition-all duration-300 shadow-sm ${activeImage === index
+                                                ? 'border-[var(--color-primary)] scale-105 shadow-md ring-4 ring-[var(--color-primary)]/10'
+                                                : 'border-transparent opacity-60 hover:opacity-100 hover:border-[var(--color-secondary)]'
                                                 }`}
                                         >
                                             <div className="w-full h-full bg-[var(--color-cream)] flex items-center justify-center">
                                                 <Image
                                                     src={image}
                                                     alt={`${product.name} ${index + 1}`}
-                                                    width={80}
-                                                    height={80}
+                                                    width={100}
+                                                    height={100}
                                                     className="object-cover w-full h-full"
                                                 />
                                             </div>
-                                        </button>
+                                        </motion.button>
                                     ))}
                                 </div>
                             )}
@@ -243,167 +249,189 @@ export default function ProductPage() {
 
                         {/* Product Info */}
                         <div suppressHydrationWarning className="flex flex-col">
-                            {/* Title & Rating */}
-                            <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 leading-tight text-[var(--color-text)]">
-                                {product.name}
-                            </h1>
-
-                            <div className="flex items-center gap-3 sm:gap-4 mb-4 md:mb-6">
-                                <div className="flex items-center gap-0.5 md:gap-1">
-                                    {[...Array(5)].map((_, i) => (
-                                        <Star
-                                            key={i}
-                                            size={16}
-                                            className="text-[var(--color-accent)]"
-                                            fill={i < Math.round(Number(product.rating || 0)) ? 'currentColor' : 'none'}
-                                        />
-                                    ))}
-                                </div>
-                                <span className="text-sm md:text-base text-[var(--color-text-light)]">
-                                    {product.rating} ({product.review_count} reviews)
+                            {/* Title & Brand */}
+                            <div className="mb-6 md:mb-8" suppressHydrationWarning>
+                                <span className="text-[var(--color-accent)] font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-2 block">
+                                    {product.category || 'Premium Superfood'}
                                 </span>
-                            </div>
+                                <h1 className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold mb-4 leading-[1.1] text-[var(--color-text)]">
+                                    {product.name}
+                                </h1>
 
-                            {/* Price */}
-                            <div className="flex items-baseline flex-wrap gap-3 md:gap-4 mb-5 md:mb-6">
-                                <span className="font-heading text-3xl md:text-4xl font-bold text-[var(--color-primary)]">
-                                    {formatPrice(currentPrice)}
-                                </span>
-                                {originalPrice > 0 && (
-                                    <>
-                                        <span className="text-lg md:text-xl text-[var(--color-text-muted)] line-through">
-                                            {formatPrice(originalPrice)}
+                                <div className="flex items-center gap-4 flex-wrap" suppressHydrationWarning>
+                                    <div className="flex items-center gap-1 bg-[var(--color-cream)] px-3 py-1.5 rounded-full">
+                                        {[...Array(5)].map((_, i) => (
+                                            <Star
+                                                key={i}
+                                                size={14}
+                                                className="text-[var(--color-accent)]"
+                                                fill={i < Math.round(Number(product.rating || 0)) ? 'currentColor' : 'none'}
+                                            />
+                                        ))}
+                                        <span className="text-xs md:text-sm font-bold ml-1 text-[var(--color-text)]">
+                                            {product.rating}
                                         </span>
-                                        <Badge variant="success" size="sm">
-                                            Save {formatPrice(originalPrice - currentPrice)}
-                                        </Badge>
-                                    </>
-                                )}
+                                    </div>
+                                    <span className="text-xs md:text-sm text-[var(--color-text-light)] font-medium underline underline-offset-4 cursor-pointer hover:text-[var(--color-primary)] transition-colors">
+                                        Read {product.review_count} Verified Reviews
+                                    </span>
+                                </div>
                             </div>
 
-                            {/* Description */}
-                            <p className="text-sm md:text-base text-[var(--color-text-light)] mb-6 md:mb-8 leading-relaxed">
+                            {/* Price Card */}
+                            <div className="bg-[var(--color-cream)]/50 rounded-3xl p-6 md:p-8 mb-8 border border-[var(--color-secondary)]/30" suppressHydrationWarning>
+                                <div className="flex items-center flex-wrap gap-4 mb-2">
+                                    <span className="font-heading text-4xl md:text-5xl font-bold text-[var(--color-primary)]">
+                                        {formatPrice(currentPrice)}
+                                    </span>
+                                    {originalPrice > 0 && (
+                                        <div className="flex items-center gap-3">
+                                            <span className="text-xl md:text-2xl text-[var(--color-text-muted)] line-through">
+                                                {formatPrice(originalPrice)}
+                                            </span>
+                                            <Badge variant="success" size="md">
+                                                Save {formatPrice(originalPrice - currentPrice)}
+                                            </Badge>
+                                        </div>
+                                    )}
+                                </div>
+                                <p className="text-xs font-bold text-green-600 uppercase tracking-widest">
+                                    Inclusive of all taxes
+                                </p>
+                            </div>
+
+                            {/* Description Short */}
+                            <p className="text-base md:text-lg text-[var(--color-text-light)] mb-8 leading-relaxed">
                                 {product.short_description}
                             </p>
 
-                            {/* Variants */}
+                            {/* Variants Selection */}
                             {variants.length > 0 && (
-                                <div className="mb-6">
-                                    <p className="font-medium text-sm md:text-base mb-3">Select Variant:</p>
-                                    <div className="grid grid-cols-2 xs:grid-cols-3 sm:flex sm:flex-wrap gap-2 md:gap-3">
+                                <div className="mb-8" suppressHydrationWarning>
+                                    <div className="flex items-center justify-between mb-4">
+                                        <p className="font-bold text-sm md:text-base uppercase tracking-wider text-[var(--color-text-light)]">Select Size</p>
+                                        <button className="text-xs font-bold text-[var(--color-primary)] underline">Size Guide</button>
+                                    </div>
+                                    <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                         {variants.map((variant) => (
-                                            <button
+                                            <motion.button
                                                 key={variant.id}
+                                                whileHover={variant.in_stock ? { y: -2 } : {}}
+                                                whileTap={variant.in_stock ? { scale: 0.98 } : {}}
                                                 onClick={() => setSelectedVariant(variant)}
-                                                className={`flex-1 sm:flex-none px-3 py-2 md:px-5 md:py-3 rounded-lg border-2 font-medium transition-all text-sm md:text-base ${selectedVariant?.id === variant.id
-                                                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white'
-                                                    : 'border-[var(--color-secondary)] bg-white hover:border-[var(--color-primary)] shadow-sm'
-                                                    } ${!variant.in_stock ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}`}
+                                                className={`flex flex-col items-center justify-center py-4 rounded-2xl border-2 transition-all shadow-sm ${selectedVariant?.id === variant.id
+                                                    ? 'border-[var(--color-primary)] bg-[var(--color-primary)]/5 ring-4 ring-[var(--color-primary)]/10'
+                                                    : 'border-[var(--color-secondary)] bg-white hover:border-[var(--color-primary)]/30'
+                                                    } ${!variant.in_stock ? 'opacity-40 cursor-not-allowed bg-gray-50 border-gray-100 grayscale' : ''}`}
                                             >
-                                                <span className="block truncate">{variant.name}</span>
-                                                <span className="block text-xs md:text-sm opacity-80">
+                                                <span className={`font-bold text-sm md:text-base mb-1 ${selectedVariant?.id === variant.id ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)]'}`}>
+                                                    {variant.name}
+                                                </span>
+                                                <span className={`text-xs font-medium ${selectedVariant?.id === variant.id ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-light)]'}`}>
                                                     {formatPrice(Number(variant.price))}
                                                 </span>
                                                 {!variant.in_stock && (
-                                                    <span className="block text-[10px] md:text-xs text-red-500 font-bold mt-1">Out of Stock</span>
+                                                    <span className="absolute -top-2 -right-2 px-2 py-0.5 bg-red-100 text-red-600 text-[9px] font-bold rounded-full border border-red-200 uppercase">Sold Out</span>
                                                 )}
-                                            </button>
+                                            </motion.button>
                                         ))}
                                     </div>
                                 </div>
                             )}
 
-                            {/* Quantity */}
-                            <div className="mb-6 md:mb-8">
-                                <p className="font-medium text-sm md:text-base mb-3">Quantity:</p>
-                                <div className="inline-flex items-center border border-[var(--color-secondary)] rounded-lg bg-white overflow-hidden shadow-sm">
-                                    <button
+                            {/* Quantity & Actions */}
+                            <div className="flex flex-col sm:flex-row gap-4 mb-10" suppressHydrationWarning>
+                                <div className="flex items-center h-14 md:h-16 border-2 border-[var(--color-secondary)]/50 rounded-2xl bg-white p-1 min-w-[140px] shadow-sm">
+                                    <motion.button
+                                        whileTap={{ scale: 0.9 }}
                                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                        className="p-3 hover:bg-[var(--color-secondary)] transition-colors active:scale-95"
+                                        className="w-12 h-full rounded-xl hover:bg-[var(--color-cream)] transition-colors flex items-center justify-center text-[var(--color-text)]"
                                     >
-                                        <Minus size={18} />
-                                    </button>
-                                    <span className="w-10 md:w-12 text-center font-medium">{quantity}</span>
-                                    <button
+                                        <Minus size={20} />
+                                    </motion.button>
+                                    <span className="flex-1 text-center font-bold text-lg">{quantity}</span>
+                                    <motion.button
+                                        whileTap={{ scale: 0.9 }}
                                         onClick={() => setQuantity(quantity + 1)}
-                                        className="p-3 hover:bg-[var(--color-secondary)] transition-colors active:scale-95"
+                                        className="w-12 h-full rounded-xl hover:bg-[var(--color-cream)] transition-colors flex items-center justify-center text-[var(--color-text)]"
                                     >
-                                        <Plus size={18} />
-                                    </button>
+                                        <Plus size={20} />
+                                    </motion.button>
+                                </div>
+
+                                <div className="flex flex-col sm:flex-row gap-3 flex-1">
+                                    <Button
+                                        variant="primary"
+                                        size="lg"
+                                        fullWidth
+                                        className={`h-14 md:h-16 text-lg rounded-2xl shadow-xl shadow-emerald-900/10 ${isOutOfStock ? 'bg-gray-400 border-gray-400' : ''}`}
+                                        icon={isOutOfStock ? undefined : <ShoppingCart size={22} />}
+                                        onClick={handleAddToCart}
+                                        disabled={isOutOfStock}
+                                    >
+                                        {isOutOfStock ? 'Currently Out of Stock' : 'Add to Cart'}
+                                    </Button>
+                                    {!isOutOfStock && (
+                                        <Button
+                                            variant="accent"
+                                            size="lg"
+                                            fullWidth
+                                            className="h-14 md:h-16 text-lg rounded-2xl shadow-xl shadow-gold/10"
+                                        >
+                                            Buy Now
+                                        </Button>
+                                    )}
                                 </div>
                             </div>
 
-                            {/* CTAs */}
-                            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8">
-                                <Button
-                                    variant="primary"
-                                    size="lg"
-                                    fullWidth
-                                    icon={isOutOfStock ? undefined : <ShoppingCart size={20} />}
-                                    onClick={handleAddToCart}
-                                    disabled={isOutOfStock}
-                                    className={`py-4 md:py-4 ${isOutOfStock ? 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400 border-gray-400' : ''}`}
-                                >
-                                    {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
-                                </Button>
-                                {!isOutOfStock && (
-                                    <Button
-                                        variant="accent"
-                                        size="lg"
-                                        fullWidth
-                                        className="py-4 md:py-4"
-                                    >
-                                        Buy Now
-                                    </Button>
-                                )}
+                            {/* Trust Note - Premium Badge style */}
+                            <div className="grid grid-cols-2 gap-4 mb-10" suppressHydrationWarning>
+                                <div className="flex items-center gap-3 p-4 bg-emerald-50/50 rounded-2xl border border-emerald-100 group transition-colors hover:bg-emerald-50">
+                                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-emerald-600 shadow-sm border border-emerald-50">
+                                        <Truck size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-xs uppercase tracking-wider text-emerald-900">Free Delivery</p>
+                                        <p className="text-[10px] font-medium text-emerald-700">On orders over ₹499</p>
+                                    </div>
+                                </div>
+                                <div className="flex items-center gap-3 p-4 bg-amber-50/50 rounded-2xl border border-amber-100 group transition-colors hover:bg-amber-50">
+                                    <div className="w-10 h-10 bg-white rounded-xl flex items-center justify-center text-amber-600 shadow-sm border border-amber-50">
+                                        <RotateCcw size={20} />
+                                    </div>
+                                    <div>
+                                        <p className="font-bold text-xs uppercase tracking-wider text-amber-900">30-Day Return</p>
+                                        <p className="text-[10px] font-medium text-amber-700">Money back guarantee</p>
+                                    </div>
+                                </div>
                             </div>
 
-                            {/* Actions */}
-                            <div className="flex items-center gap-6 mb-6 md:mb-8 px-1">
-                                <button className="flex items-center gap-2 text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors">
-                                    <Heart size={18} />
+                            {/* Utility Actions */}
+                            <div className="flex items-center justify-center gap-8 py-4 border-t border-b border-[var(--color-secondary)]/30" suppressHydrationWarning>
+                                <button className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors group">
+                                    <Heart size={18} className="group-hover:fill-current" />
                                     <span>Add to Wishlist</span>
                                 </button>
-                                <button className="flex items-center gap-2 text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors">
+                                <button className="flex items-center gap-2.5 text-xs font-bold uppercase tracking-widest text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors">
                                     <Share2 size={18} />
-                                    <span>Share</span>
+                                    <span>Share Product</span>
                                 </button>
-                            </div>
-
-                            {/* Trust Elements */}
-                            <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 md:gap-4 p-4 md:p-5 bg-[var(--color-cream)] rounded-xl border border-[var(--color-secondary)] shadow-sm">
-                                {[
-                                    { icon: <Truck size={20} />, title: 'Free Shipping', desc: 'On orders over ₹499' },
-                                    { icon: <RotateCcw size={20} />, title: 'Easy Returns', desc: '30-day money back' },
-                                    { icon: <Shield size={20} />, title: 'Secure Payment', desc: '100% protected' },
-                                    { icon: <Check size={20} />, title: 'Certified Organic', desc: 'Lab tested' },
-                                ].map((item, index) => (
-                                    <div key={index} className="flex items-center xs:items-start gap-3">
-                                        <div className="w-9 h-9 md:w-10 md:h-10 bg-white rounded-lg flex-shrink-0 flex items-center justify-center text-[var(--color-primary)] shadow-sm">
-                                            {item.icon}
-                                        </div>
-                                        <div>
-                                            <p className="font-semibold text-xs md:text-sm">{item.title}</p>
-                                            <p className="text-[10px] md:text-xs text-[var(--color-text-light)] line-clamp-1">{item.desc}</p>
-                                        </div>
-                                    </div>
-                                ))}
                             </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            {/* Product Details Tabs */}
-            <section className="py-8 md:py-16 bg-[var(--color-cream)]" suppressHydrationWarning>
+            {/* Product Details Tabs - Premium Glassy Look */}
+            <section className="py-12 md:py-24 bg-[var(--color-cream)]/30 border-t border-[var(--color-secondary)]/30" suppressHydrationWarning>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                     {/* Tabs Navigation */}
-                    <div className="flex gap-1 md:gap-2 mb-6 md:mb-8 border-b border-[var(--color-secondary)] overflow-x-auto scrollbar-hide">
+                    <div className="flex justify-center md:justify-start gap-1 md:gap-4 mb-8 md:mb-12 border-b-2 border-[var(--color-secondary)]/20 overflow-x-auto scrollbar-hide pb-0.5" suppressHydrationWarning>
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`whitespace-nowrap px-4 md:px-6 py-3 font-medium text-xs md:text-base transition-colors relative ${activeTab === tab.id
+                                className={`whitespace-nowrap px-6 py-4 font-bold text-xs md:text-sm uppercase tracking-widest transition-all relative ${activeTab === tab.id
                                     ? 'text-[var(--color-primary)]'
                                     : 'text-[var(--color-text-light)] hover:text-[var(--color-text)]'
                                     }`}
@@ -411,111 +439,138 @@ export default function ProductPage() {
                                 {tab.label}
                                 {activeTab === tab.id && (
                                     <motion.div
-                                        layoutId="activeTab"
-                                        className="absolute bottom-0 left-0 right-0 h-0.5 bg-[var(--color-primary)]"
+                                        layoutId="activeTabUnderline"
+                                        className="absolute bottom-[-2px] left-0 right-0 h-1 bg-[var(--color-primary)] rounded-full z-10"
                                     />
                                 )}
                             </button>
                         ))}
                     </div>
 
-                    {/* Tab Content */}
-                    <div className="bg-white rounded-2xl p-5 md:p-8 shadow-sm border border-[var(--color-secondary)]" suppressHydrationWarning>
+                    {/* Tab Content Card */}
+                    <div className="bg-white rounded-[2rem] p-8 md:p-12 shadow-2xl shadow-emerald-900/5 border border-[var(--color-secondary)]/30" suppressHydrationWarning>
                         {activeTab === 'benefits' && (
-                            <div className="grid md:grid-cols-2 gap-8">
+                            <div className="grid lg:grid-cols-2 gap-12 md:gap-20">
                                 <div>
-                                    <h3 className="font-heading text-2xl font-semibold mb-6">Key Benefits</h3>
+                                    <h3 className="font-heading text-3xl md:text-4xl font-bold mb-8 text-[var(--color-text)]">Unmatched Benefits</h3>
                                     {benefits.length > 0 ? (
-                                        <ul className="space-y-4">
+                                        <div className="grid gap-6">
                                             {benefits.map((benefit, index) => (
-                                                <li key={index} className="flex items-start gap-3">
-                                                    <span className="w-6 h-6 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-0.5">
+                                                <motion.div
+                                                    key={index}
+                                                    initial={{ opacity: 0, x: -10 }}
+                                                    whileInView={{ opacity: 1, x: 0 }}
+                                                    transition={{ delay: index * 0.1 }}
+                                                    className="flex items-start gap-4 p-5 rounded-2xl bg-[var(--color-cream)]/50 hover:bg-[var(--color-cream)] transition-colors border border-transparent hover:border-[var(--color-primary)]/10 group"
+                                                >
+                                                    <div className="w-8 h-8 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center text-sm flex-shrink-0 mt-0.5 shadow-lg group-hover:scale-110 transition-transform">
                                                         ✓
-                                                    </span>
-                                                    <span>{benefit}</span>
-                                                </li>
+                                                    </div>
+                                                    <span className="text-base md:text-lg font-medium text-[var(--color-text)] leading-relaxed">{benefit}</span>
+                                                </motion.div>
                                             ))}
-                                        </ul>
+                                        </div>
                                     ) : (
-                                        <p className="text-gray-500">No specific benefits listed.</p>
+                                        <p className="text-[var(--color-text-light)] text-lg italic">Comprehensive health guide for this product is coming soon.</p>
                                     )}
                                 </div>
                                 <div>
-                                    <h3 className="font-heading text-2xl font-semibold mb-6">Certifications</h3>
+                                    <h3 className="font-heading text-3xl md:text-4xl font-bold mb-8 text-[var(--color-text)]">Certifications</h3>
                                     {certifications.length > 0 ? (
-                                        <div className="flex flex-wrap gap-4">
+                                        <div className="grid grid-cols-2 gap-4">
                                             {certifications.map((cert) => (
                                                 <div
                                                     key={cert}
-                                                    className="px-4 py-2 bg-[var(--color-cream)] rounded-lg text-sm font-medium"
+                                                    className="p-5 bg-white border-2 border-[var(--color-secondary)] rounded-2xl text-base font-bold text-[var(--color-primary)] flex items-center justify-center text-center shadow-sm hover:border-[var(--color-primary)] transition-all"
                                                 >
-                                                    ✓ {cert.charAt(0).toUpperCase() + cert.slice(1)}
+                                                    {cert.toUpperCase()}
                                                 </div>
                                             ))}
                                         </div>
                                     ) : (
-                                        <p className="text-gray-500">No certifications listed.</p>
+                                        <div className="p-8 bg-gray-50 rounded-3xl border-2 border-dashed border-gray-200 text-center">
+                                            <p className="text-gray-400 font-bold uppercase tracking-widest text-xs">Purity Certifications in Progress</p>
+                                        </div>
                                     )}
+                                    <div className="mt-12 p-6 bg-[var(--color-primary)]/5 rounded-3xl border border-[var(--color-primary)]/10">
+                                        <p className="text-sm font-medium text-[var(--color-primary)] leading-relaxed italic">
+                                            "Our Moringa is sourced from organic family farms in the Himalayan foothills, ensuring maximum nutrient density."
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
                         )}
 
                         {activeTab === 'ingredients' && (
-                            <div>
-                                <h3 className="font-heading text-2xl font-semibold mb-6">Ingredients</h3>
+                            <div className="max-w-3xl mx-auto">
+                                <h3 className="font-heading text-3xl md:text-4xl font-bold mb-8 text-center text-[var(--color-text)]">Pure Ingredients</h3>
                                 {ingredients.length > 0 ? (
-                                    <ul className="space-y-3 mb-8">
+                                    <div className="grid gap-4 mb-12">
                                         {ingredients.map((ingredient, index) => (
-                                            <li key={index} className="flex items-center gap-3">
-                                                <span className="text-[var(--color-primary)]">•</span>
-                                                {ingredient}
-                                            </li>
+                                            <div key={index} className="flex items-center gap-6 p-4 rounded-xl border border-[var(--color-secondary)] hover:bg-[var(--color-cream)] transition-colors">
+                                                <div className="w-3 h-3 rounded-full bg-[var(--color-accent)]" />
+                                                <span className="text-lg font-bold text-[var(--color-text)]">{ingredient}</span>
+                                            </div>
                                         ))}
-                                    </ul>
+                                    </div>
                                 ) : (
-                                    <p className="text-gray-500 mb-8">No specific ingredients listed.</p>
+                                    <p className="text-center text-[var(--color-text-light)] text-xl italic mb-12">100% Single-Ingredient Pure Organic Moringa Leaves.</p>
                                 )}
 
                                 {product.how_to_use && (
-                                    <div>
-                                        <h3 className="font-heading text-2xl font-semibold mb-6">Instructions</h3>
-                                        <p>{product.how_to_use}</p>
+                                    <div className="p-8 bg-[var(--color-cream)] rounded-3xl">
+                                        <h4 className="font-heading text-xl font-bold mb-4 uppercase tracking-widest text-[var(--color-primary)]">Quick Guide</h4>
+                                        <p className="text-lg leading-relaxed text-[var(--color-text)]">{product.how_to_use}</p>
                                     </div>
                                 )}
                             </div>
                         )}
 
                         {activeTab === 'howtouse' && (
-                            <div>
-                                <h3 className="font-heading text-2xl font-semibold mb-6">How to Use</h3>
-                                <p className="text-gray-700 leading-relaxed">
-                                    {product.how_to_use || 'No instructions provided.'}
-                                </p>
+                            <div className="max-w-3xl mx-auto">
+                                <h3 className="font-heading text-3xl md:text-4xl font-bold mb-8 text-center text-[var(--color-text)]">How to Consume</h3>
+                                <div className="p-8 md:p-12 bg-[var(--color-cream)] rounded-[2.5rem] relative overflow-hidden">
+                                    <div className="absolute top-[-20%] right-[-10%] opacity-10 rotate-12 select-none pointer-events-none">
+                                        <span className="text-[12rem]">🌿</span>
+                                    </div>
+                                    <p className="text-xl md:text-2xl leading-relaxed text-[var(--color-text)] font-medium text-center relative z-10">
+                                        {product.how_to_use || 'No instructions provided.'}
+                                    </p>
+                                </div>
                             </div>
                         )}
 
                         {activeTab === 'reviews' && (
-                            <div>
-                                <div className="flex items-center justify-between mb-8">
-                                    <div>
-                                        <h3 className="font-heading text-2xl font-semibold mb-2">Customer Reviews</h3>
-                                        <p className="text-gray-500">Coming soon!</p>
-                                    </div>
+                            <div className="text-center py-12">
+                                <div className="w-20 h-20 bg-[var(--color-cream)] rounded-full flex items-center justify-center mx-auto mb-6 text-3xl">
+                                    💬
                                 </div>
+                                <h3 className="font-heading text-3xl font-bold mb-3">Community Love</h3>
+                                <p className="text-xl text-[var(--color-text-light)] mb-8">We&apos;re currently gathering our latest customer experiences.</p>
+                                <Button variant="outline" className="rounded-full px-10">Write a Review</Button>
                             </div>
                         )}
                     </div>
                 </div>
             </section>
 
-            {/* Related Products */}
+            {/* Related Products - Premium Carousel alternative */}
             {relatedProducts.length > 0 && (
-                <section className="py-16 bg-white" suppressHydrationWarning>
+                <section className="py-16 md:py-32 bg-white" suppressHydrationWarning>
                     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
-                        <h2 className="font-heading text-3xl font-bold mb-8 text-center">
-                            You May Also Like
-                        </h2>
-                        <div className="grid md:grid-cols-3 gap-8" suppressHydrationWarning>
+                        <div className="flex flex-col md:flex-row items-end justify-between gap-6 mb-12">
+                            <div className="text-center md:text-left flex-1">
+                                <span className="text-[var(--color-accent)] font-bold text-xs md:text-sm uppercase tracking-[0.2em] mb-3 block">Complete Your Regimen</span>
+                                <h2 className="font-heading text-4xl md:text-5xl font-bold text-[var(--color-text)]">
+                                    You May Also Like
+                                </h2>
+                            </div>
+                            <Link href="/products" className="text-sm font-bold uppercase tracking-widest text-[var(--color-primary)] hover:underline">
+                                View Full Collection →
+                            </Link>
+                        </div>
+
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12" suppressHydrationWarning>
                             {relatedProducts.map((p) => (
                                 <ProductCard key={p.id} product={p as any} />
                             ))}
