@@ -549,6 +549,35 @@ export interface Database {
                     updated_at?: string
                 }
             }
+            product_reviews: {
+                Row: {
+                    id: string
+                    product_id: string
+                    user_id: string | null
+                    user_name: string
+                    rating: number
+                    comment: string
+                    created_at: string
+                }
+                Insert: {
+                    id?: string
+                    product_id: string
+                    user_id?: string | null
+                    user_name: string
+                    rating: number
+                    comment: string
+                    created_at?: string
+                }
+                Update: {
+                    id?: string
+                    product_id?: string
+                    user_id?: string | null
+                    user_name?: string
+                    rating?: number
+                    comment?: string
+                    created_at?: string
+                }
+            }
         }
     }
 }

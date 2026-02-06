@@ -17,6 +17,8 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProductCard } from '@/components/ui/Card';
 import { ProductWithVariants, ProductVariant } from '@/types/database';
+import { getProductReviews, ProductReview } from '@/lib/api/reviews';
+import ReviewModal from '@/components/products/ReviewModal';
 
 export default function ProductPage() {
     const params = useParams();
@@ -28,6 +30,9 @@ export default function ProductPage() {
     const [quantity, setQuantity] = useState(1);
     const [activeTab, setActiveTab] = useState('benefits');
     const [activeImage, setActiveImage] = useState(0);
+    const [reviews, setReviews] = useState<ProductReview[]>([]);
+    const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+    const [isReviewsLoading, setIsReviewsLoading] = useState(true);
 
     const { addItem, openCart } = useCartStore();
 
@@ -78,8 +83,26 @@ export default function ProductPage() {
             setLoading(false);
         };
 
+        const fetchReviews = async () => {
+            if (!params.slug) return;
+            const foundProduct = await getProductBySlug(params.slug as string);
+            if (foundProduct) {
+                const productReviews = await getProductReviews(foundProduct.id);
+                setReviews(productReviews);
+            }
+            setIsReviewsLoading(false);
+        };
+
         fetchProductData();
+        fetchReviews();
     }, [params.slug]);
+
+    const refreshReviews = async () => {
+        if (product) {
+            const productReviews = await getProductReviews(product.id);
+            setReviews(productReviews);
+        }
+    };
 
 
     if (loading) {
@@ -157,11 +180,17 @@ export default function ProductPage() {
         { id: 'benefits', label: 'Benefits' },
         { id: 'ingredients', label: 'Ingredients' },
         { id: 'howtouse', label: 'How to Use' },
-        { id: 'reviews', label: `Reviews (${product.review_count || 0})` },
+        { id: 'reviews', label: `Reviews (${reviews.length > 0 ? reviews.length : 0})` },
     ];
 
     return (
         <div className="min-h-screen pt-16 md:pt-24 bg-white" suppressHydrationWarning>
+            <ReviewModal
+                isOpen={isReviewModalOpen}
+                onClose={() => setIsReviewModalOpen(false)}
+                productId={product.id}
+                onSuccess={refreshReviews}
+            />
             {/* Breadcrumb - More compact on mobile */}
             <div className="bg-[var(--color-cream)]/50 py-3 md:py-4 border-b border-[var(--color-secondary)]/30" suppressHydrationWarning>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -265,16 +294,19 @@ export default function ProductPage() {
                                                 key={i}
                                                 size={12}
                                                 className="sm:size-[14px] text-[var(--color-accent)]"
-                                                fill={i < Math.round(Number(product.rating || 0)) ? 'currentColor' : 'none'}
+                                                fill={i < Math.round(reviews.length > 0 ? reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length : 0) ? 'currentColor' : 'none'}
                                             />
                                         ))}
                                         <span className="text-[10px] sm:text-xs md:text-sm font-bold ml-1 text-[var(--color-text)]">
-                                            {product.rating}
+                                            {reviews.length > 0 ? (reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length).toFixed(1) : "0.0"}
                                         </span>
                                     </div>
-                                    <span className="text-[10px] sm:text-xs md:text-sm text-[var(--color-text-light)] font-medium underline underline-offset-4 cursor-pointer hover:text-[var(--color-primary)] transition-colors">
-                                        {product.review_count} Reviews
-                                    </span>
+                                    <button
+                                        onClick={() => setActiveTab('reviews')}
+                                        className="text-[10px] sm:text-xs md:text-sm text-[var(--color-text-light)] font-medium underline underline-offset-4 cursor-pointer hover:text-[var(--color-primary)] transition-colors"
+                                    >
+                                        {reviews.length} Reviews
+                                    </button>
                                 </div>
                             </div>
 
@@ -541,13 +573,64 @@ export default function ProductPage() {
                         )}
 
                         {activeTab === 'reviews' && (
-                            <div className="text-center py-8 sm:py-12">
-                                <div className="w-16 h-16 sm:w-20 sm:h-20 bg-[var(--color-cream)] rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 text-2xl sm:text-3xl">
-                                    💬
+                            <div className="py-6 sm:py-12">
+                                <div className="flex flex-col sm:flex-row justify-between items-center gap-6 mb-12">
+                                    <div>
+                                        <h3 className="font-heading text-2xl sm:text-4xl font-bold text-[var(--color-text)] mb-2">Customer Feedback</h3>
+                                        <p className="text-[var(--color-text-light)]">Real experiences from our community members.</p>
+                                    </div>
+                                    <Button
+                                        variant="primary"
+                                        size="lg"
+                                        className="rounded-2xl px-8"
+                                        onClick={() => setIsReviewModalOpen(true)}
+                                    >
+                                        Write a Review
+                                    </Button>
                                 </div>
-                                <h3 className="font-heading text-xl sm:text-3xl font-bold mb-2 sm:mb-3">Community Love</h3>
-                                <p className="text-sm sm:text-xl text-[var(--color-text-light)] mb-6 sm:mb-8">Gathering latest customer experiences.</p>
-                                <Button variant="outline" size="md" className="rounded-full px-8 sm:px-10">Write a Review</Button>
+
+                                {isReviewsLoading ? (
+                                    <div className="flex justify-center py-20">
+                                        <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                                    </div>
+                                ) : reviews.length > 0 ? (
+                                    <div className="space-y-6 sm:space-y-8">
+                                        {reviews.map((review) => (
+                                            <div key={review.id} className="bg-white/50 backdrop-blur-sm p-6 sm:p-8 rounded-3xl border border-white shadow-sm hover:shadow-md transition-all">
+                                                <div className="flex justify-between items-start mb-4">
+                                                    <div>
+                                                        <h4 className="font-bold text-lg text-[var(--color-text)]">{review.user_name}</h4>
+                                                        <div className="flex gap-1 mt-1">
+                                                            {[...Array(5)].map((_, i) => (
+                                                                <Star key={i} size={14} className={i < review.rating ? "fill-yellow-400 text-yellow-400" : "text-gray-200"} />
+                                                            ))}
+                                                        </div>
+                                                    </div>
+                                                    <span className="text-xs text-[var(--color-text-light)] font-medium">
+                                                        {new Date(review.created_at).toLocaleDateString()}
+                                                    </span>
+                                                </div>
+                                                <p className="text-[var(--color-text)] leading-relaxed italic">"{review.comment}"</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-16 sm:py-24 bg-[var(--color-cream)]/30 rounded-[3rem]">
+                                        <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center mx-auto mb-6 text-3xl shadow-sm">
+                                            💬
+                                        </div>
+                                        <h3 className="font-heading text-2xl sm:text-3xl font-bold mb-3 text-[var(--color-text)]">Be the First!</h3>
+                                        <p className="text-lg text-[var(--color-text-light)] mb-8 max-w-md mx-auto">No reviews for this product yet. Share your experience and help others!</p>
+                                        <Button
+                                            variant="outline"
+                                            size="lg"
+                                            className="rounded-2xl px-10 border-2"
+                                            onClick={() => setIsReviewModalOpen(true)}
+                                        >
+                                            Write the First Review
+                                        </Button>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
