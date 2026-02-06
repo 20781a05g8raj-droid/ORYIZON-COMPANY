@@ -176,17 +176,17 @@ export default function ProductPage() {
             </div>
 
             {/* Product Section */}
-            <section className="py-12" suppressHydrationWarning>
+            <section className="py-8 md:py-12" suppressHydrationWarning>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
-                    <div className="grid lg:grid-cols-2 gap-12" suppressHydrationWarning>
+                    <div className="grid lg:grid-cols-2 gap-8 lg:gap-12" suppressHydrationWarning>
                         {/* Image Gallery */}
-                        <div suppressHydrationWarning>
+                        <div suppressHydrationWarning className="space-y-4">
                             {/* Main Image */}
                             <motion.div
                                 key={activeImage}
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                className="aspect-square bg-[var(--color-cream)] rounded-2xl overflow-hidden relative mb-4"
+                                className="aspect-square bg-[var(--color-cream)] rounded-2xl overflow-hidden relative"
                                 suppressHydrationWarning
                             >
                                 {images[activeImage] ? (
@@ -195,32 +195,33 @@ export default function ProductPage() {
                                         alt={product.name}
                                         fill
                                         className="object-cover"
+                                        priority
                                     />
                                 ) : (
                                     <div className="absolute inset-0 flex items-center justify-center">
-                                        <span className="text-9xl">🌿</span>
+                                        <span className="text-7xl md:text-9xl">🌿</span>
                                     </div>
                                 )}
 
                                 {/* Badges */}
-                                <div className="absolute top-4 left-4 flex flex-col gap-2">
+                                <div className="absolute top-3 left-3 md:top-4 md:left-4 flex flex-col gap-2">
                                     {discount > 0 && (
-                                        <Badge variant="accent">{discount}% OFF</Badge>
+                                        <Badge variant="accent" size="sm" className="md:size-md">{discount}% OFF</Badge>
                                     )}
                                     {product.featured && (
-                                        <Badge variant="success">⭐ Best Seller</Badge>
+                                        <Badge variant="success" size="sm" className="md:size-md">⭐ Best Seller</Badge>
                                     )}
                                 </div>
                             </motion.div>
 
                             {/* Thumbnails */}
                             {images.length > 1 && (
-                                <div className="flex gap-3">
+                                <div className="flex gap-2 md:gap-3 overflow-x-auto pb-2 scrollbar-hide">
                                     {images.map((image, index) => (
                                         <button
                                             key={index}
                                             onClick={() => setActiveImage(index)}
-                                            className={`w-20 h-20 rounded-lg overflow-hidden border-2 transition-colors ${activeImage === index
+                                            className={`flex-shrink-0 w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden border-2 transition-colors ${activeImage === index
                                                 ? 'border-[var(--color-primary)]'
                                                 : 'border-transparent'
                                                 }`}
@@ -241,39 +242,39 @@ export default function ProductPage() {
                         </div>
 
                         {/* Product Info */}
-                        <div suppressHydrationWarning>
+                        <div suppressHydrationWarning className="flex flex-col">
                             {/* Title & Rating */}
-                            <h1 className="font-heading text-3xl md:text-4xl font-bold mb-4">
+                            <h1 className="font-heading text-2xl sm:text-3xl md:text-4xl font-bold mb-3 md:mb-4 leading-tight text-[var(--color-text)]">
                                 {product.name}
                             </h1>
 
-                            <div className="flex items-center gap-4 mb-6">
-                                <div className="flex items-center gap-1">
+                            <div className="flex items-center gap-3 sm:gap-4 mb-4 md:mb-6">
+                                <div className="flex items-center gap-0.5 md:gap-1">
                                     {[...Array(5)].map((_, i) => (
                                         <Star
                                             key={i}
-                                            size={18}
+                                            size={16}
                                             className="text-[var(--color-accent)]"
                                             fill={i < Math.round(Number(product.rating || 0)) ? 'currentColor' : 'none'}
                                         />
                                     ))}
                                 </div>
-                                <span className="text-[var(--color-text-light)]">
+                                <span className="text-sm md:text-base text-[var(--color-text-light)]">
                                     {product.rating} ({product.review_count} reviews)
                                 </span>
                             </div>
 
                             {/* Price */}
-                            <div className="flex items-baseline gap-4 mb-6">
-                                <span className="font-heading text-4xl font-bold text-[var(--color-primary)]">
+                            <div className="flex items-baseline flex-wrap gap-3 md:gap-4 mb-5 md:mb-6">
+                                <span className="font-heading text-3xl md:text-4xl font-bold text-[var(--color-primary)]">
                                     {formatPrice(currentPrice)}
                                 </span>
                                 {originalPrice > 0 && (
                                     <>
-                                        <span className="text-xl text-[var(--color-text-muted)] line-through">
+                                        <span className="text-lg md:text-xl text-[var(--color-text-muted)] line-through">
                                             {formatPrice(originalPrice)}
                                         </span>
-                                        <Badge variant="success">
+                                        <Badge variant="success" size="sm">
                                             Save {formatPrice(originalPrice - currentPrice)}
                                         </Badge>
                                     </>
@@ -281,30 +282,30 @@ export default function ProductPage() {
                             </div>
 
                             {/* Description */}
-                            <p className="text-[var(--color-text-light)] mb-8">
+                            <p className="text-sm md:text-base text-[var(--color-text-light)] mb-6 md:mb-8 leading-relaxed">
                                 {product.short_description}
                             </p>
 
                             {/* Variants */}
                             {variants.length > 0 && (
                                 <div className="mb-6">
-                                    <p className="font-medium mb-3">Select Variant:</p>
-                                    <div className="flex flex-wrap gap-3">
+                                    <p className="font-medium text-sm md:text-base mb-3">Select Variant:</p>
+                                    <div className="grid grid-cols-2 xs:grid-cols-3 sm:flex sm:flex-wrap gap-2 md:gap-3">
                                         {variants.map((variant) => (
                                             <button
                                                 key={variant.id}
                                                 onClick={() => setSelectedVariant(variant)}
-                                                className={`px-5 py-3 rounded-lg border-2 font-medium transition-all ${selectedVariant?.id === variant.id
+                                                className={`flex-1 sm:flex-none px-3 py-2 md:px-5 md:py-3 rounded-lg border-2 font-medium transition-all text-sm md:text-base ${selectedVariant?.id === variant.id
                                                     ? 'border-[var(--color-primary)] bg-[var(--color-primary)] text-white'
-                                                    : 'border-[var(--color-secondary)] hover:border-[var(--color-primary)]'
+                                                    : 'border-[var(--color-secondary)] bg-white hover:border-[var(--color-primary)] shadow-sm'
                                                     } ${!variant.in_stock ? 'opacity-50 cursor-not-allowed bg-gray-50' : ''}`}
                                             >
-                                                {variant.name}
-                                                <span className="block text-sm opacity-80">
+                                                <span className="block truncate">{variant.name}</span>
+                                                <span className="block text-xs md:text-sm opacity-80">
                                                     {formatPrice(Number(variant.price))}
                                                 </span>
                                                 {!variant.in_stock && (
-                                                    <span className="block text-xs text-red-500 font-bold mt-1">Out of Stock</span>
+                                                    <span className="block text-[10px] md:text-xs text-red-500 font-bold mt-1">Out of Stock</span>
                                                 )}
                                             </button>
                                         ))}
@@ -313,19 +314,19 @@ export default function ProductPage() {
                             )}
 
                             {/* Quantity */}
-                            <div className="mb-8">
-                                <p className="font-medium mb-3">Quantity:</p>
-                                <div className="inline-flex items-center border border-[var(--color-secondary)] rounded-lg">
+                            <div className="mb-6 md:mb-8">
+                                <p className="font-medium text-sm md:text-base mb-3">Quantity:</p>
+                                <div className="inline-flex items-center border border-[var(--color-secondary)] rounded-lg bg-white overflow-hidden shadow-sm">
                                     <button
                                         onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                                        className="p-3 hover:bg-[var(--color-secondary)] transition-colors"
+                                        className="p-3 hover:bg-[var(--color-secondary)] transition-colors active:scale-95"
                                     >
                                         <Minus size={18} />
                                     </button>
-                                    <span className="w-12 text-center font-medium">{quantity}</span>
+                                    <span className="w-10 md:w-12 text-center font-medium">{quantity}</span>
                                     <button
                                         onClick={() => setQuantity(quantity + 1)}
-                                        className="p-3 hover:bg-[var(--color-secondary)] transition-colors"
+                                        className="p-3 hover:bg-[var(--color-secondary)] transition-colors active:scale-95"
                                     >
                                         <Plus size={18} />
                                     </button>
@@ -333,7 +334,7 @@ export default function ProductPage() {
                             </div>
 
                             {/* CTAs */}
-                            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+                            <div className="flex flex-col sm:flex-row gap-3 md:gap-4 mb-6 md:mb-8">
                                 <Button
                                     variant="primary"
                                     size="lg"
@@ -341,48 +342,49 @@ export default function ProductPage() {
                                     icon={isOutOfStock ? undefined : <ShoppingCart size={20} />}
                                     onClick={handleAddToCart}
                                     disabled={isOutOfStock}
-                                    className={isOutOfStock ? 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400 border-gray-400' : ''}
+                                    className={`py-4 md:py-4 ${isOutOfStock ? 'opacity-50 cursor-not-allowed bg-gray-400 hover:bg-gray-400 border-gray-400' : ''}`}
                                 >
                                     {isOutOfStock ? 'Out of Stock' : 'Add to Cart'}
                                 </Button>
-                                <Button
-                                    variant="accent"
-                                    size="lg"
-                                    fullWidth
-                                    disabled={isOutOfStock}
-                                    className={isOutOfStock ? 'opacity-50 cursor-not-allowed hidden sm:block' : ''}
-                                >
-                                    Buy Now
-                                </Button>
+                                {!isOutOfStock && (
+                                    <Button
+                                        variant="accent"
+                                        size="lg"
+                                        fullWidth
+                                        className="py-4 md:py-4"
+                                    >
+                                        Buy Now
+                                    </Button>
+                                )}
                             </div>
 
                             {/* Actions */}
-                            <div className="flex items-center gap-6 mb-8">
-                                <button className="flex items-center gap-2 text-[var(--color-text-light)] hover:text-[var(--color-primary)]">
+                            <div className="flex items-center gap-6 mb-6 md:mb-8 px-1">
+                                <button className="flex items-center gap-2 text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors">
                                     <Heart size={18} />
                                     <span>Add to Wishlist</span>
                                 </button>
-                                <button className="flex items-center gap-2 text-[var(--color-text-light)] hover:text-[var(--color-primary)]">
+                                <button className="flex items-center gap-2 text-sm text-[var(--color-text-light)] hover:text-[var(--color-primary)] transition-colors">
                                     <Share2 size={18} />
                                     <span>Share</span>
                                 </button>
                             </div>
 
                             {/* Trust Elements */}
-                            <div className="grid grid-cols-2 gap-4 p-5 bg-[var(--color-cream)] rounded-xl">
+                            <div className="grid grid-cols-1 xs:grid-cols-2 gap-3 md:gap-4 p-4 md:p-5 bg-[var(--color-cream)] rounded-xl border border-[var(--color-secondary)] shadow-sm">
                                 {[
                                     { icon: <Truck size={20} />, title: 'Free Shipping', desc: 'On orders over ₹499' },
                                     { icon: <RotateCcw size={20} />, title: 'Easy Returns', desc: '30-day money back' },
                                     { icon: <Shield size={20} />, title: 'Secure Payment', desc: '100% protected' },
                                     { icon: <Check size={20} />, title: 'Certified Organic', desc: 'Lab tested' },
                                 ].map((item, index) => (
-                                    <div key={index} className="flex items-start gap-3">
-                                        <div className="w-10 h-10 bg-white rounded-lg flex items-center justify-center text-[var(--color-primary)]">
+                                    <div key={index} className="flex items-center xs:items-start gap-3">
+                                        <div className="w-9 h-9 md:w-10 md:h-10 bg-white rounded-lg flex-shrink-0 flex items-center justify-center text-[var(--color-primary)] shadow-sm">
                                             {item.icon}
                                         </div>
                                         <div>
-                                            <p className="font-medium text-sm">{item.title}</p>
-                                            <p className="text-xs text-[var(--color-text-light)]">{item.desc}</p>
+                                            <p className="font-semibold text-xs md:text-sm">{item.title}</p>
+                                            <p className="text-[10px] md:text-xs text-[var(--color-text-light)] line-clamp-1">{item.desc}</p>
                                         </div>
                                     </div>
                                 ))}
@@ -393,15 +395,15 @@ export default function ProductPage() {
             </section>
 
             {/* Product Details Tabs */}
-            <section className="py-12 bg-[var(--color-cream)]" suppressHydrationWarning>
+            <section className="py-8 md:py-16 bg-[var(--color-cream)]" suppressHydrationWarning>
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                     {/* Tabs Navigation */}
-                    <div className="flex flex-wrap gap-2 mb-8 border-b border-[var(--color-secondary)]">
+                    <div className="flex gap-1 md:gap-2 mb-6 md:mb-8 border-b border-[var(--color-secondary)] overflow-x-auto scrollbar-hide">
                         {tabs.map((tab) => (
                             <button
                                 key={tab.id}
                                 onClick={() => setActiveTab(tab.id)}
-                                className={`px-6 py-3 font-medium transition-colors relative ${activeTab === tab.id
+                                className={`whitespace-nowrap px-4 md:px-6 py-3 font-medium text-xs md:text-base transition-colors relative ${activeTab === tab.id
                                     ? 'text-[var(--color-primary)]'
                                     : 'text-[var(--color-text-light)] hover:text-[var(--color-text)]'
                                     }`}
@@ -418,7 +420,7 @@ export default function ProductPage() {
                     </div>
 
                     {/* Tab Content */}
-                    <div className="bg-white rounded-xl p-8" suppressHydrationWarning>
+                    <div className="bg-white rounded-2xl p-5 md:p-8 shadow-sm border border-[var(--color-secondary)]" suppressHydrationWarning>
                         {activeTab === 'benefits' && (
                             <div className="grid md:grid-cols-2 gap-8">
                                 <div>

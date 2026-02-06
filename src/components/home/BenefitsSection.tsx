@@ -6,35 +6,31 @@ import { KEY_BENEFITS } from '@/lib/constants';
 
 export function BenefitsSection() {
     return (
-        <section style={{ padding: '5rem 0', backgroundColor: 'white' }}>
-            <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }}>
+        <section className="py-16 md:py-24 bg-white" suppressHydrationWarning>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                 {/* Section Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{ textAlign: 'center', marginBottom: '4rem' }}
+                    className="text-center mb-12 md:mb-20"
                     suppressHydrationWarning
                 >
-                    <span style={{ color: '#C4A35A', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem' }}>
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
                         Why Choose Moringa
                     </span>
-                    <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, marginTop: '0.5rem', marginBottom: '1rem', color: '#2C2C2C' }}>
+                    <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)] leading-tight">
                         Nature&apos;s Complete{' '}
-                        <span style={{ color: '#2D5016' }}>Superfood</span>
+                        <span className="text-[var(--color-primary)]">Superfood</span>
                     </h2>
-                    <p style={{ color: '#666666', maxWidth: '42rem', margin: '0 auto', fontSize: '1.125rem' }}>
+                    <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-base md:text-lg">
                         Discover the incredible benefits that make Moringa one of the most
                         nutrient-dense plants on Earth.
                     </p>
                 </motion.div>
 
                 {/* Benefits Grid */}
-                <div style={{
-                    display: 'grid',
-                    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                    gap: '2rem'
-                }} suppressHydrationWarning>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8" suppressHydrationWarning>
                     {KEY_BENEFITS.map((benefit, index) => (
                         <motion.div
                             key={benefit.id}
@@ -42,45 +38,25 @@ export function BenefitsSection() {
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: index * 0.1 }}
-                            whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(0,0,0,0.1)' }}
-                            style={{
-                                padding: '2rem',
-                                backgroundColor: '#FBF9F4',
-                                borderRadius: '1rem',
-                                transition: 'all 0.3s ease'
-                            }}
+                            whileHover={{ y: -5 }}
+                            className="p-6 md:p-8 bg-[var(--color-cream)] rounded-2xl md:rounded-3xl transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5 border border-[var(--color-secondary)]/50"
                             suppressHydrationWarning
                         >
                             {/* Icon */}
                             <motion.div
                                 whileHover={{ scale: 1.1, rotate: 5 }}
-                                style={{
-                                    width: '4rem',
-                                    height: '4rem',
-                                    borderRadius: '1rem',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    fontSize: '1.875rem',
-                                    marginBottom: '1.25rem',
-                                    backgroundColor: `${benefit.color}20`
-                                }}
+                                className="w-14 h-14 md:w-16 md:h-16 rounded-xl md:rounded-2xl flex items-center justify-center text-3xl mb-6 shadow-sm"
+                                style={{ backgroundColor: `${benefit.color}20` }}
                                 suppressHydrationWarning
                             >
                                 {benefit.icon}
                             </motion.div>
 
                             {/* Content */}
-                            <h3 style={{
-                                fontFamily: "'Playfair Display', Georgia, serif",
-                                fontSize: '1.25rem',
-                                fontWeight: 600,
-                                marginBottom: '0.75rem',
-                                color: '#2C2C2C'
-                            }}>
+                            <h3 className="font-heading text-xl md:text-2xl font-bold mb-3 text-[var(--color-text)]">
                                 {benefit.title}
                             </h3>
-                            <p style={{ color: '#666666' }}>
+                            <p className="text-[var(--color-text-light)] text-sm md:text-base leading-relaxed">
                                 {benefit.description}
                             </p>
                         </motion.div>
@@ -92,12 +68,7 @@ export function BenefitsSection() {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{
-                        marginTop: '5rem',
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                        gap: '2rem'
-                    }}
+                    className="mt-16 md:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
                     suppressHydrationWarning
                 >
                     {[
@@ -106,22 +77,17 @@ export function BenefitsSection() {
                         { value: '4x', label: 'More Calcium than Milk' },
                         { value: '25%', label: 'Plant-Based Protein' },
                     ].map((stat, index) => (
-                        <div key={index} style={{ textAlign: 'center' }} suppressHydrationWarning>
+                        <div key={index} className="text-center" suppressHydrationWarning>
                             <motion.div
                                 initial={{ scale: 0 }}
                                 whileInView={{ scale: 1 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.1, type: 'spring' }}
-                                style={{
-                                    fontFamily: "'Playfair Display', Georgia, serif",
-                                    fontSize: 'clamp(2rem, 4vw, 3rem)',
-                                    fontWeight: 700,
-                                    color: '#2D5016'
-                                }}
+                                className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-primary)] mb-2"
                             >
                                 {stat.value}
                             </motion.div>
-                            <p style={{ color: '#666666', marginTop: '0.5rem', fontSize: '0.875rem' }}>
+                            <p className="text-[var(--color-text-light)] text-xs md:text-sm font-medium px-2">
                                 {stat.label}
                             </p>
                         </div>

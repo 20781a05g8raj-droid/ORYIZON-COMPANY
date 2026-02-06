@@ -82,44 +82,28 @@ export function FeaturedProduct() {
         : 0;
 
     return (
-        <section style={{ padding: '5rem 0', backgroundColor: '#F5F1E8' }} suppressHydrationWarning>
-            <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }} suppressHydrationWarning>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '3rem', alignItems: 'center' }} suppressHydrationWarning>
+        <section className="py-12 md:py-20 bg-[var(--color-secondary)]" suppressHydrationWarning>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+                <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center" suppressHydrationWarning>
                     {/* Product Image */}
                     <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
                         viewport={{ once: true }}
-                        style={{ position: 'relative' }}
+                        className="relative"
                     >
-                        <div style={{
-                            position: 'relative',
-                            aspectRatio: '1',
-                            backgroundColor: 'white',
-                            borderRadius: '1.5rem',
-                            overflow: 'hidden',
-                            boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.25)'
-                        }} suppressHydrationWarning>
+                        <div className="relative aspect-square bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl" suppressHydrationWarning>
                             {mainImage ? (
                                 <Image
                                     src={mainImage}
                                     alt={product.name}
                                     fill
                                     className="object-cover"
+                                    priority
                                 />
                             ) : (
-                                <div style={{
-                                    position: 'absolute',
-                                    inset: 0,
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center',
-                                    background: 'linear-gradient(135deg, #4A7C23 0%, #2D5016 100%)'
-                                }}>
-                                    <div
-                                        className="text-8xl animate-spin-slow"
-                                        style={{ display: 'inline-block' }}
-                                    >
+                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)]">
+                                    <div className="text-7xl md:text-9xl animate-spin-slow">
                                         🌿
                                     </div>
                                 </div>
@@ -127,7 +111,7 @@ export function FeaturedProduct() {
 
                             {/* Discount Badge */}
                             {discount > 0 && (
-                                <div style={{ position: 'absolute', top: '1.25rem', left: '1.25rem' }}>
+                                <div className="absolute top-4 left-4 md:top-6 md:left-6">
                                     <Badge variant="accent" size="md">
                                         {discount}% OFF
                                     </Badge>
@@ -135,46 +119,46 @@ export function FeaturedProduct() {
                             )}
 
                             {/* Best Seller Badge */}
-                            <div style={{ position: 'absolute', top: '1.25rem', right: '1.25rem' }}>
+                            <div className="absolute top-4 right-4 md:top-6 md:right-6">
                                 <Badge variant="success" size="md">
                                     ⭐ Best Seller
                                 </Badge>
                             </div>
                         </div>
 
-                        {/* Floating Elements */}
-                        <div
-                            className="absolute -top-4 -right-4 w-24 h-24 bg-[var(--color-accent)] rounded-full flex items-center justify-center text-white font-bold shadow-gold animate-float-slow"
-                            style={{
-                                color: 'white',
-                                fontWeight: 'bold',
-                                boxShadow: '0 4px 20px rgba(196, 163, 90, 0.3)'
-                            }}
+                        {/* Floating Price Tag */}
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ delay: 0.3 }}
+                            className="absolute -bottom-4 -right-2 md:-right-4 w-20 h-20 md:w-24 md:h-24 bg-[var(--color-accent)] rounded-full flex items-center justify-center text-white font-bold shadow-gold animate-float-slow z-10"
                         >
-                            <div style={{ textAlign: 'center' }}>
-                                <div style={{ fontSize: '0.75rem' }}>FROM</div>
-                                <div style={{ fontSize: '1.125rem' }}>{formatPrice(displayPrice)}</div>
+                            <div className="text-center">
+                                <div className="text-[10px] md:text-xs">FROM</div>
+                                <div className="text-base md:text-lg">{formatPrice(displayPrice)}</div>
                             </div>
-                        </div>
+                        </motion.div>
                     </motion.div>
 
                     {/* Product Info */}
                     <motion.div
-                        initial={{ opacity: 0, x: 50 }}
+                        initial={{ opacity: 0, x: 20 }}
                         whileInView={{ opacity: 1, x: 0 }}
                         viewport={{ once: true }}
+                        className="flex flex-col"
                     >
-                        <span style={{ color: '#C4A35A', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem' }}>
+                        <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
                             Featured Product
                         </span>
 
-                        <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(2.25rem, 5vw, 3rem)', fontWeight: 700, marginTop: '0.5rem', marginBottom: '1rem', color: '#2C2C2C' }} suppressHydrationWarning>
+                        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)] leading-tight" suppressHydrationWarning>
                             {product.name}
                         </h2>
 
                         {/* Rating */}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginBottom: '1.5rem' }} suppressHydrationWarning>
-                            <div style={{ display: 'flex', color: '#C4A35A' }} suppressHydrationWarning>
+                        <div className="flex items-center gap-3 mb-6" suppressHydrationWarning>
+                            <div className="flex text-[var(--color-accent)]" suppressHydrationWarning>
                                 {[...Array(5)].map((_, i) => (
                                     <Star
                                         key={i}
@@ -183,122 +167,76 @@ export function FeaturedProduct() {
                                     />
                                 ))}
                             </div>
-                            <span style={{ color: '#666666' }}>
+                            <span className="text-[var(--color-text-light)] text-sm md:text-base">
                                 {product.rating || 5} ({product.review_count || 0} reviews)
                             </span>
                         </div>
 
                         {/* Description */}
-                        <p style={{ color: '#666666', fontSize: '1.125rem', marginBottom: '1.5rem', lineHeight: 1.6 }} suppressHydrationWarning>
+                        <p className="text-[var(--color-text-light)] text-base md:text-lg mb-6 md:mb-8 leading-relaxed" suppressHydrationWarning>
                             {product.short_description || product.description}
                         </p>
 
                         {/* Key Benefits */}
                         {product.benefits && product.benefits.length > 0 && (
-                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '0.75rem', marginBottom: '2rem' }} suppressHydrationWarning>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8" suppressHydrationWarning>
                                 {product.benefits.slice(0, 4).map((benefit, index) => (
                                     <motion.div
                                         key={index}
-                                        initial={{ opacity: 0, x: -20 }}
+                                        initial={{ opacity: 0, x: -10 }}
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: index * 0.1 }}
-                                        style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}
+                                        className="flex items-center gap-3"
                                         suppressHydrationWarning
                                     >
-                                        <span style={{
-                                            width: '1.25rem',
-                                            height: '1.25rem',
-                                            borderRadius: '9999px',
-                                            backgroundColor: '#2D5016',
-                                            color: 'white',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            fontSize: '0.75rem'
-                                        }}>
+                                        <span className="w-5 h-5 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[10px] flex-shrink-0">
                                             ✓
                                         </span>
-                                        <span style={{ fontSize: '0.875rem', color: '#2C2C2C' }}>{benefit}</span>
+                                        <span className="text-sm text-[var(--color-text)] font-medium">{benefit}</span>
                                     </motion.div>
                                 ))}
                             </div>
                         )}
 
                         {/* Price */}
-                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '2rem' }} suppressHydrationWarning>
-                            <span style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '2.25rem', fontWeight: 700, color: '#2D5016' }}>
+                        <div className="flex items-baseline gap-4 mb-8" suppressHydrationWarning>
+                            <span className="font-heading text-4xl md:text-5xl font-bold text-[var(--color-primary)]">
                                 {formatPrice(displayPrice)}
                             </span>
                             {displayOriginalPrice && (
-                                <span style={{ fontSize: '1.25rem', color: '#999999', textDecoration: 'line-through' }}>
+                                <span className="text-xl md:text-2xl text-gray-400 line-through">
                                     {formatPrice(displayOriginalPrice)}
                                 </span>
                             )}
                             {discount > 0 && (
-                                <Badge variant="success">Save {formatPrice(displayOriginalPrice! - displayPrice)}</Badge>
+                                <Badge variant="success" className="px-3 py-1">Save {formatPrice(displayOriginalPrice! - displayPrice)}</Badge>
                             )}
                         </div>
 
-                        {/* Variants */}
-                        {product.product_variants && product.product_variants.length > 0 && (
-                            <div style={{ marginBottom: '2rem' }} suppressHydrationWarning>
-                                <p style={{ fontSize: '0.875rem', fontWeight: 500, marginBottom: '0.75rem', color: '#2C2C2C' }}>Select Size:</p>
-                                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.75rem' }} suppressHydrationWarning>
-                                    {product.product_variants.map((variant) => (
-                                        <button
-                                            key={variant.id}
-                                            style={{
-                                                padding: '0.5rem 1rem',
-                                                border: '2px solid #2D5016',
-                                                borderRadius: '0.5rem',
-                                                color: '#2D5016',
-                                                background: 'transparent',
-                                                fontWeight: 500,
-                                                cursor: 'pointer',
-                                                transition: 'all 0.2s'
-                                            }}
-                                            onMouseEnter={(e) => {
-                                                e.currentTarget.style.backgroundColor = '#2D5016';
-                                                e.currentTarget.style.color = 'white';
-                                            }}
-                                            onMouseLeave={(e) => {
-                                                e.currentTarget.style.backgroundColor = 'transparent';
-                                                e.currentTarget.style.color = '#2D5016';
-                                            }}
-                                        >
-                                            {variant.name}
-                                        </button>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
                         {/* CTAs */}
-                        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }} suppressHydrationWarning>
-                            <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }} suppressHydrationWarning>
-                                <Link href={`/products/${product.slug}`} style={{ flex: 1 }}>
-                                    <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />}>
-                                        Add to Cart
-                                    </Button>
-                                </Link>
-                                <Link href={`/products/${product.slug}`}>
-                                    <Button variant="outline" size="lg" icon={<ArrowRight size={20} />} iconPosition="right">
-                                        View Details
-                                    </Button>
-                                </Link>
-                            </div>
+                        <div className="flex flex-col sm:flex-row gap-4" suppressHydrationWarning>
+                            <Link href={`/products/${product.slug}`} className="flex-1">
+                                <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />}>
+                                    Add to Cart
+                                </Button>
+                            </Link>
+                            <Link href={`/products/${product.slug}`} className="flex-1">
+                                <Button variant="outline" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right">
+                                    View Details
+                                </Button>
+                            </Link>
                         </div>
 
-                        {/* Trust Elements */}
-                        <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1.5rem', marginTop: '2rem', fontSize: '0.875rem', color: '#666666' }} suppressHydrationWarning>
-                            <span>🚚 Free Shipping over ₹499</span>
-                            <span>↩️ 30-Day Returns</span>
-                            <span>🔒 Secure Checkout</span>
+                        {/* Trust elements on mobile */}
+                        <div className="flex flex-wrap gap-x-6 gap-y-2 mt-8 md:mt-10 text-xs md:text-sm text-[var(--color-text-light)] font-medium" suppressHydrationWarning>
+                            <span className="flex items-center gap-2">🚚 Free Shipping over ₹499</span>
+                            <span className="flex items-center gap-2">↩️ 30-Day Returns</span>
+                            <span className="flex items-center gap-2">🔒 Secure Checkout</span>
                         </div>
                     </motion.div>
                 </div>
             </div>
-        </section >
+        </section>
     );
 }

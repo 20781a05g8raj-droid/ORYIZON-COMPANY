@@ -20,14 +20,9 @@ const ctaLeaves = [
 
 export function CTASection() {
     return (
-        <section style={{
-            padding: '5rem 0',
-            background: 'linear-gradient(135deg, #2D5016 0%, #1A3009 100%)',
-            position: 'relative',
-            overflow: 'hidden'
-        }} suppressHydrationWarning>
+        <section className="py-16 md:py-24 bg-gradient-to-br from-[var(--color-primary)] to-[#1A3009] relative overflow-hidden" suppressHydrationWarning>
             {/* Background Elements - Using fixed positions */}
-            <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }} suppressHydrationWarning>
+            <div className="absolute inset-0 overflow-hidden pointer-events-none" suppressHydrationWarning>
                 {ctaLeaves.map((leaf, i) => (
                     <motion.div
                         key={i}
@@ -41,9 +36,8 @@ export function CTASection() {
                             repeat: Infinity,
                             delay: leaf.delay,
                         }}
+                        className="absolute text-3xl md:text-5xl"
                         style={{
-                            position: 'absolute',
-                            fontSize: '2.25rem',
                             left: `${leaf.left}%`,
                             top: `${leaf.top}%`,
                         }}
@@ -54,28 +48,17 @@ export function CTASection() {
                 ))}
             </div>
 
-            <div style={{ position: 'relative', zIndex: 10, maxWidth: '64rem', margin: '0 auto', padding: '0 1rem' }} suppressHydrationWarning>
-                <div style={{ textAlign: 'center' }} suppressHydrationWarning>
+            <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+                <div className="text-center" suppressHydrationWarning>
                     {/* Badge */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        style={{
-                            display: 'inline-flex',
-                            alignItems: 'center',
-                            gap: '0.5rem',
-                            padding: '0.5rem 1rem',
-                            backgroundColor: 'rgba(255,255,255,0.1)',
-                            backdropFilter: 'blur(4px)',
-                            borderRadius: '9999px',
-                            color: 'rgba(255,255,255,0.9)',
-                            fontSize: '0.875rem',
-                            marginBottom: '1.5rem'
-                        }}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-white/90 text-xs md:text-sm font-medium mb-6 md:mb-8"
                         suppressHydrationWarning
                     >
-                        <Sparkles size={16} style={{ color: '#C4A35A' }} />
+                        <Sparkles size={16} className="text-[var(--color-accent)]" />
                         <span>Limited Time Offer</span>
                     </motion.div>
 
@@ -84,16 +67,10 @@ export function CTASection() {
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        style={{
-                            fontFamily: "'Playfair Display', Georgia, serif",
-                            fontSize: 'clamp(2.25rem, 5vw, 3.75rem)',
-                            fontWeight: 700,
-                            color: 'white',
-                            marginBottom: '1.5rem'
-                        }}
+                        className="font-heading text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 leading-tight"
                     >
                         Start Your Wellness Journey{' '}
-                        <span style={{ color: '#C4A35A' }}>Today</span>
+                        <span className="text-[var(--color-accent)]">Today</span>
                     </motion.h2>
 
                     {/* Subtitle */}
@@ -102,13 +79,7 @@ export function CTASection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.1 }}
-                        style={{
-                            fontSize: '1.25rem',
-                            color: 'rgba(255,255,255,0.8)',
-                            maxWidth: '42rem',
-                            margin: '0 auto 2rem auto',
-                            lineHeight: 1.6
-                        }}
+                        className="text-base md:text-xl text-white/80 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed"
                     >
                         Join thousands of health-conscious individuals who have transformed their
                         lives with the power of Moringa.
@@ -120,13 +91,7 @@ export function CTASection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.2 }}
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
-                            gap: '1.5rem',
-                            marginBottom: '2.5rem'
-                        }}
+                        className="flex flex-wrap justify-center gap-4 md:gap-8 mb-10 md:mb-12"
                         suppressHydrationWarning
                     >
                         {[
@@ -134,17 +99,9 @@ export function CTASection() {
                             '30-Day Money Back Guarantee',
                             'Certified Organic',
                         ].map((text, index) => (
-                            <div key={index} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'rgba(255,255,255,0.9)' }} suppressHydrationWarning>
-                                <div style={{
-                                    width: '1.25rem',
-                                    height: '1.25rem',
-                                    backgroundColor: '#C4A35A',
-                                    borderRadius: '9999px',
-                                    display: 'flex',
-                                    alignItems: 'center',
-                                    justifyContent: 'center'
-                                }} suppressHydrationWarning>
-                                    <Check size={12} style={{ color: 'white' }} />
+                            <div key={index} className="flex items-center gap-2 text-white/90 text-sm md:text-base font-medium" suppressHydrationWarning>
+                                <div className="w-5 h-5 bg-[var(--color-accent)] rounded-full flex items-center justify-center shadow-lg shadow-gold/20" suppressHydrationWarning>
+                                    <Check size={12} className="text-white" />
                                 </div>
                                 <span>{text}</span>
                             </div>
@@ -157,40 +114,19 @@ export function CTASection() {
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.3 }}
-                        style={{
-                            display: 'flex',
-                            flexDirection: 'column',
-                            alignItems: 'center',
-                            justifyContent: 'center',
-                            gap: '1rem'
-                        }}
+                        className="flex flex-col sm:flex-row items-center justify-center gap-4"
                         suppressHydrationWarning
                     >
-                        <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', justifyContent: 'center' }} suppressHydrationWarning>
-                            <Link href="/products">
-                                <Button variant="accent" size="lg" icon={<ArrowRight size={20} />} iconPosition="right">
-                                    Shop Now & Save 17%
-                                </Button>
-                            </Link>
-                            <Link href="/about">
-                                <button
-                                    style={{
-                                        padding: '0.75rem 2rem',
-                                        borderRadius: '0.5rem',
-                                        color: 'white',
-                                        backgroundColor: 'transparent',
-                                        border: 'none',
-                                        fontSize: '1.125rem',
-                                        cursor: 'pointer',
-                                        transition: 'background-color 0.2s'
-                                    }}
-                                    onMouseEnter={(e) => e.currentTarget.style.backgroundColor = 'rgba(255,255,255,0.1)'}
-                                    onMouseLeave={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
-                                >
-                                    Learn More
-                                </button>
-                            </Link>
-                        </div>
+                        <Link href="/products" className="w-full sm:w-auto">
+                            <Button variant="accent" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right">
+                                Shop Now & Save 17%
+                            </Button>
+                        </Link>
+                        <Link href="/about" className="w-full sm:w-auto">
+                            <Button variant="ghost" size="lg" fullWidth className="text-white hover:bg-white/10">
+                                Learn More
+                            </Button>
+                        </Link>
                     </motion.div>
 
                     {/* Trust Note */}
@@ -199,7 +135,7 @@ export function CTASection() {
                         whileInView={{ opacity: 1 }}
                         viewport={{ once: true }}
                         transition={{ delay: 0.4 }}
-                        style={{ marginTop: '2rem', color: 'rgba(255,255,255,0.6)', fontSize: '0.875rem' }}
+                        className="mt-8 md:mt-12 text-white/50 text-xs md:text-sm font-medium"
                     >
                         Trusted by 10,000+ customers across India 🇮🇳
                     </motion.p>

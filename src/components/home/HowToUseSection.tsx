@@ -6,50 +6,35 @@ import { HOW_TO_USE } from '@/lib/constants';
 
 export function HowToUseSection() {
     return (
-        <section style={{ padding: '5rem 0', backgroundColor: 'white' }} suppressHydrationWarning>
-            <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }} suppressHydrationWarning>
+        <section className="py-16 md:py-24 bg-white" suppressHydrationWarning>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                 {/* Section Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{ textAlign: 'center', marginBottom: '4rem' }}
+                    className="text-center mb-12 md:mb-20"
                     suppressHydrationWarning
                 >
-                    <span style={{ color: '#C4A35A', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem' }}>
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
                         Simple & Versatile
                     </span>
-                    <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, marginTop: '0.5rem', marginBottom: '1rem', color: '#2C2C2C' }}>
+                    <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)] leading-tight">
                         How to Use{' '}
-                        <span style={{ color: '#2D5016' }}>Moringa</span>
+                        <span className="text-[var(--color-primary)]">Moringa</span>
                     </h2>
-                    <p style={{ color: '#666666', maxWidth: '42rem', margin: '0 auto', fontSize: '1.125rem' }}>
+                    <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-base md:text-lg">
                         Adding Moringa to your daily routine is easy. Here are some simple ways
                         to enjoy its benefits.
                     </p>
                 </motion.div>
 
                 {/* Steps */}
-                <div style={{ position: 'relative' }} suppressHydrationWarning>
+                <div className="relative" suppressHydrationWarning>
                     {/* Connection Line */}
-                    <div className="hidden lg:block" style={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: 0,
-                        right: 0,
-                        height: '4px',
-                        background: 'linear-gradient(to right, transparent, #4A7C23, transparent)',
-                        transform: 'translateY(-50%)',
-                        zIndex: 0
-                    }} suppressHydrationWarning />
+                    <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary-light)] to-transparent -translate-y-1/2 z-0" suppressHydrationWarning />
 
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
-                        gap: '2rem',
-                        position: 'relative',
-                        zIndex: 1
-                    }} suppressHydrationWarning>
+                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 relative z-10" suppressHydrationWarning>
                         {HOW_TO_USE.map((step, index) => (
                             <motion.div
                                 key={step.id}
@@ -57,56 +42,33 @@ export function HowToUseSection() {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 viewport={{ once: true }}
                                 transition={{ delay: index * 0.15 }}
-                                style={{ position: 'relative' }}
+                                className="relative h-full"
                             >
                                 {/* Step Card */}
                                 <motion.div
                                     whileHover={{ y: -5 }}
-                                    style={{
-                                        backgroundColor: '#FBF9F4',
-                                        borderRadius: '1rem',
-                                        padding: '2rem',
-                                        textAlign: 'center',
-                                        position: 'relative',
-                                        zIndex: 10,
-                                        height: '100%'
-                                    }}
+                                    className="bg-[var(--color-cream)] rounded-3xl p-8 md:p-10 text-center relative z-10 h-full border border-[var(--color-secondary)]/50 transition-all duration-300 hover:shadow-2xl hover:shadow-primary/5"
                                 >
                                     {/* Step Number */}
-                                    <div style={{
-                                        position: 'absolute',
-                                        top: '-1rem',
-                                        left: '50%',
-                                        transform: 'translateX(-50%)',
-                                        width: '2rem',
-                                        height: '2rem',
-                                        backgroundColor: '#2D5016',
-                                        color: 'white',
-                                        borderRadius: '9999px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        fontWeight: 'bold',
-                                        fontSize: '0.875rem'
-                                    }} suppressHydrationWarning>
+                                    <div className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-lg shadow-primary/20" suppressHydrationWarning>
                                         {index + 1}
                                     </div>
 
                                     {/* Icon */}
                                     <motion.div
                                         whileHover={{ scale: 1.1, rotate: 10 }}
-                                        style={{ fontSize: '3rem', marginBottom: '1rem', display: 'inline-block' }}
+                                        className="text-5xl md:text-6xl mb-6 inline-block"
                                     >
                                         {step.icon}
                                     </motion.div>
 
                                     {/* Title */}
-                                    <h3 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.25rem', fontWeight: 600, marginBottom: '0.5rem', color: '#2C2C2C' }}>
+                                    <h3 className="font-heading text-xl md:text-2xl font-bold mb-3 text-[var(--color-text)]">
                                         {step.title}
                                     </h3>
 
                                     {/* Description */}
-                                    <p style={{ color: '#666666', fontSize: '0.875rem' }}>
+                                    <p className="text-[var(--color-text-light)] text-sm md:text-base leading-relaxed">
                                         {step.description}
                                     </p>
                                 </motion.div>
@@ -120,27 +82,21 @@ export function HowToUseSection() {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{
-                        marginTop: '4rem',
-                        background: 'linear-gradient(to right, #2D5016, #4A7C23)',
-                        borderRadius: '1rem',
-                        padding: '2rem',
-                        color: 'white'
-                    }}
+                    className="mt-16 md:mt-24 bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-light)] rounded-3xl p-8 md:p-12 text-white shadow-xl shadow-primary/10"
                     suppressHydrationWarning
                 >
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '2rem', textAlign: 'center' }} suppressHydrationWarning>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 text-center" suppressHydrationWarning>
                         <div>
-                            <h4 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>Adults</h4>
-                            <p style={{ color: 'rgba(255,255,255,0.8)' }}>5-10g (1-2 teaspoons) daily</p>
+                            <h4 className="font-heading text-xl md:text-2xl font-bold mb-2">Adults</h4>
+                            <p className="text-white/80 font-medium">5-10g (1-2 teaspoons) daily</p>
+                        </div>
+                        <div className="border-y sm:border-y-0 sm:border-x border-white/10 py-8 sm:py-0">
+                            <h4 className="font-heading text-xl md:text-2xl font-bold mb-2">Elders</h4>
+                            <p className="text-white/80 font-medium">3-5g (½-1 teaspoon) daily</p>
                         </div>
                         <div>
-                            <h4 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>Elders</h4>
-                            <p style={{ color: 'rgba(255,255,255,0.8)' }}>3-5g (½-1 teaspoon) daily</p>
-                        </div>
-                        <div>
-                            <h4 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.5rem', fontWeight: 600, marginBottom: '0.5rem' }}>Best Time</h4>
-                            <p style={{ color: 'rgba(255,255,255,0.8)' }}>Morning with breakfast</p>
+                            <h4 className="font-heading text-xl md:text-2xl font-bold mb-2">Best Time</h4>
+                            <p className="text-white/80 font-medium">Morning with breakfast</p>
                         </div>
                     </div>
                 </motion.div>

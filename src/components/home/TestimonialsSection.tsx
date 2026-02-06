@@ -51,107 +51,68 @@ export function TestimonialsSection() {
     const currentTestimonial = testimonials[currentIndex];
 
     return (
-        <section style={{ padding: '5rem 0', backgroundColor: '#FBF9F4' }} suppressHydrationWarning>
-            <div style={{ maxWidth: '80rem', margin: '0 auto', padding: '0 1rem' }} suppressHydrationWarning>
+        <section className="py-16 md:py-24 bg-[var(--color-secondary)]/30 overflow-hidden" suppressHydrationWarning>
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                 {/* Section Header */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{ textAlign: 'center', marginBottom: '4rem' }}
+                    className="text-center mb-12 md:mb-20"
                     suppressHydrationWarning
                 >
-                    <span style={{ color: '#C4A35A', fontWeight: 500, textTransform: 'uppercase', letterSpacing: '0.1em', fontSize: '0.875rem' }}>
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
                         Customer Love
                     </span>
-                    <h2 style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: 'clamp(2rem, 5vw, 3rem)', fontWeight: 700, marginTop: '0.5rem', marginBottom: '1rem', color: '#2C2C2C' }}>
+                    <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)] leading-tight">
                         What Our Customers{' '}
-                        <span style={{ color: '#2D5016' }}>Say</span>
+                        <span className="text-[var(--color-primary)]">Say</span>
                     </h2>
-                    <p style={{ color: '#666666', maxWidth: '42rem', margin: '0 auto', fontSize: '1.125rem' }}>
+                    <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-base md:text-lg">
                         Join thousands of satisfied customers who have transformed their health
                         with Moringa Pure.
                     </p>
                 </motion.div>
 
                 {/* Testimonial Carousel */}
-                <div style={{ position: 'relative', maxWidth: '56rem', margin: '0 auto' }} suppressHydrationWarning>
+                <div className="relative max-w-4xl mx-auto min-h-[400px]" suppressHydrationWarning>
                     {/* Quote Icon */}
-                    <div style={{
-                        position: 'absolute',
-                        top: '-2rem',
-                        left: '50%',
-                        transform: 'translateX(-50%)',
-                        width: '4rem',
-                        height: '4rem',
-                        backgroundColor: '#2D5016',
-                        borderRadius: '9999px',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        zIndex: 10,
-                        color: 'white'
-                    }} suppressHydrationWarning>
-                        <Quote size={28} />
+                    <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-16 h-16 bg-[var(--color-primary)] text-white rounded-full flex items-center justify-center z-10 shadow-xl shadow-primary/20" suppressHydrationWarning>
+                        <Quote size={32} />
                     </div>
 
                     {/* Main Testimonial */}
-                    <div style={{
-                        backgroundColor: 'white',
-                        borderRadius: '1.5rem',
-                        boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
-                        padding: '3rem 2rem',
-                        paddingTop: '3rem',
-                        overflow: 'hidden'
-                    }} suppressHydrationWarning>
+                    <div className="bg-white rounded-[2rem] shadow-2xl shadow-primary/5 p-8 md:p-12 pt-16 md:pt-20 overflow-hidden relative" suppressHydrationWarning>
                         <AnimatePresence mode="wait">
                             <motion.div
                                 key={currentIndex}
-                                initial={{ opacity: 0, x: 50 }}
+                                initial={{ opacity: 0, x: 20 }}
                                 animate={{ opacity: 1, x: 0 }}
-                                exit={{ opacity: 0, x: -50 }}
-                                transition={{ duration: 0.3 }}
-                                style={{ textAlign: 'center' }}
+                                exit={{ opacity: 0, x: -20 }}
+                                transition={{ duration: 0.4 }}
+                                className="text-center"
                                 suppressHydrationWarning
                             >
                                 {/* Rating */}
-                                <div style={{ display: 'flex', justifyContent: 'center', gap: '0.25rem', marginBottom: '1.5rem', color: '#C4A35A' }} suppressHydrationWarning>
+                                <div className="flex justify-center gap-1 mb-6 text-[var(--color-accent)]" suppressHydrationWarning>
                                     {[...Array(5)].map((_, i) => (
                                         <Star
                                             key={i}
-                                            size={24}
+                                            size={20}
+                                            className="md:w-6 md:h-6"
                                             fill={i < currentTestimonial.rating ? 'currentColor' : 'none'}
                                         />
                                     ))}
                                 </div>
 
                                 {/* Content */}
-                                <p style={{
-                                    fontSize: 'clamp(1.25rem, 4vw, 1.5rem)',
-                                    color: '#2C2C2C',
-                                    marginBottom: '2rem',
-                                    fontWeight: 500,
-                                    fontStyle: 'italic',
-                                    lineHeight: 1.6
-                                }}>
+                                <p className="font-heading text-xl sm:text-2xl md:text-3xl font-medium text-[var(--color-text)] mb-8 md:mb-12 italic leading-relaxed">
                                     &ldquo;{currentTestimonial.comment}&rdquo;
                                 </p>
 
                                 {/* Author */}
-                                <div suppressHydrationWarning>
-                                    <div style={{
-                                        width: '4rem',
-                                        height: '4rem',
-                                        backgroundColor: '#F5F1E8',
-                                        borderRadius: '9999px',
-                                        display: 'flex',
-                                        alignItems: 'center',
-                                        justifyContent: 'center',
-                                        margin: '0 auto 1rem auto',
-                                        fontSize: '1.5rem',
-                                        overflow: 'hidden',
-                                        position: 'relative'
-                                    }} suppressHydrationWarning>
+                                <div className="flex flex-col items-center" suppressHydrationWarning>
+                                    <div className="relative w-16 h-16 md:w-20 md:h-20 bg-[var(--color-cream)] rounded-full mb-4 overflow-hidden shadow-lg border-2 border-white" suppressHydrationWarning>
                                         {currentTestimonial.image ? (
                                             <Image
                                                 src={currentTestimonial.image}
@@ -160,18 +121,21 @@ export function TestimonialsSection() {
                                                 className="object-cover"
                                             />
                                         ) : (
-                                            currentTestimonial.name.charAt(0)
+                                            <div className="w-full h-full flex items-center justify-center text-2xl font-bold text-[var(--color-primary)]">
+                                                {currentTestimonial.name.charAt(0)}
+                                            </div>
                                         )}
                                     </div>
-                                    <p style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '1.125rem', fontWeight: 600 }}>
+                                    <p className="font-heading text-lg md:text-xl font-bold text-[var(--color-text)]">
                                         {currentTestimonial.name}
                                     </p>
-                                    <p style={{ color: '#666666' }}>
+                                    <p className="text-[var(--color-text-light)] text-sm md:text-base">
                                         {currentTestimonial.location}
                                     </p>
                                     {currentTestimonial.verified && (
-                                        <div className="flex items-center justify-center gap-1 mt-1 text-emerald-600 text-sm">
-                                            <span>✓ Verified Purchase</span>
+                                        <div className="flex items-center gap-1.5 mt-2 text-emerald-600 text-xs font-semibold px-3 py-1 bg-emerald-50 rounded-full">
+                                            <span className="w-3.5 h-3.5 bg-emerald-600 text-white rounded-full flex items-center justify-center text-[8px]">✓</span>
+                                            <span>Verified Purchase</span>
                                         </div>
                                     )}
                                 </div>
@@ -180,51 +144,23 @@ export function TestimonialsSection() {
                     </div>
 
                     {/* Navigation */}
-                    <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '1rem', marginTop: '2rem' }} suppressHydrationWarning>
+                    <div className="flex items-center justify-center gap-6 mt-8 md:mt-12" suppressHydrationWarning>
                         <motion.button
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={prevTestimonial}
-                            style={{
-                                width: '3rem',
-                                height: '3rem',
-                                borderRadius: '9999px',
-                                backgroundColor: 'white',
-                                border: 'none',
-                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#2D5016';
-                                e.currentTarget.style.color = 'white';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'white';
-                                e.currentTarget.style.color = 'black';
-                            }}
+                            className="w-12 h-12 rounded-full bg-white text-[var(--color-text)] shadow-lg flex items-center justify-center transition-all hover:bg-[var(--color-primary)] hover:text-white"
                         >
                             <ChevronLeft size={24} />
                         </motion.button>
 
                         {/* Dots */}
-                        <div style={{ display: 'flex', gap: '0.5rem' }} suppressHydrationWarning>
+                        <div className="flex gap-2" suppressHydrationWarning>
                             {testimonials.map((_, index) => (
                                 <button
                                     key={index}
                                     onClick={() => setCurrentIndex(index)}
-                                    style={{
-                                        height: '0.75rem',
-                                        borderRadius: '9999px',
-                                        transition: 'all 0.3s',
-                                        backgroundColor: index === currentIndex ? '#2D5016' : 'rgba(74, 124, 35, 0.3)',
-                                        width: index === currentIndex ? '2rem' : '0.75rem',
-                                        border: 'none',
-                                        cursor: 'pointer'
-                                    }}
+                                    className={`h-2 rounded-full transition-all duration-300 ${index === currentIndex ? 'w-8 bg-[var(--color-primary)]' : 'w-2 bg-[var(--color-primary)]/20 hover:bg-[var(--color-primary)]/40'}`}
                                 />
                             ))}
                         </div>
@@ -233,27 +169,7 @@ export function TestimonialsSection() {
                             whileHover={{ scale: 1.1 }}
                             whileTap={{ scale: 0.95 }}
                             onClick={nextTestimonial}
-                            style={{
-                                width: '3rem',
-                                height: '3rem',
-                                borderRadius: '9999px',
-                                backgroundColor: 'white',
-                                border: 'none',
-                                boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
-                                display: 'flex',
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                cursor: 'pointer',
-                                transition: 'all 0.3s'
-                            }}
-                            onMouseEnter={(e) => {
-                                e.currentTarget.style.backgroundColor = '#2D5016';
-                                e.currentTarget.style.color = 'white';
-                            }}
-                            onMouseLeave={(e) => {
-                                e.currentTarget.style.backgroundColor = 'white';
-                                e.currentTarget.style.color = 'black';
-                            }}
+                            className="w-12 h-12 rounded-full bg-white text-[var(--color-text)] shadow-lg flex items-center justify-center transition-all hover:bg-[var(--color-primary)] hover:text-white"
                         >
                             <ChevronRight size={24} />
                         </motion.button>
@@ -265,12 +181,7 @@ export function TestimonialsSection() {
                     initial={{ opacity: 0, y: 30 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    style={{
-                        marginTop: '4rem',
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(150px, 1fr))',
-                        gap: '2rem'
-                    }}
+                    className="mt-16 md:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-8 md:gap-12"
                     suppressHydrationWarning
                 >
                     {[
@@ -279,11 +190,11 @@ export function TestimonialsSection() {
                         { value: '98%', label: 'Would Recommend' },
                         { value: '1,200+', label: 'Reviews' },
                     ].map((stat, index) => (
-                        <div key={index} style={{ textAlign: 'center' }} suppressHydrationWarning>
-                            <div style={{ fontFamily: "'Playfair Display', Georgia, serif", fontSize: '2.5rem', fontWeight: 700, color: '#2D5016' }}>
+                        <div key={index} className="text-center" suppressHydrationWarning>
+                            <div className="font-heading text-3xl md:text-4xl lg:text-5xl font-bold text-[var(--color-primary)] mb-2">
                                 {stat.value}
                             </div>
-                            <p style={{ color: '#666666', marginTop: '0.25rem' }}>
+                            <p className="text-[var(--color-text-light)] text-sm font-medium">
                                 {stat.label}
                             </p>
                         </div>
