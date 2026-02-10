@@ -4,15 +4,22 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
-import { ChevronLeft, CreditCard, Truck, Shield, Check, Tag, X } from 'lucide-react';
+import Script from 'next/script';
+import { ChevronLeft, CreditCard, Truck, Shield, Check, Tag, X, Loader2 } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
-import { PAYMENT_METHODS } from '@/lib/constants';
 import { getShippingSettings, type ShippingSettings } from '@/lib/api/settings';
 import { createOrder, getOrCreateCustomer } from '@/lib/api/orders';
 import { getProductBySlug as fetchProductBySlug } from '@/lib/api/products';
 import type { Order } from '@/types/database';
+import { toast } from 'react-hot-toast';
+
+declare global {
+    interface Window {
+        Razorpay: any;
+    }
+}
 
 export default function CheckoutPage() {
     const {
@@ -56,7 +63,7 @@ export default function CheckoutPage() {
         pincode: '',
     });
 
-    const [paymentMethod, setPaymentMethod] = useState('card');
+    const [paymentMethod, setPaymentMethod] = useState('online');
 
     const totalPrice = getTotalPrice();
     const discountAmount = getDiscountAmount();
@@ -74,8 +81,7 @@ export default function CheckoutPage() {
         setStep(2);
     };
 
-    const handlePlaceOrder = async () => {
-        setIsProcessing(true);
+    const processOrderCreation = async (paymentDetails: any = null) => {
         try {
             // 1. Create or get customer
             await getOrCreateCustomer({
@@ -94,18 +100,13 @@ export default function CheckoutPage() {
                 let productId = item.product.id;
 
                 // If ID is not a UUID (assumed if it doesn't look like one), try to find by slug
-                // Simple check for UUID format (8-4-4-4-12 hex digits)
                 const isUuid = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(productId);
 
                 if (!isUuid && item.product.slug) {
-                    console.log(`Resolving UUID for product: ${item.product.name} (${item.product.slug})`);
                     try {
                         const product = await fetchProductBySlug(item.product.slug);
                         if (product) {
                             productId = product.id;
-                            console.log(`Resolved to UUID: ${productId}`);
-                        } else {
-                            console.warn(`Could not resolve UUID for slug: ${item.product.slug}`);
                         }
                     } catch (err) {
                         console.error(`Failed to resolve product UUID for slug ${item.product.slug}`, err);
@@ -115,7 +116,6 @@ export default function CheckoutPage() {
                 return {
                     product_id: productId,
                     product_name: item.product.name,
-                    // variant_id removed as it does not exist in schema
                     variant_name: item.variant.name,
                     quantity: item.quantity,
                     price: item.variant.price,
@@ -135,7 +135,7 @@ export default function CheckoutPage() {
                 shipping: shipping,
                 total: finalTotal,
                 coupon_code: appliedCoupon ? appliedCoupon.code : null,
-                notes: '',
+                notes: paymentDetails ? `Payment ID: ${paymentDetails.razorpay_payment_id}` : '',
 
                 status: 'pending',
                 payment_status: paymentMethod === 'cod' ? 'pending' : 'paid',
@@ -150,11 +150,99 @@ export default function CheckoutPage() {
             setIsProcessing(false);
             setOrderComplete(true);
             clearCart();
+            toast.success('Order placed successfully!');
         } catch (error: any) {
             console.error('Order creation failed:', error);
-            console.error('Error details:', JSON.stringify(error, null, 2));
             setIsProcessing(false);
-            alert(`Failed to place order: ${error.message || 'Unknown error'}. Please check console for details.`);
+            toast.error(`Failed to place order: ${error.message || 'Unknown error'}`);
+        }
+    };
+
+    const handleRazorpayPayment = async () => {
+        const res = await fetch('/api/razorpay/order', {
+            method: 'POST',
+            body: JSON.stringify({
+                amount: finalTotal,
+                currency: 'INR',
+                receipt: `receipt_${Date.now()}`,
+            }),
+            headers: {
+                'Content-Type': 'application/json',
+            },
+        });
+
+        const data = await res.json();
+
+        if (!data.id) {
+            toast.error('Could not create payment order');
+            setIsProcessing(false);
+            return;
+        }
+
+        const options = {
+            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Use public key here
+            amount: data.amount,
+            currency: data.currency,
+            name: "Oryizon",
+            description: "Organic Moringa Products",
+            image: "/logo.png", // Add logo if available
+            order_id: data.id,
+            handler: async function (response: any) {
+                // Verify Payment
+                try {
+                    const verifyRes = await fetch('/api/razorpay/verify', {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            razorpay_payment_id: response.razorpay_payment_id,
+                            razorpay_order_id: response.razorpay_order_id,
+                            razorpay_signature: response.razorpay_signature,
+                        }),
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                    });
+
+                    const verifyData = await verifyRes.json();
+
+                    if (verifyData.success) {
+                        await processOrderCreation(response);
+                    } else {
+                        toast.error('Payment verification failed');
+                        setIsProcessing(false);
+                    }
+                } catch (error) {
+                    console.error('Verification error:', error);
+                    toast.error('Payment verification failed');
+                    setIsProcessing(false);
+                }
+            },
+            prefill: {
+                name: `${shippingData.firstName} ${shippingData.lastName}`,
+                email: shippingData.email,
+                contact: shippingData.phone,
+            },
+            theme: {
+                color: "#16a34a", // Emerald-600
+            },
+            modal: {
+                ondismiss: function () {
+                    setIsProcessing(false);
+                }
+            }
+        };
+
+        const paymentObject = new window.Razorpay(options);
+        paymentObject.open();
+    };
+
+    const handlePlaceOrder = async () => {
+        setIsProcessing(true);
+
+        if (paymentMethod === 'online') {
+            await handleRazorpayPayment();
+        } else {
+            // Cash on Delivery
+            await processOrderCreation();
         }
     };
 
@@ -208,6 +296,10 @@ export default function CheckoutPage() {
 
     return (
         <div className="min-h-screen pt-24 bg-[var(--color-cream)]" suppressHydrationWarning>
+            <Script
+                id="razorpay-checkout-js"
+                src="https://checkout.razorpay.com/v1/checkout.js"
+            />
             {/* Header */}
             <section className="bg-white py-6 border-b">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -365,14 +457,12 @@ export default function CheckoutPage() {
 
                                     <div className="space-y-4 mb-8">
                                         {[
-                                            { id: 'card', label: 'Credit / Debit Card', icon: '💳' },
-                                            { id: 'upi', label: 'UPI', icon: '📱' },
-                                            { id: 'netbanking', label: 'Net Banking', icon: '🏦' },
-                                            { id: 'cod', label: 'Cash on Delivery', icon: '💵' },
+                                            { id: 'online', label: 'Pay Online (Razorpay)', description: 'Credit/Debit Card, UPI, NetBanking', icon: '💳' },
+                                            { id: 'cod', label: 'Cash on Delivery', description: 'Pay when you receive', icon: '💵' },
                                         ].map((method) => (
                                             <label
                                                 key={method.id}
-                                                className={`flex items-center gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors ${paymentMethod === method.id
+                                                className={`flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors ${paymentMethod === method.id
                                                     ? 'border-[var(--color-primary)] bg-[var(--color-cream)]'
                                                     : 'border-[var(--color-secondary)] hover:border-[var(--color-primary-light)]'
                                                     }`}
@@ -385,48 +475,20 @@ export default function CheckoutPage() {
                                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                                     className="sr-only"
                                                 />
-                                                <span className="text-2xl">{method.icon}</span>
-                                                <span className="font-medium">{method.label}</span>
+                                                <span className="text-2xl mt-1">{method.icon}</span>
+                                                <div className="flex-1">
+                                                    <span className="font-medium block">{method.label}</span>
+                                                    <span className="text-sm text-gray-500">{method.description}</span>
+                                                </div>
                                                 {paymentMethod === method.id && (
-                                                    <Check size={20} className="ml-auto text-[var(--color-primary)]" />
+                                                    <Check size={20} className="text-[var(--color-primary)]" />
                                                 )}
                                             </label>
                                         ))}
                                     </div>
 
-                                    {paymentMethod === 'card' && (
-                                        <div className="space-y-4 mb-8 p-4 bg-[var(--color-cream)] rounded-xl">
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">Card Number</label>
-                                                <input
-                                                    type="text"
-                                                    placeholder="1234 5678 9012 3456"
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
-                                                />
-                                            </div>
-                                            <div className="grid grid-cols-2 gap-4">
-                                                <div>
-                                                    <label className="block text-sm font-medium mb-2">Expiry</label>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="MM/YY"
-                                                        className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
-                                                    />
-                                                </div>
-                                                <div>
-                                                    <label className="block text-sm font-medium mb-2">CVV</label>
-                                                    <input
-                                                        type="text"
-                                                        placeholder="123"
-                                                        className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
-                                                    />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    )}
-
                                     <div className="flex gap-4">
-                                        <Button variant="outline" onClick={() => setStep(1)}>
+                                        <Button variant="outline" onClick={() => setStep(1)} disabled={isProcessing}>
                                             Back
                                         </Button>
                                         <Button
@@ -452,8 +514,28 @@ export default function CheckoutPage() {
                                 <div className="space-y-4 max-h-60 overflow-y-auto mb-6">
                                     {items.map((item) => (
                                         <div key={`${item.product.id}-${item.variant.id}`} className="flex gap-3">
-                                            <div className="w-16 h-16 bg-[var(--color-cream)] rounded-lg flex-shrink-0 flex items-center justify-center">
-                                                <span className="text-2xl">🌿</span>
+                                            <div className="w-16 h-16 bg-[var(--color-cream)] rounded-lg flex-shrink-0 overflow-hidden relative">
+                                                {item.product.images?.[0] ? (
+                                                    <img
+                                                        src={(() => {
+                                                            const img = item.product.images?.[0];
+                                                            if (!img) return '/images/products/product-1.png';
+                                                            if (img.startsWith('http')) return img;
+                                                            if (img.startsWith('/')) return img;
+                                                            return `/images/products/${img}`;
+                                                        })()}
+                                                        alt={item.product.name}
+                                                        className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                            const target = e.target as HTMLImageElement;
+                                                            target.src = '/images/products/product-1.png';
+                                                        }}
+                                                    />
+                                                ) : (
+                                                    <div className="w-full h-full flex items-center justify-center">
+                                                        <span className="text-2xl">🌿</span>
+                                                    </div>
+                                                )}
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-medium text-sm line-clamp-1">{item.product.name}</p>
@@ -498,6 +580,7 @@ export default function CheckoutPage() {
                                                 size="sm"
                                                 onClick={handleApplyCoupon}
                                                 disabled={!couponCode.trim()}
+                                                icon={<Tag size={16} />}
                                             >
                                                 Apply
                                             </Button>

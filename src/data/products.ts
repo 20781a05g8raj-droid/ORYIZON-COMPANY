@@ -76,8 +76,8 @@ Each batch is third-party tested for purity and potency, ensuring you receive on
 Perfect for busy lifestyles, travel, or those who prefer not to taste the powder. Simply take with water for a quick and effective nutritional boost.`,
         shortDescription: 'Convenient capsule form of pure organic Moringa for on-the-go nutrition.',
         images: [
-            '/images/products/moringa-capsules-1.jpg',
-            '/images/products/moringa-capsules-2.jpg',
+            '/images/products/product-4.png',
+            '/images/products/product-5.png',
         ],
         category: 'Capsules',
         variants: [
@@ -123,8 +123,8 @@ Perfect for busy lifestyles, travel, or those who prefer not to taste the powder
 Enjoy hot or iced, any time of day. Each tea bag is individually wrapped to preserve freshness and flavor.`,
         shortDescription: 'Caffeine-free herbal tea made from organic Moringa leaves.',
         images: [
-            '/images/products/moringa-tea-1.jpg',
-            '/images/products/moringa-tea-2.jpg',
+            '/images/products/product-6.png',
+            '/images/products/product-7.png',
         ],
         category: 'Tea',
         variants: [

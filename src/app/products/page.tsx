@@ -19,8 +19,16 @@ function adaptProduct(product: ProductWithVariants) {
         originalPrice: product.original_price || undefined,
         description: product.description || '',
         shortDescription: product.short_description || product.description || '',
-        image: product.images?.[0] || '/images/products/moringa-powder-1.jpg',
-        images: product.images || [],
+        image: (() => {
+            const img = product.images?.[0];
+            if (!img) return '/images/products/product-1.png';
+            if (img.startsWith('http') || img.startsWith('/')) return img;
+            return `/images/products/${img}`;
+        })(),
+        images: product.images?.map(img => {
+            if (img.startsWith('http') || img.startsWith('/')) return img;
+            return `/images/products/${img}`;
+        }) || [],
         category: product.category,
         rating: product.rating,
         reviewCount: product.review_count,

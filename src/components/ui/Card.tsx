@@ -35,12 +35,19 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
             <div className={`relative overflow-hidden ${featured ? 'md:w-1/2' : 'aspect-square'}`}>
                 <div className="aspect-square relative bg-[var(--color-cream)]">
                     {/* Primary Image */}
-                    {product.images[0] ? (
-                        <Image
-                            src={product.images[0]}
+                    {product.images?.[0] ? (
+                        <img
+                            src={(() => {
+                                const img = product.images[0];
+                                if (img.startsWith('http') || img.startsWith('/')) return img;
+                                return `/images/products/${img}`;
+                            })()}
                             alt={product.name}
-                            fill
-                            className={`object-cover transition-all duration-700 ease-in-out ${product.images[1] ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
+                            className={`w-full h-full object-cover transition-all duration-700 ease-in-out ${product.images[1] ? 'group-hover:opacity-0' : 'group-hover:scale-105'}`}
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/images/products/product-1.png';
+                            }}
                         />
                     ) : (
                         <div className="absolute inset-0 flex items-center justify-center">
@@ -49,12 +56,19 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
                     )}
 
                     {/* Secondary Image (Reveal on Hover) */}
-                    {product.images[1] && (
-                        <Image
-                            src={product.images[1]}
+                    {product.images?.[1] && (
+                        <img
+                            src={(() => {
+                                const img = product.images[1];
+                                if (img.startsWith('http') || img.startsWith('/')) return img;
+                                return `/images/products/${img}`;
+                            })()}
                             alt={`${product.name} - Alternate View`}
-                            fill
-                            className="object-cover absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                            className="w-full h-full object-cover absolute inset-0 opacity-0 group-hover:opacity-100 group-hover:scale-105 transition-all duration-700 ease-in-out"
+                            onError={(e) => {
+                                const target = e.target as HTMLImageElement;
+                                target.src = '/images/products/product-2.png';
+                            }}
                         />
                     )}
                 </div>

@@ -128,12 +128,20 @@ export default function CartPage() {
                                             <div className="col-span-6 flex gap-4 mb-4 md:mb-0">
                                                 <div className="w-20 h-20 bg-[var(--color-cream)] rounded-lg overflow-hidden flex-shrink-0">
                                                     {item.product.images[0] ? (
-                                                        <Image
-                                                            src={item.product.images[0]}
+                                                        <img
+                                                            src={(() => {
+                                                                const img = item.product.images?.[0];
+                                                                if (!img) return '/images/products/product-1.png';
+                                                                if (img.startsWith('http')) return img;
+                                                                if (img.startsWith('/')) return img;
+                                                                return `/images/products/${img}`;
+                                                            })()}
                                                             alt={item.product.name}
-                                                            width={80}
-                                                            height={80}
-                                                            className="object-cover w-full h-full"
+                                                            className="w-full h-full object-cover"
+                                                            onError={(e) => {
+                                                                const target = e.target as HTMLImageElement;
+                                                                target.src = '/images/products/product-1.png';
+                                                            }}
                                                         />
                                                     ) : (
                                                         <div className="w-full h-full flex items-center justify-center text-3xl">
@@ -223,7 +231,7 @@ export default function CartPage() {
 
                                 {/* Coupon */}
                                 <div className="mb-6">
-                                    <label className="block text-sm font-medium mb-2">Coupon Code</label>
+                                    <label className="block text-sm font-medium mb-2">Apply Coupon</label>
                                     {appliedCoupon ? (
                                         <motion.div
                                             initial={{ opacity: 0, y: -10 }}
@@ -251,7 +259,7 @@ export default function CartPage() {
                                                     type="text"
                                                     value={couponCode}
                                                     onChange={(e) => setCouponCode(e.target.value.toUpperCase())}
-                                                    placeholder="Enter code"
+                                                    placeholder="Coupon Code"
                                                     className="flex-1 px-4 py-2 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)] uppercase"
                                                 />
                                                 <Button
@@ -259,8 +267,9 @@ export default function CartPage() {
                                                     size="sm"
                                                     onClick={handleApplyCoupon}
                                                     disabled={!couponCode.trim()}
+                                                    icon={<Tag size={16} />}
                                                 >
-                                                    <Tag size={16} />
+                                                    Apply
                                                 </Button>
                                             </div>
                                             {couponError && (
@@ -284,12 +293,7 @@ export default function CartPage() {
                                         </div>
                                     )}
 
-                                    {/* Available coupons hint */}
-                                    {!appliedCoupon && (
-                                        <p className="text-xs text-[var(--color-text-light)] mt-2">
-                                            Try: WELCOME10, MORINGA20, FLAT100
-                                        </p>
-                                    )}
+
                                 </div>
 
                                 {/* Summary */}

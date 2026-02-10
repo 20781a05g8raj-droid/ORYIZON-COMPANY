@@ -111,12 +111,20 @@ export function CartDrawer() {
                                             {/* Product Image */}
                                             <div className="w-20 h-20 bg-white rounded-lg overflow-hidden flex-shrink-0">
                                                 {item.product.images[0] ? (
-                                                    <Image
-                                                        src={item.product.images[0]}
+                                                    <img
+                                                        src={(() => {
+                                                            const img = item.product.images?.[0];
+                                                            if (!img) return '/images/products/product-1.png';
+                                                            if (img.startsWith('http')) return img;
+                                                            if (img.startsWith('/')) return img;
+                                                            return `/images/products/${img}`;
+                                                        })()}
                                                         alt={item.product.name}
-                                                        width={80}
-                                                        height={80}
-                                                        className="object-cover w-full h-full"
+                                                        className="w-full h-full object-cover"
+                                                        onError={(e) => {
+                                                            const target = e.target as HTMLImageElement;
+                                                            target.src = '/images/products/product-1.png';
+                                                        }}
                                                     />
                                                 ) : (
                                                     <div className="w-full h-full flex items-center justify-center text-3xl">

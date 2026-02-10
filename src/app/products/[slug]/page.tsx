@@ -131,7 +131,11 @@ export default function ProductPage() {
     if (localImages.length > 0) {
         images = localImages;
     } else {
-        images = product.images?.map(img => img.replace(/ /g, '-')) || [];
+        images = product.images?.map(img => {
+            const sanitized = img.replace(/ /g, '-');
+            if (sanitized.startsWith('http') || sanitized.startsWith('/')) return sanitized;
+            return `/images/products/${sanitized}`;
+        }) || [];
     }
 
     const benefits = product.benefits || [];

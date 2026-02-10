@@ -40,7 +40,11 @@ export function FeaturedProduct() {
                         // Fallback sanitization for DB-only images
                         finalProduct = {
                             ...apiProduct,
-                            images: apiProduct.images.map(img => img.replace(/ /g, '-'))
+                            images: apiProduct.images.map(img => {
+                                const sanitized = img.replace(/ /g, '-');
+                                if (sanitized.startsWith('http') || sanitized.startsWith('/')) return sanitized;
+                                return `/images/products/${sanitized}`;
+                            })
                         };
                     }
 

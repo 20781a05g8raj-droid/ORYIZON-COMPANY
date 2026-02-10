@@ -37,7 +37,7 @@ export function Footer() {
         <footer className="bg-gradient-to-b from-[#1A3009] to-[#0D1805] text-white overflow-hidden">
             {/* Newsletter Section */}
             <div className="relative border-b border-white/5" suppressHydrationWarning>
-                <div className="absolute inset-0 bg-[var(--color-primary)]/10" />
+                <div className="absolute inset-0 bg-[var(--color-primary)]/10" suppressHydrationWarning />
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 relative z-10" suppressHydrationWarning>
                     <div className="flex flex-col lg:flex-row items-center justify-between gap-10" suppressHydrationWarning>
                         <div className="text-center lg:text-left" suppressHydrationWarning>
@@ -50,7 +50,7 @@ export function Footer() {
                         </div>
 
                         <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
-                            <div className="relative flex-1 sm:w-80 group">
+                            <div className="relative flex-1 sm:w-80 group" suppressHydrationWarning>
                                 <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-white/40 group-focus-within:text-[var(--color-accent)] transition-colors" size={20} />
                                 <input
                                     type="email"
@@ -63,9 +63,9 @@ export function Footer() {
                             </div>
                             <Button type="submit" variant="accent" size="lg" className="rounded-2xl font-bold px-10 h-[60px] shadow-xl shadow-gold/10">
                                 {subscribed ? '✓ Subscribed!' : (
-                                    <span className="flex items-center gap-2">
+                                    <div className="relative z-10 flex items-center gap-2" suppressHydrationWarning>
                                         Join Now <Send size={18} />
-                                    </span>
+                                    </div>
                                 )}
                             </Button>
                         </form>
@@ -99,7 +99,7 @@ export function Footer() {
                                 href={`mailto:${SITE_CONFIG.email}`}
                                 className="flex items-center gap-4 text-white/60 hover:text-white transition-colors"
                             >
-                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center" suppressHydrationWarning>
                                     <Mail size={18} className="text-[var(--color-accent)]" />
                                 </div>
                                 <span className="font-medium">{SITE_CONFIG.email}</span>
@@ -109,13 +109,13 @@ export function Footer() {
                                 href={`tel:${SITE_CONFIG.phone}`}
                                 className="flex items-center gap-4 text-white/60 hover:text-white transition-colors"
                             >
-                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center">
+                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center" suppressHydrationWarning>
                                     <Phone size={18} className="text-[var(--color-accent)]" />
                                 </div>
                                 <span className="font-medium">{SITE_CONFIG.phone}</span>
                             </motion.a>
                             <div className="flex items-start gap-4 text-white/60" suppressHydrationWarning>
-                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0">
+                                <div className="w-10 h-10 rounded-xl bg-white/5 flex items-center justify-center flex-shrink-0" suppressHydrationWarning>
                                     <MapPin size={18} className="text-[var(--color-accent)]" />
                                 </div>
                                 <span className="font-medium leading-relaxed">{SITE_CONFIG.address}</span>
@@ -214,7 +214,7 @@ export function Footer() {
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8" suppressHydrationWarning>
                     <div className="flex flex-col md:flex-row items-center justify-between gap-6 text-sm font-medium text-white/40" suppressHydrationWarning>
                         <p>© {new Date().getFullYear()} {SITE_CONFIG.name}. Modern Wellness, Purely Delivered.</p>
-                        <div className="flex items-center gap-6">
+                        <div className="flex items-center gap-6" suppressHydrationWarning>
                             <span className="flex items-center gap-2">
                                 Made with <motion.span animate={{ scale: [1, 1.2, 1] }} transition={{ repeat: Infinity, duration: 2 }} className="text-green-500">💚</motion.span> in India
                             </span>
