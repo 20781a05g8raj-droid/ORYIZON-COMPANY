@@ -1,234 +1,124 @@
 'use client';
 
-import React, { useState } from 'react';
-import { motion } from 'framer-motion';
-import {
-    ArrowLeft,
-    Save,
-    Eye,
-    Upload,
-    Bold,
-    Italic,
-    List,
-    Link as LinkIcon,
-    Image as ImageIcon,
-    Trash2
-} from 'lucide-react';
-import Link from 'next/link';
-import { useParams } from 'next/navigation';
-
-// Mock blog posts for editing
-const mockPosts: Record<string, any> = {
-    '1': {
-        title: 'The Ultimate Guide to Moringa Benefits',
-        excerpt: 'Discover the incredible health benefits of moringa and how it can transform your wellness routine.',
-        content: 'Moringa, often called the "Miracle Tree," has been used for centuries in traditional medicine...',
-        author: 'Dr. Priya Sharma',
-        category: 'Health',
-        status: 'published',
-    },
-    '2': {
-        title: '5 Delicious Moringa Smoothie Recipes',
-        excerpt: 'Try these amazing smoothie recipes packed with moringa powder for a nutritious boost.',
-        content: 'Start your day with these nutrient-packed moringa smoothie recipes...',
-        author: 'Chef Rahul',
-        category: 'Recipes',
-        status: 'published',
-    },
-    '3': {
-        title: 'How to Incorporate Superfoods into Your Daily Diet',
-        excerpt: 'A practical guide to adding superfoods like moringa to your everyday meals.',
-        content: 'Superfoods are nutrient-dense foods that provide exceptional health benefits...',
-        author: 'Nutritionist Anita',
-        category: 'Wellness',
-        status: 'draft',
-    },
-};
+import React, { useState, useEffect } from 'react';
+import { useParams, useRouter } from 'next/navigation';
+import { getBlogPostById } from '@/lib/api/blog';
+import { deleteBlogPostAction, updateBlogPostAction } from '@/app/actions/blog';
+import { BlogEditor } from '@/components/admin/BlogEditor';
+import { Loader2, Trash2 } from 'lucide-react';
+import { toast } from 'react-hot-toast';
+// import { supabase } from '@/lib/supabase'; // Not needed anymore for delete
 
 export default function EditBlogPostPage() {
     const params = useParams();
+    const router = useRouter();
     const postId = params.id as string;
-    const post = mockPosts[postId] || mockPosts['1'];
 
-    const [formData, setFormData] = useState({
-        title: post.title,
-        excerpt: post.excerpt,
-        content: post.content,
-        category: post.category,
-        status: post.status,
-        author: post.author,
-    });
+    const [post, setPost] = useState<any>(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState<string | null>(null);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+    useEffect(() => {
+        const fetchPost = async () => {
+            if (!postId) return;
+            try {
+                setLoading(true);
+                const data = await getBlogPostById(postId);
+                if (data) {
+                    setPost(data);
+                } else {
+                    setError('Post not found');
+                }
+            } catch (err: any) {
+                setError(err.message || 'Failed to fetch post');
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchPost();
+    }, [postId]);
+
+    const handleUpdate = async (data: any) => {
+        // Prepare update object
+        // Omit id, created_at
+        const { id, created_at, ...updateData } = data;
+
+        await updateBlogPostAction(postId, updateData);
+        toast.success('Post updated successfully!');
+        router.push('/admin/content/blog');
+        router.refresh();
     };
 
-    return (
-        <div className="space-y-6">
-            {/* Header */}
-            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                <div className="flex items-center gap-4">
-                    <Link
-                        href="/admin/content/blog"
-                        className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-                    >
-                        <ArrowLeft size={20} />
-                    </Link>
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Edit Post</h1>
-                        <p className="text-gray-500">Update blog post content</p>
-                    </div>
-                </div>
-                <div className="flex items-center gap-3">
-                    <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <Eye size={18} />
-                        Preview
-                    </button>
-                    <button className="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors">
-                        <Trash2 size={18} />
-                        Delete
-                    </button>
-                    <button className="flex items-center gap-2 px-4 py-2 bg-emerald-600 hover:bg-emerald-700 text-white rounded-lg transition-colors font-medium">
-                        <Save size={18} />
-                        Update
-                    </button>
-                </div>
+    const handleDelete = async () => {
+        if (!confirm('Are you sure you want to delete this post? This cannot be undone.')) return;
+
+        try {
+            // Use Server Action to bypass RLS
+            await deleteBlogPostAction(postId);
+
+            toast.success('Post deleted successfully');
+            router.push('/admin/content/blog');
+            router.refresh();
+        } catch (err: any) {
+            console.error('Delete error:', err);
+            toast.error('Failed to delete post: ' + err.message);
+        }
+    };
+
+    if (loading) {
+        return (
+            <div className="flex items-center justify-center h-[50vh]">
+                <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
+                <span className="ml-2 text-gray-600">Loading editor...</span>
             </div>
+        );
+    }
 
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {/* Main Content */}
-                <div className="lg:col-span-2 space-y-6">
-                    {/* Title */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <input
-                            type="text"
-                            name="title"
-                            value={formData.title}
-                            onChange={handleChange}
-                            placeholder="Enter post title..."
-                            className="w-full text-2xl font-bold border-none outline-none placeholder-gray-300"
-                        />
-                    </div>
+    if (error) {
+        return (
+            <div className="flex flex-col items-center justify-center h-[50vh] gap-4">
+                <p className="text-red-600 text-lg">{error}</p>
+                <button
+                    onClick={() => router.push('/admin/content/blog')}
+                    className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
+                >
+                    Back to List
+                </button>
+            </div>
+        );
+    }
 
-                    {/* Editor */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-4">
-                        <div className="flex items-center gap-2 border-b border-gray-100 pb-3 mb-4">
-                            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-                                <Bold size={18} />
-                            </button>
-                            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-                                <Italic size={18} />
-                            </button>
-                            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-                                <List size={18} />
-                            </button>
-                            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-                                <LinkIcon size={18} />
-                            </button>
-                            <button className="p-2 hover:bg-gray-100 rounded transition-colors">
-                                <ImageIcon size={18} />
-                            </button>
-                        </div>
-                        <textarea
-                            name="content"
-                            value={formData.content}
-                            onChange={handleChange}
-                            placeholder="Write your post content..."
-                            rows={15}
-                            className="w-full border-none outline-none resize-none placeholder-gray-400"
-                        />
-                    </div>
+    return (
+        <div className="relative">
+            {/* Delete button positioned absolute or passed to editor? 
+                 Editor doesn't have delete button props currently.
+                 Let's wrap Editor or add a Delete button below it or above it. 
+                 Since Editor handles the header, we can't easily inject buttons into its header without modifying Editor props.
+                 
+                 Option 1: Modify BlogEditor to accept additionalActions or onDelete.
+                 Option 2: Just place Delete button below.
+                 Option 3: Place Delete button absolutely positioned at top right (might conflict).
+                 
+                 Let's Modify BlogEditor to accept onDelete prop for better UX. 
+                 But for now, I'll place it at the bottom to avoid changing Component signature again immediately or place it above.
+              */}
 
-                    {/* Excerpt */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Excerpt</label>
-                        <textarea
-                            name="excerpt"
-                            value={formData.excerpt}
-                            onChange={handleChange}
-                            placeholder="Write a short summary..."
-                            rows={3}
-                            className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
-                        />
-                    </div>
-                </div>
+            {/* Actually, let's update BlogEditor to handle delete if we want consistent UI. 
+                 But simpler is to put it here.
+             */}
 
-                {/* Sidebar */}
-                <div className="space-y-6">
-                    {/* Publish Settings */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 className="font-semibold text-gray-900 mb-4">Publish Settings</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Status</label>
-                                <select
-                                    name="status"
-                                    value={formData.status}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                >
-                                    <option value="draft">Draft</option>
-                                    <option value="published">Published</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
-                                <select
-                                    name="category"
-                                    value={formData.category}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                >
-                                    <option>Health</option>
-                                    <option>Recipes</option>
-                                    <option>Wellness</option>
-                                    <option>Education</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Author</label>
-                                <input
-                                    type="text"
-                                    name="author"
-                                    value={formData.author}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                />
-                            </div>
-                        </div>
-                    </div>
+            <BlogEditor initialData={post} isEditing onSave={handleUpdate} />
 
-                    {/* Featured Image */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 className="font-semibold text-gray-900 mb-4">Featured Image</h3>
-                        <div className="border-2 border-dashed border-gray-200 rounded-lg p-6 text-center">
-                            <Upload size={32} className="mx-auto text-gray-400 mb-2" />
-                            <p className="text-sm text-gray-500">Click to upload or drag and drop</p>
-                        </div>
-                    </div>
-
-                    {/* SEO */}
-                    <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-6">
-                        <h3 className="font-semibold text-gray-900 mb-4">SEO Settings</h3>
-                        <div className="space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Meta Title</label>
-                                <input
-                                    type="text"
-                                    defaultValue={formData.title}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
-                                <textarea
-                                    rows={2}
-                                    defaultValue={formData.excerpt}
-                                    className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
-                                />
-                            </div>
-                        </div>
-                    </div>
+            <div className="mt-8 border-t pt-6">
+                <div className="flex justify-end">
+                    <button
+                        onClick={handleDelete}
+                        className="flex items-center gap-2 px-4 py-2 border border-red-200 text-red-600 rounded-lg hover:bg-red-50 transition-colors"
+                    >
+                        <Trash2 size={18} />
+                        Delete Post
+                    </button>
                 </div>
             </div>
         </div>

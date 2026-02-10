@@ -5,16 +5,34 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Calendar, Clock, ArrowRight, Loader2 } from 'lucide-react';
-import { blogPosts, getBlogCategories } from '@/data/blog';
+import { getBlogPosts, getBlogCategories } from '@/lib/api/blog';
 import { Button } from '@/components/ui/Button';
-import type { BlogPost } from '@/types';
+import type { BlogPost } from '@/types/database';
 
 export default function BlogPage() {
     const [selectedCategory, setSelectedCategory] = useState('All');
+    const [posts, setPosts] = useState<BlogPost[]>([]);
+    const [categories, setCategories] = useState<string[]>(['All']);
+    const [loading, setLoading] = useState(true);
 
-    // Use local data directly
-    const posts = blogPosts;
-    const categories = getBlogCategories();
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const [postsData, categoriesData] = await Promise.all([
+                    getBlogPosts(),
+                    getBlogCategories()
+                ]);
+                setPosts(postsData);
+                setCategories(['All', ...categoriesData]);
+            } catch (error) {
+                console.error('Failed to fetch blog data:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const filteredPosts = selectedCategory === 'All'
         ? posts
@@ -22,6 +40,14 @@ export default function BlogPage() {
 
     const featuredPost = filteredPosts[0];
     const recentPosts = filteredPosts.slice(1);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen pt-24 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)]" />
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen pt-24">
@@ -50,15 +76,6 @@ export default function BlogPage() {
             <section className="py-6 bg-white border-b sticky top-20 z-20">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                     <div className="flex flex-wrap gap-2 justify-center" suppressHydrationWarning>
-                        <button
-                            onClick={() => setSelectedCategory('All')}
-                            className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${selectedCategory === 'All'
-                                ? 'bg-[var(--color-primary)] text-white'
-                                : 'bg-[var(--color-secondary)] text-[var(--color-text-light)] hover:bg-[var(--color-primary)] hover:text-white'
-                                }`}
-                        >
-                            All Posts
-                        </button>
                         {categories.map((category) => (
                             <button
                                 key={category}
@@ -128,7 +145,7 @@ export default function BlogPage() {
                                             </span>
                                             <span className="flex items-center gap-1">
                                                 <Clock size={16} />
-                                                {featuredPost.readTime}
+                                                {featuredPost.read_time}
                                             </span>
                                         </div>
                                         <Link href={`/blog/${featuredPost.slug}`}>
@@ -194,7 +211,7 @@ export default function BlogPage() {
                                                     </span>
                                                     <span className="flex items-center gap-1">
                                                         <Clock size={14} />
-                                                        {post.readTime}
+                                                        {post.read_time}
                                                     </span>
                                                 </div>
                                             </div>

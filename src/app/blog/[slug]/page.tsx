@@ -4,13 +4,46 @@ import React from 'react';
 import { useParams } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { Calendar, Clock, ArrowLeft, Facebook, Twitter, Linkedin, ArrowRight } from 'lucide-react';
-import { getBlogBySlug, blogPosts } from '@/data/blog';
+import { Calendar, Clock, ArrowLeft, Facebook, Twitter, Linkedin, ArrowRight, Loader2 } from 'lucide-react';
+import { getBlogPostBySlug, getBlogPostsByCategory } from '@/lib/api/blog';
 import { Button } from '@/components/ui/Button';
+import type { BlogPost } from '@/types/database';
+import { useState, useEffect } from 'react';
 
 export default function BlogPostPage() {
     const params = useParams();
-    const post = getBlogBySlug(params.slug as string);
+    const [post, setPost] = useState<BlogPost | null>(null);
+    const [relatedPosts, setRelatedPosts] = useState<BlogPost[]>([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!params.slug) return;
+            try {
+                const fetchedPost = await getBlogPostBySlug(params.slug as string);
+                setPost(fetchedPost);
+
+                if (fetchedPost) {
+                    const related = await getBlogPostsByCategory(fetchedPost.category);
+                    setRelatedPosts(related.filter(p => p.id !== fetchedPost.id).slice(0, 3));
+                }
+            } catch (error) {
+                console.error('Failed to fetch blog post:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [params.slug]);
+
+    if (loading) {
+        return (
+            <div className="min-h-screen pt-32 flex items-center justify-center">
+                <Loader2 className="w-8 h-8 animate-spin text-[var(--color-primary)]" />
+            </div>
+        );
+    }
 
     if (!post) {
         return (
@@ -25,9 +58,18 @@ export default function BlogPostPage() {
         );
     }
 
-    const relatedPosts = blogPosts
-        .filter(p => p.id !== post.id && p.category === post.category)
-        .slice(0, 3);
+    if (!post) {
+        return (
+            <div className="min-h-screen pt-32 flex items-center justify-center">
+                <div className="text-center">
+                    <h1 className="font-heading text-3xl font-bold mb-4">Article Not Found</h1>
+                    <Link href="/blog">
+                        <Button variant="primary">View All Articles</Button>
+                    </Link>
+                </div>
+            </div>
+        );
+    }
 
     return (
         <div className="min-h-screen pt-24" suppressHydrationWarning>
@@ -56,7 +98,7 @@ export default function BlogPostPage() {
                             </span>
                             <span className="flex items-center gap-2">
                                 <Clock size={18} />
-                                {post.readTime}
+                                {post.read_time}
                             </span>
                             <span>By {post.author}</span>
                         </div>
@@ -216,7 +258,7 @@ export default function BlogPostPage() {
                                         </h3>
                                         <div className="flex items-center gap-2 text-sm text-[var(--color-text-muted)]">
                                             <Clock size={14} />
-                                            {relatedPost.readTime}
+                                            {relatedPost.read_time}
                                         </div>
                                     </div>
                                 </article>

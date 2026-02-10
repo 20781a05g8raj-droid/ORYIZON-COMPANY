@@ -64,7 +64,11 @@ export function Header() {
                 suppressHydrationWarning
             >
                 {/* Scroll Progress Bar */}
-                <div className="absolute bottom-0 left-0 h-[2px] bg-[var(--color-accent)] transition-all duration-200 ease-out" style={{ width: `${scrollProgress}%` }} />
+                <div
+                    className="absolute bottom-0 left-0 h-[2px] bg-[var(--color-accent)] transition-all duration-200 ease-out"
+                    style={{ width: `${scrollProgress}%` }}
+                    suppressHydrationWarning
+                />
 
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
                     <div className="flex items-center justify-between" suppressHydrationWarning>

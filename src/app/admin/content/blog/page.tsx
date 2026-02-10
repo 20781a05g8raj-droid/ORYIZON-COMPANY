@@ -17,8 +17,11 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { getAllBlogPosts, deleteBlogPost, getBlogCategories } from '@/lib/api/blog';
+import { getAllBlogPosts, getBlogCategories } from '@/lib/api/blog';
+import { deleteBlogPostAction } from '@/app/actions/blog';
+import { blogPosts as staticBlogPosts } from '@/data/blog';
 import type { BlogPost } from '@/types/database';
+import { supabase } from '@/lib/supabase';
 
 const statusColors: Record<string, string> = {
     published: 'bg-green-100 text-green-700',
@@ -33,6 +36,7 @@ export default function BlogManagementPage() {
     const [searchQuery, setSearchQuery] = useState('');
     const [categoryFilter, setCategoryFilter] = useState('All');
     const [categories, setCategories] = useState<string[]>([]);
+    const [seeding, setSeeding] = useState(false);
 
     const fetchPosts = async () => {
         try {
@@ -56,15 +60,62 @@ export default function BlogManagementPage() {
         fetchPosts();
     }, []);
 
-    const handleDelete = async (id: string, title: string) => {
-        if (!confirm(`Are you sure you want to delete "${title}"?`)) return;
+    const handleSeed = async () => {
+        if (!confirm('This will seed the database with static blog posts from your code. Continue?')) return;
 
         try {
-            await deleteBlogPost(id);
-            setPosts(posts.filter(p => p.id !== id));
-        } catch (err) {
-            alert('Failed to delete post');
+            setSeeding(true);
+
+            // Format posts for DB
+            const postsToInsert = staticBlogPosts.map(post => ({
+                // id: post.id, // Omit ID to let DB generate UUID if needed, or use slug as key
+                title: post.title,
+                slug: post.slug,
+                excerpt: post.excerpt,
+                content: post.content,
+                image: post.image,
+                icon: post.icon,
+                author: post.author,
+                category: post.category,
+                tags: post.tags,
+                featured: post.featured || false,
+                published: true,
+                date: post.date,
+                read_time: post.readTime,
+                created_at: new Date().toISOString(),
+                updated_at: new Date().toISOString()
+            }));
+
+            // Use upsert to avoid duplicates, relying on SLUG as unique key
+            const { error } = await supabase
+                .from('blog_posts')
+                .upsert(postsToInsert as any, { onConflict: 'slug' });
+
+            if (error) throw error;
+
+            alert('Blog posts seeded successfully!');
+            fetchPosts(); // Refresh list
+        } catch (err: any) {
+            alert('Failed to seed posts. Error: ' + err.message);
             console.error(err);
+        } finally {
+            setSeeding(false);
+        }
+    };
+
+    const handleDelete = async (id: string, title: string) => {
+        if (!confirm(`Are you sure you want to delete "${title}"? This cannot be undone.`)) return;
+
+        try {
+            // Use Server Action to bypass RLS
+            await deleteBlogPostAction(id);
+
+            // Only update local state if DB delete succeeded
+            setPosts(prev => prev.filter(p => p.id !== id));
+            alert(`"${title}" deleted successfully.`);
+        } catch (err: any) {
+            console.error('Delete exception:', err);
+            alert('Failed to delete post: ' + (err.message || 'Unknown error'));
         }
     };
 
@@ -109,6 +160,15 @@ export default function BlogManagementPage() {
                     <p className="text-gray-500">Create and manage your blog content</p>
                 </div>
                 <div className="flex gap-2">
+                    <button
+                        onClick={handleSeed}
+                        disabled={seeding}
+                        className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors font-medium disabled:opacity-50"
+                        title="Seed database from static file"
+                    >
+                        {seeding ? <Loader2 size={20} className="animate-spin" /> : <RefreshCw size={20} />}
+                        {seeding ? 'Seeding...' : 'Seed Data'}
+                    </button>
                     <button
                         onClick={fetchPosts}
                         className="p-2 border border-gray-200 rounded-lg hover:bg-gray-50"
