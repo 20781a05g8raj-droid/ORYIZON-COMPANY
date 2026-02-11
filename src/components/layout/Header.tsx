@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, Search, User } from 'lucide-react';
+import { ShoppingCart, Menu, X, Search, User, Sparkles } from 'lucide-react';
 import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants';
 import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui/Button';
@@ -43,10 +43,6 @@ export function Header() {
         return null;
     }
 
-    // Determine header style state
-    // If on homepage: transparent when at top, white/blurred when scrolled
-    // If NOT on homepage: ALWAYS white/blurred (to be visible against potentially white backgrounds)
-    // OR we could just say: if !isHomePage || isScrolled
     const showSolidHeader = !isHomePage || isScrolled;
 
     return (
@@ -58,14 +54,14 @@ export function Header() {
           fixed top-0 left-0 right-0 z-50 transition-all duration-500
           ${showSolidHeader
                         ? 'bg-white/90 backdrop-blur-xl shadow-lg border-b border-[var(--color-secondary)]/30 py-2 md:py-3'
-                        : 'bg-transparent py-4 md:py-6'
+                        : 'bg-transparent py-3 md:py-6'
                     }
         `}
                 suppressHydrationWarning
             >
                 {/* Scroll Progress Bar */}
                 <div
-                    className="absolute bottom-0 left-0 h-[2px] bg-[var(--color-accent)] transition-all duration-200 ease-out"
+                    className="absolute bottom-0 left-0 h-[2px] bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary-light)] transition-all duration-200 ease-out"
                     style={{ width: `${scrollProgress}%` }}
                     suppressHydrationWarning
                 />
@@ -115,13 +111,13 @@ export function Header() {
                         </nav>
 
                         {/* Right Actions */}
-                        <div className="flex items-center gap-2 md:gap-4">
+                        <div className="flex items-center gap-1.5 md:gap-4">
                             {/* Search */}
                             <motion.button
                                 whileHover={{ scale: 1.1 }}
                                 whileTap={{ scale: 0.9 }}
                                 className={`
-                  p-2 rounded-full transition-colors hidden md:flex items-center justify-center
+                  p-2.5 rounded-full transition-colors hidden md:flex items-center justify-center
                   ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white font-bold'
@@ -138,7 +134,7 @@ export function Header() {
                                     whileHover={{ scale: 1.1 }}
                                     whileTap={{ scale: 0.9 }}
                                     className={`
-                    p-2 rounded-full transition-colors flex items-center justify-center
+                    p-2.5 rounded-full transition-colors flex items-center justify-center
                     ${showSolidHeader
                                             ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                             : 'hover:bg-white/10 text-white font-bold'
@@ -156,7 +152,7 @@ export function Header() {
                                 whileTap={{ scale: 0.9 }}
                                 onClick={openCart}
                                 className={`
-                  p-2 rounded-full transition-colors relative flex items-center justify-center
+                  p-2.5 rounded-full transition-colors relative flex items-center justify-center
                   ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white font-bold'
@@ -188,7 +184,7 @@ export function Header() {
                                 whileTap={{ scale: 0.9 }}
                                 onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                                 className={`
-                  p-2 rounded-full transition-colors lg:hidden flex items-center justify-center
+                  p-2.5 rounded-xl transition-colors lg:hidden flex items-center justify-center min-w-[44px] min-h-[44px]
                   ${showSolidHeader
                                         ? 'hover:bg-[var(--color-secondary)] text-[var(--color-text)]'
                                         : 'hover:bg-white/10 text-white font-bold'
@@ -196,14 +192,14 @@ export function Header() {
                 `}
                                 aria-label="Menu"
                             >
-                                {isMobileMenuOpen ? <X size={26} strokeWidth={2.5} /> : <Menu size={26} strokeWidth={2.5} />}
+                                {isMobileMenuOpen ? <X size={24} strokeWidth={2.5} /> : <Menu size={24} strokeWidth={2.5} />}
                             </motion.button>
                         </div>
                     </div>
                 </div>
             </motion.header>
 
-            {/* Mobile Menu Overlay */}
+            {/* ========== PREMIUM MOBILE MENU ========== */}
             <AnimatePresence>
                 {isMobileMenuOpen && (
                     <motion.div
@@ -212,67 +208,102 @@ export function Header() {
                         exit={{ opacity: 0 }}
                         className="fixed inset-0 z-[60] lg:hidden"
                     >
-                        {/* Backdrop */}
-                        <div
-                            className="absolute inset-0 bg-[var(--color-text)]/40 backdrop-blur-md"
+                        {/* Frosted glass backdrop */}
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            exit={{ opacity: 0 }}
+                            className="absolute inset-0 bg-[#1A3009]/60 backdrop-blur-xl"
                             onClick={() => setIsMobileMenuOpen(false)}
                         />
 
-                        {/* Menu Content */}
+                        {/* Menu Panel */}
                         <motion.nav
                             initial={{ x: '100%' }}
                             animate={{ x: 0 }}
                             exit={{ x: '100%' }}
-                            transition={{ type: 'spring', damping: 25, stiffness: 200 }}
-                            className="absolute top-0 right-0 bottom-0 w-[85%] max-w-sm bg-white shadow-2xl p-8 flex flex-col"
+                            transition={{ type: 'spring', damping: 28, stiffness: 220 }}
+                            className="absolute top-0 right-0 bottom-0 w-[88%] max-w-sm bg-gradient-to-b from-white via-white to-[var(--color-cream)] shadow-2xl flex flex-col overflow-hidden"
                         >
-                            <div className="flex items-center justify-between mb-12">
-                                <div className="relative w-32 h-8">
-                                    <Image src="/images/oryizon-logo.png" alt="Oryizon" fill className="object-contain" />
-                                </div>
-                                <motion.button
-                                    whileTap={{ scale: 0.9 }}
-                                    onClick={() => setIsMobileMenuOpen(false)}
-                                    className="p-2 bg-[var(--color-secondary)] rounded-full text-[var(--color-text)]"
-                                >
-                                    <X size={24} />
-                                </motion.button>
-                            </div>
-
-                            <div className="flex flex-col gap-6 overflow-y-auto flex-1">
-                                {NAV_ITEMS.map((item, index) => (
-                                    <motion.div
-                                        key={item.href}
-                                        initial={{ opacity: 0, x: 20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.1 }}
+                            {/* Header with gradient accent line */}
+                            <div className="relative px-7 pt-6 pb-5">
+                                <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-[var(--color-primary)] via-[var(--color-accent)] to-[var(--color-primary-light)]" />
+                                <div className="flex items-center justify-between">
+                                    <div className="relative w-32 h-8">
+                                        <Image src="/images/oryizon-logo.png" alt="Oryizon" fill className="object-contain" />
+                                    </div>
+                                    <motion.button
+                                        whileTap={{ scale: 0.9 }}
+                                        onClick={() => setIsMobileMenuOpen(false)}
+                                        className="p-2.5 bg-[var(--color-cream)] rounded-xl text-[var(--color-text)] min-w-[44px] min-h-[44px] flex items-center justify-center"
                                     >
-                                        <Link
-                                            href={item.href}
-                                            onClick={() => setIsMobileMenuOpen(false)}
-                                            className={`text-2xl font-heading font-bold transition-all ${pathname === item.href ? 'text-[var(--color-primary)]' : 'text-[var(--color-text)] hover:text-[var(--color-primary)]'}`}
-                                        >
-                                            {item.label}
-                                        </Link>
-                                    </motion.div>
-                                ))}
+                                        <X size={22} />
+                                    </motion.button>
+                                </div>
                             </div>
 
-                            <div className="mt-auto space-y-4 pt-8">
+                            {/* Navigation Links */}
+                            <div className="flex-1 overflow-y-auto px-7 py-4">
+                                <div className="flex flex-col gap-1.5">
+                                    {NAV_ITEMS.map((item, index) => (
+                                        <motion.div
+                                            key={item.href}
+                                            initial={{ opacity: 0, x: 30 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: 0.05 + index * 0.08, type: 'spring', stiffness: 300 }}
+                                        >
+                                            <Link
+                                                href={item.href}
+                                                onClick={() => setIsMobileMenuOpen(false)}
+                                                className={`flex items-center gap-4 px-5 py-4 rounded-2xl transition-all text-lg font-heading font-bold min-h-[52px] ${pathname === item.href
+                                                    ? 'text-[var(--color-primary)] bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10'
+                                                    : 'text-[var(--color-text)] hover:bg-[var(--color-cream)] active:bg-[var(--color-cream)]'
+                                                    }`}
+                                            >
+                                                {pathname === item.href && (
+                                                    <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-primary)]" />
+                                                )}
+                                                {item.label}
+                                            </Link>
+                                        </motion.div>
+                                    ))}
+                                </div>
+
+                                {/* Decorative divider */}
+                                <div className="my-6 h-px bg-gradient-to-r from-transparent via-[var(--color-accent)]/30 to-transparent" />
+
+                                {/* Quick info */}
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    transition={{ delay: 0.5 }}
+                                    className="flex items-center gap-3 px-5 py-4 rounded-2xl bg-[var(--color-primary)]/5 border border-[var(--color-primary)]/10"
+                                >
+                                    <Sparkles size={18} className="text-[var(--color-accent)]" />
+                                    <span className="text-sm font-medium text-[var(--color-text-light)]">Premium Organic Moringa</span>
+                                </motion.div>
+                            </div>
+
+                            {/* Bottom CTA Area */}
+                            <div className="px-7 pb-8 pt-4 space-y-3 bg-gradient-to-t from-[var(--color-cream)] to-transparent">
                                 <Link href="/products" onClick={() => setIsMobileMenuOpen(false)}>
-                                    <Button variant="primary" fullWidth size="lg" className="rounded-2xl font-bold">
+                                    <Button variant="primary" fullWidth size="lg" className="rounded-2xl font-bold h-14 shadow-xl glow-cta">
                                         Shop All Products
                                     </Button>
                                 </Link>
 
                                 <Link href="/account" onClick={() => setIsMobileMenuOpen(false)}>
-                                    <Button variant="outline" fullWidth size="lg" className="rounded-2xl font-bold">
+                                    <Button variant="outline" fullWidth size="lg" className="rounded-2xl font-bold h-14 border-2 mt-2">
                                         My Account
                                     </Button>
                                 </Link>
 
-                                <div className="pt-6 text-center text-[var(--color-text-light)] text-sm font-medium">
-                                    🌱 Sustainably Sourced • Lab Tested
+                                <div className="pt-4 flex items-center justify-center gap-4 text-[var(--color-text-light)] text-xs font-medium">
+                                    <span className="flex items-center gap-1.5">🌱 Organic</span>
+                                    <span className="w-1 h-1 rounded-full bg-[var(--color-accent)]/40" />
+                                    <span className="flex items-center gap-1.5">🔬 Lab Tested</span>
+                                    <span className="w-1 h-1 rounded-full bg-[var(--color-accent)]/40" />
+                                    <span className="flex items-center gap-1.5">🇮🇳 India</span>
                                 </div>
                             </div>
                         </motion.nav>

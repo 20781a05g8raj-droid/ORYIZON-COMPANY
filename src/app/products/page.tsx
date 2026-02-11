@@ -205,7 +205,7 @@ export default function ProductsPage() {
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
                         {[
                             { icon: '🚚', title: 'Free Shipping', desc: 'On orders over ₹499' },
-                            { icon: '↩️', title: 'Easy Returns', desc: '30-day guarantee' },
+                            { icon: '↩️', title: 'Easy Returns', desc: '7-day guarantee' },
                             { icon: '🔒', title: 'Secure Payment', desc: '100% secure checkout' },
                             { icon: '💬', title: 'Support', desc: '24/7 customer support' },
                         ].map((item, index) => (

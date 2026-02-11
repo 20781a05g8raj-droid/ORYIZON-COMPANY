@@ -64,7 +64,7 @@ export default function TermsPage() {
 
                     <h2>6. Returns and Refunds</h2>
                     <ul>
-                        <li>Products can be returned within 30 days of delivery</li>
+                        <li>Products can be returned within 7 days of delivery</li>
                         <li>Items must be unused and in original packaging</li>
                         <li>Refunds will be processed within 5-7 business days</li>
                         <li>Shipping costs for returns may apply</li>

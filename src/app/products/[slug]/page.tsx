@@ -436,7 +436,7 @@ export default function ProductPage() {
                                         <RotateCcw size={18} />
                                     </div>
                                     <div>
-                                        <p className="font-bold text-[10px] sm:text-xs uppercase tracking-wider text-amber-900">30-Day Return</p>
+                                        <p className="font-bold text-[10px] sm:text-xs uppercase tracking-wider text-amber-900">7-Day Return</p>
                                         <p className="text-[9px] sm:text-[10px] font-medium text-amber-700">Money back guarantee</p>
                                     </div>
                                 </div>

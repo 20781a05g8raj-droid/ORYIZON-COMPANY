@@ -43,7 +43,7 @@ export default function ShippingReturnsPage() {
                         {[
                             { icon: <Truck size={28} />, title: 'Free Shipping', desc: `On orders over ${formatPrice(shippingSettings.freeShippingThreshold)}` },
                             { icon: <Clock size={28} />, title: 'Fast Delivery', desc: `${shippingSettings.deliveryTime.standard}` },
-                            { icon: <RotateCcw size={28} />, title: 'Easy Returns', desc: '30-day return policy' },
+                            { icon: <RotateCcw size={28} />, title: 'Easy Returns', desc: '7-day return policy' },
                             { icon: <CreditCard size={28} />, title: 'Secure Payment', desc: 'Multiple payment options' },
                         ].map((item, index) => (
                             <motion.div
@@ -131,17 +131,17 @@ export default function ShippingReturnsPage() {
                             </div>
 
                             <div className="bg-green-50 border border-green-200 rounded-xl p-6 mb-6">
-                                <h3 className="font-semibold text-green-800 mb-2">30-Day Money Back Guarantee</h3>
+                                <h3 className="font-semibold text-green-800 mb-2">7-Day Money Back Guarantee</h3>
                                 <p className="text-green-700">
                                     We stand behind the quality of our products. If you&apos;re not satisfied,
-                                    return it within 30 days for a full refund.
+                                    return it within 7 days for a full refund.
                                 </p>
                             </div>
 
                             <div className="space-y-4 text-[var(--color-text-light)]">
                                 <h3 className="font-semibold text-[var(--color-text)]">Return Eligibility</h3>
                                 <ul className="list-disc pl-5 space-y-2">
-                                    <li>Products must be returned within 30 days of delivery</li>
+                                    <li>Products must be returned within 7 days of delivery</li>
                                     <li>Unused products in original, sealed packaging</li>
                                     <li>Damaged or defective products (report within 48 hours)</li>
                                     <li>Wrong product delivered</li>

@@ -4,11 +4,33 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
-import { getTopFAQs } from '@/data/faqs';
 import { Button } from '@/components/ui/Button';
 
+// SEO-targeted FAQ questions matching user's spec
+const seoFaqs = [
+    {
+        id: 'faq-1',
+        question: 'What are the benefits of moringa powder?',
+        answer: 'Moringa powder helps support immunity, energy levels, digestion, and overall health due to its high nutrient content.',
+    },
+    {
+        id: 'faq-2',
+        question: 'When is the best time to take moringa powder?',
+        answer: 'The best time to take moringa powder is in the morning on an empty stomach or with meals.',
+    },
+    {
+        id: 'faq-3',
+        question: 'Can moringa powder boost immunity?',
+        answer: 'Yes, moringa powder contains antioxidants and nutrients that help support a healthy immune system.',
+    },
+    {
+        id: 'faq-4',
+        question: 'Is moringa good for weight management?',
+        answer: 'Moringa powder may support metabolism and nutrition, which can help in healthy weight management.',
+    },
+];
+
 export function FAQPreviewSection() {
-    const faqs = getTopFAQs(4);
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
     return (
@@ -36,7 +58,7 @@ export function FAQPreviewSection() {
 
                 {/* FAQ Accordion */}
                 <div className="space-y-4" suppressHydrationWarning>
-                    {faqs.map((faq, index) => (
+                    {seoFaqs.map((faq, index) => (
                         <motion.div
                             key={faq.id}
                             initial={{ opacity: 0, y: 10 }}
@@ -50,9 +72,9 @@ export function FAQPreviewSection() {
                                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                                 className="w-full flex items-center justify-between p-5 md:p-6 text-left hover:bg-[var(--color-cream)] transition-all group"
                             >
-                                <span className="font-heading font-bold text-base md:text-lg pr-4 text-[var(--color-text)]">
+                                <h3 className="font-heading font-bold text-base md:text-lg pr-4 text-[var(--color-text)]">
                                     {faq.question}
-                                </span>
+                                </h3>
                                 <motion.span
                                     animate={{ rotate: openIndex === index ? 180 : 0 }}
                                     transition={{ duration: 0.3 }}
@@ -84,12 +106,12 @@ export function FAQPreviewSection() {
                     ))}
                 </div>
 
-                {/* CTA */}
+                {/* CTAs */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
-                    className="text-center mt-10 md:mt-12"
+                    className="text-center mt-10 md:mt-12 space-y-4"
                     suppressHydrationWarning
                 >
                     <Link href="/faq">
@@ -97,6 +119,14 @@ export function FAQPreviewSection() {
                             View All FAQs
                         </Button>
                     </Link>
+
+                    {/* Internal Link for SEO */}
+                    <p className="text-[var(--color-text-light)] text-sm md:text-base mt-6">
+                        Learn more about moringa benefits in our{' '}
+                        <Link href="/blog" className="text-[var(--color-primary)] font-semibold hover:underline transition-colors">
+                            health blog
+                        </Link>.
+                    </p>
                 </motion.div>
             </div>
         </section>

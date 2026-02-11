@@ -48,22 +48,26 @@ export function HeroSection() {
 
             {/* Gradient Overlay */}
             <div
-                className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-black/10"
+                className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 md:from-black/30 md:to-black/10"
                 suppressHydrationWarning
             />
 
+            {/* Decorative glow orbs — mobile only */}
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[var(--color-accent)]/10 rounded-full blur-3xl md:hidden" suppressHydrationWarning />
+            <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-emerald-400/10 rounded-full blur-3xl md:hidden" suppressHydrationWarning />
+
             {/* Content Container */}
-            <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-24 flex flex-col items-center text-center" suppressHydrationWarning>
+            <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 md:py-24 flex flex-col items-center text-center" suppressHydrationWarning>
                 {/* Badge */}
                 <motion.div
                     initial={{ opacity: 0, scale: 0.9 }}
                     animate={{ opacity: 1, scale: 1 }}
                     transition={{ duration: 0.5 }}
-                    className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 backdrop-blur-md text-white/90 text-xs md:text-sm font-medium mb-8 md:mb-10 border border-white/10 shadow-xl"
+                    className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl text-white/90 text-[11px] md:text-sm font-semibold mb-8 md:mb-10 border border-white/15 shadow-2xl"
                     suppressHydrationWarning
                 >
                     <Sparkles size={16} className="text-[var(--color-accent)] animate-pulse" />
-                    <span>Premium 100% Certified Organic Moringa</span>
+                    <span className="tracking-wide">Premium 100% Certified Organic Moringa</span>
                 </motion.div>
 
                 {/* Headline */}
@@ -71,12 +75,12 @@ export function HeroSection() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-4xl xs:text-5xl md:text-7xl lg:text-9xl font-bold text-white mb-6 md:mb-8 leading-[1.1] md:leading-[1.05]"
+                    className="text-[2rem] leading-[1.15] xs:text-4xl md:text-6xl lg:text-8xl font-bold text-white mb-5 md:mb-8 md:leading-[1.05]"
                     style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
                     suppressHydrationWarning
                 >
-                    Pure. Organic.<br />
-                    <span className="text-[var(--color-accent)] drop-shadow-sm">Powerful.</span>
+                    Organic Moringa Powder –<br />
+                    <span className="text-[var(--color-accent)] drop-shadow-lg">Natural Superfood for Daily Health</span>
                 </motion.h1>
 
                 {/* Subheadline */}
@@ -84,34 +88,37 @@ export function HeroSection() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.8, delay: 0.4 }}
-                    className="text-base sm:text-lg md:text-2xl text-white/80 max-w-3xl mx-auto mb-10 md:mb-14 leading-relaxed md:leading-relaxed"
+                    className="text-[15px] leading-relaxed sm:text-lg md:text-2xl text-white/75 max-w-3xl mx-auto mb-10 md:mb-14 md:leading-relaxed"
                     suppressHydrationWarning
                 >
-                    Experience nature&apos;s most intensive superfood. Our sustainably sourced
-                    Moringa delivers 90+ essential nutrients for peak energy and vitality.
+                    Oryizon brings you premium quality organic moringa powder made from carefully
+                    dried moringa leaves to support immunity, energy, and overall wellness.
                 </motion.p>
 
-                {/* Key Benefits */}
+                {/* Key Benefits — Glass pills on mobile */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 1, delay: 0.6 }}
-                    className="flex flex-wrap justify-center gap-6 md:gap-10 mb-12 md:mb-16"
+                    className="flex flex-wrap justify-center gap-3 md:gap-10 mb-10 md:mb-16"
                     suppressHydrationWarning
                 >
                     {[
-                        { icon: <Leaf size={20} />, text: '7x Vitamin C' },
-                        { icon: <Shield size={20} />, text: '4x Calcium' },
-                        { icon: <Sparkles size={20} />, text: '25% Protein' },
+                        { icon: <Leaf size={18} />, text: '7x Vitamin C' },
+                        { icon: <Shield size={18} />, text: '4x Calcium' },
+                        { icon: <Sparkles size={18} />, text: '25% Protein' },
                     ].map((item, index) => (
-                        <div
+                        <motion.div
                             key={index}
-                            className="flex items-center gap-3 text-white/90 text-sm md:text-lg font-medium"
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.7 + index * 0.15 }}
+                            className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/8 backdrop-blur-xl border border-white/10 text-white/90 text-sm md:text-lg font-medium md:bg-transparent md:border-none md:backdrop-blur-none md:px-0 md:py-0"
                             suppressHydrationWarning
                         >
-                            <span className="text-[var(--color-accent)] text-xl md:text-2xl">{item.icon}</span>
+                            <span className="text-[var(--color-accent)] md:text-xl">{item.icon}</span>
                             <span>{item.text}</span>
-                        </div>
+                        </motion.div>
                     ))}
                 </motion.div>
 
@@ -120,42 +127,46 @@ export function HeroSection() {
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 0.8 }}
-                    className="flex flex-col sm:flex-row items-center justify-center gap-5 w-full max-w-md md:max-w-none"
+                    className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md md:max-w-none"
                     suppressHydrationWarning
                 >
                     <Link href="/products" className="w-full sm:w-auto">
                         <BeamBorder className="rounded-2xl p-[1px] w-full">
-                            <Button variant="accent" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl shadow-2xl shadow-gold/20" icon={<ArrowRight size={22} />} iconPosition="right">
+                            <Button variant="accent" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl shadow-2xl shadow-gold/20 glow-cta" icon={<ArrowRight size={22} />} iconPosition="right">
                                 Shop Now
                             </Button>
                         </BeamBorder>
                     </Link>
                     <Link href="/about" className="w-full sm:w-auto">
-                        <Button variant="outline" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl border-2 border-white/30 text-white hover:bg-white/10 hover:border-white transition-all">
+                        <Button variant="outline" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/40 backdrop-blur-sm transition-all">
                             Learn More
                         </Button>
                     </Link>
                 </motion.div>
 
-                {/* Trust Badges */}
+                {/* Trust Badges — Horizontal scroll on mobile */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1 }}
-                    className="mt-16 md:mt-24 flex flex-wrap justify-center items-center gap-4 md:gap-8"
+                    className="mt-14 md:mt-24 w-full"
                     suppressHydrationWarning
                 >
-                    {CERTIFICATIONS.slice(0, 4).map((cert) => (
-                        <motion.div
-                            key={cert.id}
-                            whileHover={{ scale: 1.05, y: -2 }}
-                            className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/5 transition-all hover:bg-white/10 hover:border-white/20 shadow-lg"
-                            suppressHydrationWarning
-                        >
-                            <span className="text-xl md:text-2xl leading-none">{cert.icon}</span>
-                            <span className="text-xs md:text-sm font-semibold text-white/90">{cert.name}</span>
-                        </motion.div>
-                    ))}
+                    <div className="flex md:flex-wrap md:justify-center items-center gap-3 md:gap-8 overflow-x-auto scrollbar-hide pb-2 -mx-5 px-5 md:mx-0 md:px-0 scroll-snap-x">
+                        {CERTIFICATIONS.slice(0, 4).map((cert, index) => (
+                            <motion.div
+                                key={cert.id}
+                                initial={{ opacity: 0, scale: 0.9 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 1.1 + index * 0.1 }}
+                                className="flex-shrink-0 flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white/8 backdrop-blur-xl border border-white/10 transition-all hover:bg-white/15 hover:border-white/20 shadow-lg"
+                                suppressHydrationWarning
+                            >
+                                <span className="text-xl md:text-2xl leading-none">{cert.icon}</span>
+                                <span className="text-xs md:text-sm font-semibold text-white/90 whitespace-nowrap">{cert.name}</span>
+                            </motion.div>
+                        ))}
+                    </div>
                 </motion.div>
             </div>
 
@@ -164,11 +175,11 @@ export function HeroSection() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
                 transition={{ duration: 1, delay: 1.5 }}
-                className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
+                className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                 suppressHydrationWarning
             >
-                <span className="text-white/40 text-[10px] uppercase tracking-[0.2em] font-bold">Scroll</span>
-                <div className="w-6 h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1.5">
+                <span className="text-white/40 text-[9px] uppercase tracking-[0.25em] font-bold">Scroll</span>
+                <div className="w-5 h-9 md:w-6 md:h-10 rounded-full border-2 border-white/20 flex items-start justify-center p-1.5">
                     <motion.div
                         animate={{ y: [0, 12, 0] }}
                         transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}

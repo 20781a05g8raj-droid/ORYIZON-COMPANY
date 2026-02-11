@@ -331,7 +331,7 @@ export const blogPosts: BlogPost[] = [
         slug: 'how-to-include-moringa-in-your-daily-diet',
         excerpt: 'Discover 15+ simple, delicious ways to add moringa powder to your daily routine — from morning tonics & smoothies to energy balls & golden milk. Includes dosage guide, best times to take moringa, trending recipes, and expert tips for maximum benefits.',
         content: moringaDietContent,
-        image: '/images/blog/blog-2-moringa-diet.jpg',
+        image: '/images/blog/moringa-daily-diet-hero.png',
         author: 'Dr. Priya Sharma',
         date: 'February 10, 2026',
         readTime: '14 min read',

@@ -363,3 +363,114 @@
 .animate-marquee-paused:hover {
   animation-play-state: paused;
 }
+
+/* ===== Mobile Luxury Utilities ===== */
+
+/* Glassmorphism card for mobile */
+.glass-card {
+  background: rgba(255, 255, 255, 0.7);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+}
+
+.glass-card-dark {
+  background: rgba(255, 255, 255, 0.06);
+  backdrop-filter: blur(20px) saturate(150%);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Gradient top border accent */
+.gradient-border-top {
+  position: relative;
+  overflow: hidden;
+}
+
+.gradient-border-top::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-accent), var(--color-primary-light));
+  border-radius: 0 0 4px 4px;
+}
+
+/* Shimmer animation for premium loading / decoration */
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.animate-shimmer {
+  background: linear-gradient(90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.08) 50%,
+      transparent 100%);
+  background-size: 200% 100%;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+/* Glowing CTA button pulse */
+@keyframes glow-pulse {
+
+  0%,
+  100% {
+    box-shadow: 0 0 20px rgba(196, 163, 90, 0.3), 0 0 40px rgba(196, 163, 90, 0.1);
+  }
+
+  50% {
+    box-shadow: 0 0 30px rgba(196, 163, 90, 0.5), 0 0 60px rgba(196, 163, 90, 0.2);
+  }
+}
+
+@media (max-width: 768px) {
+  .glow-cta {
+    animation: glow-pulse 2.5s ease-in-out infinite;
+  }
+}
+
+/* Premium gradient icon wrapper */
+.gradient-icon {
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: white;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile premium shadow */
+.shadow-premium {
+  box-shadow:
+    0 4px 6px -1px rgba(0, 0, 0, 0.05),
+    0 10px 30px -5px rgba(45, 80, 22, 0.08),
+    0 0 0 1px rgba(245, 241, 232, 0.5);
+}
+
+/* Horizontal scroll snap for mobile */
+.scroll-snap-x {
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+}
+
+.scroll-snap-x>* {
+  scroll-snap-align: center;
+}
+
+/* Hide scrollbar but keep scrolling */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

@@ -86,8 +86,8 @@ export function FeaturedProduct() {
         : 0;
 
     return (
-        <section className="py-12 md:py-20 bg-[var(--color-secondary)]" suppressHydrationWarning>
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <section className="py-14 md:py-20 bg-[var(--color-secondary)]" suppressHydrationWarning>
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
                 <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center" suppressHydrationWarning>
                     {/* Product Image */}
                     <motion.div
@@ -96,11 +96,11 @@ export function FeaturedProduct() {
                         viewport={{ once: true }}
                         className="relative"
                     >
-                        <div className="relative aspect-square bg-white rounded-2xl md:rounded-3xl overflow-hidden shadow-2xl" suppressHydrationWarning>
+                        <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-2xl" suppressHydrationWarning>
                             {mainImage ? (
                                 <Image
                                     src={mainImage}
-                                    alt={product.name}
+                                    alt="organic moringa powder by Oryizon for immunity and daily health"
                                     fill
                                     className="object-cover"
                                     priority
@@ -130,16 +130,16 @@ export function FeaturedProduct() {
                             </div>
                         </div>
 
-                        {/* Floating Price Tag */}
+                        {/* Floating Price Tag — glass effect on mobile */}
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
                             viewport={{ once: true }}
                             transition={{ delay: 0.3 }}
-                            className="absolute -bottom-4 -right-2 md:-right-4 w-20 h-20 md:w-24 md:h-24 bg-[var(--color-accent)] rounded-full flex items-center justify-center text-white font-bold shadow-gold animate-float-slow z-10"
+                            className="absolute -bottom-4 -right-2 md:-right-4 w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-light)] rounded-full flex items-center justify-center text-white font-bold shadow-2xl shadow-gold/30 animate-float-slow z-10 ring-4 ring-white/20"
                         >
                             <div className="text-center">
-                                <div className="text-[10px] md:text-xs">FROM</div>
+                                <div className="text-[10px] md:text-xs opacity-80">FROM</div>
                                 <div className="text-base md:text-lg">{formatPrice(displayPrice)}</div>
                             </div>
                         </motion.div>
@@ -156,17 +156,18 @@ export function FeaturedProduct() {
                             Featured Product
                         </span>
 
-                        <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)] leading-tight" suppressHydrationWarning>
+                        <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]" suppressHydrationWarning>
                             {product.name}
                         </h2>
 
                         {/* Rating */}
-                        <div className="flex items-center gap-3 mb-6" suppressHydrationWarning>
+                        <div className="flex items-center gap-3 mb-5 md:mb-6" suppressHydrationWarning>
                             <div className="flex text-[var(--color-accent)]" suppressHydrationWarning>
                                 {[...Array(5)].map((_, i) => (
                                     <Star
                                         key={i}
-                                        size={20}
+                                        size={18}
+                                        className="md:w-5 md:h-5"
                                         fill={i < Math.round(Number(product.rating || 5)) ? 'currentColor' : 'none'}
                                     />
                                 ))}
@@ -177,13 +178,13 @@ export function FeaturedProduct() {
                         </div>
 
                         {/* Description */}
-                        <p className="text-[var(--color-text-light)] text-base md:text-lg mb-6 md:mb-8 leading-relaxed" suppressHydrationWarning>
+                        <p className="text-[var(--color-text-light)] text-[15px] md:text-lg mb-5 md:mb-8 leading-relaxed" suppressHydrationWarning>
                             {product.short_description || product.description}
                         </p>
 
-                        {/* Key Benefits */}
+                        {/* Key Benefits — as mini gradient-bordered cards on mobile */}
                         {product.benefits && product.benefits.length > 0 && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 mb-8" suppressHydrationWarning>
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3 mb-6 md:mb-8" suppressHydrationWarning>
                                 {product.benefits.slice(0, 4).map((benefit, index) => (
                                     <motion.div
                                         key={index}
@@ -191,10 +192,10 @@ export function FeaturedProduct() {
                                         whileInView={{ opacity: 1, x: 0 }}
                                         viewport={{ once: true }}
                                         transition={{ delay: index * 0.1 }}
-                                        className="flex items-center gap-3"
+                                        className="flex items-center gap-3 p-3 md:p-0 rounded-xl md:rounded-none bg-white/60 md:bg-transparent border border-[var(--color-secondary)] md:border-none"
                                         suppressHydrationWarning
                                     >
-                                        <span className="w-5 h-5 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center text-[10px] flex-shrink-0">
+                                        <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white flex items-center justify-center text-[10px] flex-shrink-0 shadow-sm">
                                             ✓
                                         </span>
                                         <span className="text-sm text-[var(--color-text)] font-medium">{benefit}</span>
@@ -204,12 +205,12 @@ export function FeaturedProduct() {
                         )}
 
                         {/* Price */}
-                        <div className="flex items-baseline gap-4 mb-8" suppressHydrationWarning>
-                            <span className="font-heading text-4xl md:text-5xl font-bold text-[var(--color-primary)]">
+                        <div className="flex items-baseline gap-3 md:gap-4 mb-6 md:mb-8" suppressHydrationWarning>
+                            <span className="font-heading text-3xl md:text-5xl font-bold text-[var(--color-primary)]">
                                 {formatPrice(displayPrice)}
                             </span>
                             {displayOriginalPrice && (
-                                <span className="text-xl md:text-2xl text-gray-400 line-through">
+                                <span className="text-lg md:text-2xl text-gray-400 line-through">
                                     {formatPrice(displayOriginalPrice)}
                                 </span>
                             )}
@@ -219,24 +220,33 @@ export function FeaturedProduct() {
                         </div>
 
                         {/* CTAs */}
-                        <div className="flex flex-col sm:flex-row gap-4" suppressHydrationWarning>
+                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4" suppressHydrationWarning>
                             <Link href={`/products/${product.slug}`} className="flex-1">
-                                <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />}>
+                                <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />} className="rounded-2xl h-14 glow-cta">
                                     Add to Cart
                                 </Button>
                             </Link>
                             <Link href={`/products/${product.slug}`} className="flex-1">
-                                <Button variant="outline" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right">
+                                <Button variant="outline" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-2xl h-14 border-2">
                                     View Details
                                 </Button>
                             </Link>
                         </div>
 
-                        {/* Trust elements on mobile */}
-                        <div className="flex flex-wrap gap-x-6 gap-y-2 mt-8 md:mt-10 text-xs md:text-sm text-[var(--color-text-light)] font-medium" suppressHydrationWarning>
-                            <span className="flex items-center gap-2">🚚 Free Shipping over ₹499</span>
-                            <span className="flex items-center gap-2">↩️ 30-Day Returns</span>
-                            <span className="flex items-center gap-2">🔒 Secure Checkout</span>
+                        {/* Trust elements — glass pills on mobile */}
+                        <div className="flex flex-wrap gap-3 mt-6 md:mt-10" suppressHydrationWarning>
+                            {[
+                                { icon: '🚚', text: 'Free Shipping over ₹499' },
+                                { icon: '↩️', text: '7-Day Returns' },
+                                { icon: '🔒', text: 'Secure Checkout' },
+                            ].map((item, index) => (
+                                <span
+                                    key={index}
+                                    className="flex items-center gap-2 px-3.5 py-2 md:px-0 md:py-0 rounded-xl md:rounded-none bg-white/70 md:bg-transparent border border-[var(--color-secondary)] md:border-none text-xs md:text-sm text-[var(--color-text-light)] font-medium"
+                                >
+                                    {item.icon} {item.text}
+                                </span>
+                            ))}
                         </div>
                     </motion.div>
                 </div>

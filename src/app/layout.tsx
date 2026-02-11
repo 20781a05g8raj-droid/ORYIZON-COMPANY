@@ -21,26 +21,60 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ORYIZON - Premium Organic Moringa Powder | Natural Superfood",
-  description: "Experience nature's most powerful superfood. Our certified organic Moringa powder delivers 90+ nutrients for energy, immunity, and total wellness. Free shipping over ₹499.",
-  keywords: ["moringa", "moringa powder", "organic moringa", "superfood", "immunity booster", "natural supplement", "ayurvedic", "health food"],
-  authors: [{ name: "ORYIZON" }],
+  metadataBase: new URL("https://oryizon.com"),
+  title: {
+    default: "Organic Moringa Powder for Daily Health & Immunity | Oryizon",
+    template: "%s | Oryizon",
+  },
+  description: "Premium organic moringa powder rich in vitamins, minerals & antioxidants. Boost immunity, energy & overall wellness naturally with Oryizon.",
+  keywords: [
+    "moringa powder", "organic moringa powder", "moringa benefits",
+    "immunity booster", "natural superfood", "moringa for health",
+    "moringa oleifera", "plant protein", "ayurvedic supplement",
+    "daily wellness", "oryizon moringa", "moringa antioxidants",
+    "buy moringa powder online", "best moringa powder India",
+  ],
+  authors: [{ name: "Oryizon" }],
+  creator: "Oryizon",
+  publisher: "Oryizon",
+  alternates: {
+    canonical: "https://oryizon.com",
+  },
   openGraph: {
-    title: "ORYIZON - Premium Organic Moringa Powder",
-    description: "Pure. Organic. Powerful. Experience nature's most nutrient-dense superfood.",
+    title: "Organic Moringa Powder for Daily Health & Immunity | Oryizon",
+    description: "Premium organic moringa powder rich in vitamins, minerals & antioxidants. Boost immunity, energy & overall wellness naturally with Oryizon.",
     url: "https://oryizon.com",
-    siteName: "ORYIZON",
+    siteName: "Oryizon",
     type: "website",
     locale: "en_IN",
+    images: [
+      {
+        url: "/images/products/product-1.png",
+        width: 1200,
+        height: 630,
+        alt: "Organic moringa powder by Oryizon for immunity and daily health",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ORYIZON - Premium Organic Moringa Powder",
-    description: "Pure. Organic. Powerful. Experience nature's most nutrient-dense superfood.",
+    title: "Organic Moringa Powder for Daily Health & Immunity | Oryizon",
+    description: "Premium organic moringa powder rich in vitamins, minerals & antioxidants. Boost immunity, energy & overall wellness naturally.",
+    images: ["/images/products/product-1.png"],
   },
   robots: {
     index: true,
     follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
+  },
+  verification: {
+    google: "your-google-verification-code",
   },
 };
 

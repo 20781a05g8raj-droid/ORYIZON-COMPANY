@@ -21,11 +21,12 @@ export function HowToUseSection() {
                     </span>
                     <h2 className="font-heading text-3xl sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)] leading-tight">
                         How to Use{' '}
-                        <span className="text-[var(--color-primary)]">Moringa</span>
+                        <span className="text-[var(--color-primary)]">Moringa Powder Daily?</span>
                     </h2>
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-base md:text-lg">
-                        Adding Moringa to your daily routine is easy. Here are some simple ways
-                        to enjoy its benefits.
+                        You can consume moringa powder by mixing one teaspoon with warm water,
+                        smoothies, juice, or adding it to meals. Regular daily use helps
+                        support nutrition and overall health.
                     </p>
                 </motion.div>
 

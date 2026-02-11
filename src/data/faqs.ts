@@ -70,7 +70,7 @@ export const faqs: FAQ[] = [
     {
         id: '12',
         question: 'What is your return policy?',
-        answer: 'We offer a 30-day satisfaction guarantee. If you\'re not happy with your purchase, you can return unopened products within 30 days for a full refund. For quality issues, we\'ll replace or refund your order immediately. Please contact our support team to initiate a return.',
+        answer: 'We offer a 7-day satisfaction guarantee. If you\'re not happy with your purchase, you can return unopened products within 7 days for a full refund. For quality issues, we\'ll replace or refund your order immediately. Please contact our support team to initiate a return.',
         category: 'Returns',
     },
 ];

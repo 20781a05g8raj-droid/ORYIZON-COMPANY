@@ -12,7 +12,7 @@ export const moringaDietContent = `
     <p class="mb-0 text-[var(--color-text)] leading-relaxed">The easiest way to include moringa in your daily diet is to add 1 teaspoon of <a href="/products/organic-moringa-powder" class="text-[var(--color-primary)] font-semibold hover:underline">organic moringa powder</a> to your morning smoothie, stir it into warm water with lemon and honey, or sprinkle it over salads and soups. Start with ½ teaspoon and gradually increase to 1-2 tablespoons per day for optimal benefits.</p>
 </div>
 
-<img src="/images/blog/blog-2-moringa-diet.jpg" alt="Various dishes and drinks made with moringa powder - smoothies, teas, and meals" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
+<img src="/images/blog/moringa-daily-diet-hero.png" alt="Various dishes and drinks made with moringa powder - smoothies, teas, and meals" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
 
 <p class="mb-6 leading-relaxed">In this guide, you'll discover <strong>15+ easy, delicious, and practical ways</strong> to make moringa a natural part of your breakfast, lunch, dinner, and snacks. Whether you're a busy professional, a fitness enthusiast, or a home cook looking for creative ideas — we've got you covered. Let's turn that unopened bag into your daily wellness ritual.</p>
 
@@ -86,6 +86,8 @@ export const moringaDietContent = `
     </table>
 </div>
 
+<img src="/images/blog/moringa-dosage-guide.png" alt="Moringa dosage guide infographic" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
+
 <div class="bg-gradient-to-r from-green-50 to-white p-5 rounded-xl border-l-4 border-[var(--color-primary)] my-6">
     <p class="mb-0 leading-relaxed"><strong>💡 Pro Tip:</strong> Start with ½ teaspoon for the first week. Increase gradually over 2-3 weeks. If taking more than 1 tsp daily, split the dose — morning and evening. Consistency matters far more than quantity!</p>
 </div>
@@ -118,6 +120,8 @@ export const moringaDietContent = `
         <p class="text-xs mt-2 font-medium text-purple-700">Moringa tea with honey</p>
     </div>
 </div>
+
+<img src="/images/blog/moringa-best-time.png" alt="Best time to take moringa timeline" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
 
 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-6 mt-12 text-[var(--color-text)]">🍴 15+ Easy Ways to Include Moringa in Your Diet</h2>
 
@@ -153,6 +157,7 @@ export const moringaDietContent = `
             <p class="text-sm text-[var(--color-text-light)]">1 banana • 1 cup spinach • 1 tsp moringa powder • 1 cup almond milk • 1 tbsp peanut butter • 4 ice cubes</p>
         </div>
         <p class="text-sm text-[var(--color-text-light)]"><strong>💡 Tip:</strong> Add chia seeds for extra omega-3s and fiber. Blend for 45 seconds for a silky texture.</p>
+        <img src="/images/blog/moringa-smoothie.png" alt="Green moringa smoothie" class="w-full h-64 object-cover rounded-xl mt-4 shadow-sm" />
     </div>
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -167,6 +172,7 @@ export const moringaDietContent = `
             <p class="text-sm text-[var(--color-text-light)]">1 cup oat milk • ½ tsp moringa powder • ½ tsp matcha • 1 tsp honey • froth with milk frother</p>
         </div>
         <p class="text-sm text-[var(--color-text-light)]"><strong>💡 Tip:</strong> Steam the milk first, then whisk in the powders to avoid lumps. Dust extra moringa on top for presentation!</p>
+        <img src="/images/blog/moringa-latte.png" alt="Moringa matcha latte" class="w-full h-64 object-cover rounded-xl mt-4 shadow-sm" />
     </div>
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -242,6 +248,7 @@ export const moringaDietContent = `
             <p class="font-semibold text-sm mb-2">Ingredients:</p>
             <p class="text-sm text-[var(--color-text-light)]">½ cup oats • 1 cup yogurt • 1 tsp moringa • 1 tbsp chia seeds • mixed berries • drizzle of honey → refrigerate overnight</p>
         </div>
+        <img src="/images/blog/moringa-overnight-oats.png" alt="Moringa overnight oats" class="w-full h-64 object-cover rounded-xl mt-4 shadow-sm" />
     </div>
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -299,6 +306,7 @@ export const moringaDietContent = `
             <p class="font-semibold text-sm mb-2">Ingredients:</p>
             <p class="text-sm text-[var(--color-text-light)]">1 cup pitted dates • ½ cup mixed nuts • 2 tbsp moringa • 2 tbsp coconut flakes • 1 tbsp cocoa → Blend, roll into balls, refrigerate</p>
         </div>
+        <img src="/images/blog/moringa-energy-balls.png" alt="Moringa energy balls" class="w-full h-64 object-cover rounded-xl mt-4 shadow-sm" />
     </div>
 
     <div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
@@ -350,7 +358,9 @@ export const moringaDietContent = `
 
 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-4 mt-12 text-[var(--color-text)]">🍃 What Does Moringa Taste Like?</h2>
 
-<p class="mb-4 leading-relaxed">Moringa has a <strong>mild, earthy, slightly grassy flavor</strong> — similar to matcha but gentler, with a hint of spinach. High-quality organic moringa (like <a href="/products/organic-moringa-powder" class="text-[var(--color-primary)] font-semibold hover:underline">ORYIZON's</a>) is NOT bitter. The taste blends beautifully into both sweet and savory dishes, and in most recipes above, you'll barely notice it.</p>
+<p class="mb-4 leading-relaxed">Moringa has a <strong>mild, earthy, slightly grassy flavor</strong> — similar to matcha but gentler, with a hint of spinach. High-quality organic moringa (like <a href="/products/organic-moringa-powder" class="text-[var(--color-primary)] font-semibold hover:underline">ORYIZON's</a>) is NOT bitter. The taste blends beautifully into both sweet and savory dishes, and in most recipes above, You'll barely notice it.</p>
+
+<img src="/images/blog/moringa-taste-comparison.png" alt="Moringa taste comparison chart" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
 
 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-4 mt-12 text-[var(--color-text)]">❌ Common Mistakes to Avoid</h2>
 
