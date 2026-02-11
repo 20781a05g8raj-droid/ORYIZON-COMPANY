@@ -474,3 +474,90 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ===== 3D Animation Utilities ===== */
+
+/* Gradient shift for loading screen */
+@keyframes gradientShift {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* 3D perspective container */
+.perspective-container {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+/* 3D icon flip on hover */
+@keyframes iconFlip3d {
+  0% {
+    transform: rotateY(0deg);
+  }
+
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
+.icon-3d-flip:hover .icon-3d-target {
+  animation: iconFlip3d 0.6s ease-in-out;
+}
+
+/* Staggered reveal keyframe */
+@keyframes revealUp3d {
+  0% {
+    opacity: 0;
+    transform: translateY(40px) rotateX(10deg);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateY(0) rotateX(0);
+  }
+}
+
+/* Text gradient effect */
+.text-gradient-gold {
+  background: linear-gradient(135deg, var(--color-accent) 0%, #E8D5A3 50%, var(--color-accent) 100%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 3s linear infinite;
+}
+
+/* Desktop glow on hover */
+@media (min-width: 769px) {
+  .glow-cta:hover {
+    box-shadow: 0 0 30px rgba(196, 163, 90, 0.5), 0 0 60px rgba(196, 163, 90, 0.2);
+    transition: box-shadow 0.3s ease;
+  }
+}
+
+/* 3D card shadow depth */
+.shadow-3d {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.04),
+    0 4px 8px rgba(0, 0, 0, 0.04),
+    0 12px 24px rgba(0, 0, 0, 0.06),
+    0 24px 48px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.shadow-3d:hover {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 8px 16px rgba(0, 0, 0, 0.06),
+    0 20px 40px rgba(0, 0, 0, 0.08),
+    0 40px 80px rgba(0, 0, 0, 0.06);
+}

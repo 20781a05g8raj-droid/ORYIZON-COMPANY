@@ -5,6 +5,7 @@ import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
 import { CartDrawer } from "@/components/cart/CartDrawer";
 import { ClientToaster } from "@/components/layout/ClientToaster";
+import { LoadingScreenWrapper } from "@/components/layout/LoadingScreenWrapper";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -107,6 +108,7 @@ export default function RootLayout({
           }}
         />
         <ClientToaster />
+        <LoadingScreenWrapper />
         <Header />
         <CartDrawer />
         <main suppressHydrationWarning>{children}</main>

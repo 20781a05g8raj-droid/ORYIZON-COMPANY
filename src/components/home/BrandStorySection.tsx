@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Marquee } from '@/components/ui/animations/Marquee';
+import { TiltCard } from '@/components/ui/animations/TiltCard';
 
 export function BrandStorySection() {
     return (
@@ -23,40 +24,48 @@ export function BrandStorySection() {
 
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
                 <div className="grid lg:grid-cols-2 gap-10 md:gap-20 items-center" suppressHydrationWarning>
-                    {/* Image Side */}
+                    {/* Image Side with 3D tilt */}
                     <motion.div
-                        initial={{ opacity: 0, x: -20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, x: -30, rotateY: -8 }}
+                        whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
                         viewport={{ once: true }}
+                        transition={{ type: 'spring', stiffness: 70 }}
                         className="relative"
                     >
-                        <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)] shadow-2xl" suppressHydrationWarning>
-                            <div className="absolute inset-0 flex items-center justify-center">
-                                <div className="text-7xl md:text-9xl animate-pulse-soft opacity-20">
-                                    🌳
+                        <TiltCard tiltStrength={6} scale={1.02} className="rounded-3xl">
+                            <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)] shadow-3d" suppressHydrationWarning>
+                                <div className="absolute inset-0 flex items-center justify-center">
+                                    <motion.div
+                                        animate={{ scale: [1, 1.1, 1], rotateZ: [0, 5, 0] }}
+                                        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
+                                        className="text-7xl md:text-9xl opacity-20"
+                                    >
+                                        🌳
+                                    </motion.div>
+                                </div>
+
+                                {/* Decorative Elements */}
+                                <div className="absolute inset-0 bg-black/10 transition-opacity hover:opacity-0" />
+
+                                {/* Overlay Text */}
+                                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 md:p-8" suppressHydrationWarning>
+                                    <p className="text-white font-heading text-lg md:text-2xl font-bold mb-1" suppressHydrationWarning>
+                                        From Our Farm to Your Table
+                                    </p>
+                                    <p className="text-white/80 text-sm md:text-base" suppressHydrationWarning>
+                                        Organic farms in South India
+                                    </p>
                                 </div>
                             </div>
+                        </TiltCard>
 
-                            {/* Decorative Elements */}
-                            <div className="absolute inset-0 bg-black/10 transition-opacity hover:opacity-0" />
-
-                            {/* Overlay Text */}
-                            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-5 md:p-8" suppressHydrationWarning>
-                                <p className="text-white font-heading text-lg md:text-2xl font-bold mb-1" suppressHydrationWarning>
-                                    From Our Farm to Your Table
-                                </p>
-                                <p className="text-white/80 text-sm md:text-base" suppressHydrationWarning>
-                                    Organic farms in South India
-                                </p>
-                            </div>
-                        </div>
-
-                        {/* Floating Card — glass effect */}
+                        {/* Floating Card — glass effect with 3D entrance */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, scale: 0.8, y: 30, rotate: -5 }}
+                            whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
+                            transition={{ delay: 0.4, type: 'spring', stiffness: 120 }}
+                            whileHover={{ scale: 1.08, rotate: 3 }}
                             className="absolute -bottom-5 right-2 md:-right-10 glass-card rounded-2xl shadow-2xl p-4 md:p-6 max-w-[220px] md:max-w-xs z-10"
                             suppressHydrationWarning
                         >
@@ -74,11 +83,12 @@ export function BrandStorySection() {
                         </motion.div>
                     </motion.div>
 
-                    {/* Content Side */}
+                    {/* Content Side with 3D entrance */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, x: 30, rotateY: 5 }}
+                        whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
                         viewport={{ once: true }}
+                        transition={{ type: 'spring', stiffness: 70, delay: 0.2 }}
                         className="flex flex-col pt-6 lg:pt-0"
                     >
                         <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
@@ -104,7 +114,7 @@ export function BrandStorySection() {
                             </p>
                         </div>
 
-                        {/* Journey Steps — gradient cards on mobile */}
+                        {/* Journey Steps — 3D staggered entrance */}
                         <div className="grid grid-cols-2 gap-3 md:gap-6 mt-8 md:mt-10" suppressHydrationWarning>
                             {[
                                 { step: '01', title: 'Harvest', desc: 'Hand-picked daily', gradient: 'from-emerald-500/10 to-emerald-500/5' },
@@ -114,11 +124,12 @@ export function BrandStorySection() {
                             ].map((item, index) => (
                                 <motion.div
                                     key={item.step}
-                                    initial={{ opacity: 0, y: 10 }}
-                                    whileInView={{ opacity: 1, y: 0 }}
+                                    initial={{ opacity: 0, y: 30, rotateX: 15 }}
+                                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
                                     viewport={{ once: true }}
-                                    transition={{ delay: index * 0.1 }}
-                                    className={`flex gap-3 md:gap-4 p-4 md:p-0 rounded-2xl md:rounded-none bg-gradient-to-br ${item.gradient} md:bg-none border border-[var(--color-secondary)]/50 md:border-none`}
+                                    transition={{ delay: 0.3 + index * 0.12, type: 'spring', stiffness: 100 }}
+                                    whileHover={{ y: -4, scale: 1.03 }}
+                                    className={`flex gap-3 md:gap-4 p-4 md:p-0 rounded-2xl md:rounded-none bg-gradient-to-br ${item.gradient} md:bg-none border border-[var(--color-secondary)]/50 md:border-none cursor-default transition-all`}
                                     suppressHydrationWarning
                                 >
                                     <span className="font-heading text-xl md:text-3xl font-bold text-[var(--color-accent)] opacity-60">
@@ -132,12 +143,14 @@ export function BrandStorySection() {
                             ))}
                         </div>
 
-                        {/* CTA */}
+                        {/* CTA with 3D press */}
                         <div className="mt-8 md:mt-10" suppressHydrationWarning>
                             <Link href="/about">
-                                <Button variant="primary" size="lg" icon={<ArrowRight size={20} />} iconPosition="right" className="w-full sm:w-auto rounded-2xl h-14 glow-cta">
-                                    Read Our Full Story
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                                    <Button variant="primary" size="lg" icon={<ArrowRight size={20} />} iconPosition="right" className="w-full sm:w-auto rounded-2xl h-14 glow-cta">
+                                        Read Our Full Story
+                                    </Button>
+                                </motion.div>
                             </Link>
                         </div>
                     </motion.div>

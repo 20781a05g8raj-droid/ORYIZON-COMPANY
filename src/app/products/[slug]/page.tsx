@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
+import { useParams, useRouter } from 'next/navigation';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -22,6 +22,7 @@ import ReviewModal from '@/components/products/ReviewModal';
 
 export default function ProductPage() {
     const params = useParams();
+    const router = useRouter();
     const [product, setProduct] = useState<ProductWithVariants | null>(null);
     const [localImages, setLocalImages] = useState<string[]>([]);
     const [relatedProducts, setRelatedProducts] = useState<ProductWithVariants[]>([]);
@@ -178,6 +179,30 @@ export default function ProductPage() {
 
         addItem(cartItemProduct as any, cartItemVariant as any, quantity);
         openCart();
+    };
+
+    const handleBuyNow = () => {
+        if (isOutOfStock) return;
+
+        const cartItemProduct = {
+            id: product.id,
+            name: product.name,
+            price: Number(product.price),
+            originalPrice: product.original_price ? Number(product.original_price) : undefined,
+            images: images,
+            category: product.category,
+            slug: product.slug,
+        };
+
+        const cartItemVariant = selectedVariant ? {
+            id: selectedVariant.id,
+            name: selectedVariant.name,
+            price: Number(selectedVariant.price),
+            originalPrice: selectedVariant.original_price ? Number(selectedVariant.original_price) : undefined,
+        } : undefined;
+
+        addItem(cartItemProduct as any, cartItemVariant as any, quantity);
+        router.push('/checkout');
     };
 
     const tabs = [
@@ -413,6 +438,7 @@ export default function ProductPage() {
                                             size="lg"
                                             fullWidth
                                             className="h-12 sm:h-14 md:h-16 text-sm sm:text-lg rounded-xl sm:rounded-2xl shadow-xl shadow-gold/10"
+                                            onClick={handleBuyNow}
                                         >
                                             Buy Now
                                         </Button>

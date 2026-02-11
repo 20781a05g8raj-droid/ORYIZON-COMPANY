@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 import { Star, ShoppingCart, ArrowRight, Loader2 } from 'lucide-react';
+import { TiltCard } from '@/components/ui/animations/TiltCard';
 import { getAllProducts as getLocalProducts } from '@/data/products';
 import { getFeaturedProducts } from '@/lib/api/products';
 import { formatPrice, calculateDiscount } from '@/lib/utils';
@@ -89,53 +90,57 @@ export function FeaturedProduct() {
         <section className="py-14 md:py-20 bg-[var(--color-secondary)]" suppressHydrationWarning>
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
                 <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center" suppressHydrationWarning>
-                    {/* Product Image */}
+                    {/* Product Image with 3D tilt */}
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
+                        initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
+                        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
                         viewport={{ once: true }}
+                        transition={{ type: 'spring', stiffness: 80 }}
                         className="relative"
                     >
-                        <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-2xl" suppressHydrationWarning>
-                            {mainImage ? (
-                                <Image
-                                    src={mainImage}
-                                    alt="organic moringa powder by Oryizon for immunity and daily health"
-                                    fill
-                                    className="object-cover"
-                                    priority
-                                />
-                            ) : (
-                                <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)]">
-                                    <div className="text-7xl md:text-9xl animate-spin-slow">
-                                        🌿
+                        <TiltCard tiltStrength={8} scale={1.03} className="rounded-3xl">
+                            <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-3d" suppressHydrationWarning>
+                                {mainImage ? (
+                                    <Image
+                                        src={mainImage}
+                                        alt="organic moringa powder by Oryizon for immunity and daily health"
+                                        fill
+                                        className="object-cover"
+                                        priority
+                                    />
+                                ) : (
+                                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)]">
+                                        <div className="text-7xl md:text-9xl animate-spin-slow">
+                                            🌿
+                                        </div>
                                     </div>
-                                </div>
-                            )}
+                                )}
 
-                            {/* Discount Badge */}
-                            {discount > 0 && (
-                                <div className="absolute top-4 left-4 md:top-6 md:left-6">
-                                    <Badge variant="accent" size="md">
-                                        {discount}% OFF
+                                {/* Discount Badge */}
+                                {discount > 0 && (
+                                    <div className="absolute top-4 left-4 md:top-6 md:left-6">
+                                        <Badge variant="accent" size="md">
+                                            {discount}% OFF
+                                        </Badge>
+                                    </div>
+                                )}
+
+                                {/* Best Seller Badge */}
+                                <div className="absolute top-4 right-4 md:top-6 md:right-6">
+                                    <Badge variant="success" size="md">
+                                        ⭐ Best Seller
                                     </Badge>
                                 </div>
-                            )}
-
-                            {/* Best Seller Badge */}
-                            <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                                <Badge variant="success" size="md">
-                                    ⭐ Best Seller
-                                </Badge>
                             </div>
-                        </div>
+                        </TiltCard>
 
                         {/* Floating Price Tag — glass effect on mobile */}
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
+                            initial={{ opacity: 0, scale: 0.5, rotate: -30 }}
+                            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
                             viewport={{ once: true }}
-                            transition={{ delay: 0.3 }}
+                            transition={{ delay: 0.4, type: 'spring', stiffness: 150 }}
+                            whileHover={{ scale: 1.15, rotate: 10 }}
                             className="absolute -bottom-4 -right-2 md:-right-4 w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-light)] rounded-full flex items-center justify-center text-white font-bold shadow-2xl shadow-gold/30 animate-float-slow z-10 ring-4 ring-white/20"
                         >
                             <div className="text-center">
@@ -147,9 +152,10 @@ export function FeaturedProduct() {
 
                     {/* Product Info */}
                     <motion.div
-                        initial={{ opacity: 0, x: 20 }}
-                        whileInView={{ opacity: 1, x: 0 }}
+                        initial={{ opacity: 0, x: 30, rotateY: 5 }}
+                        whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
                         viewport={{ once: true }}
+                        transition={{ type: 'spring', stiffness: 80, delay: 0.2 }}
                         className="flex flex-col"
                     >
                         <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
@@ -222,14 +228,18 @@ export function FeaturedProduct() {
                         {/* CTAs */}
                         <div className="flex flex-col sm:flex-row gap-3 md:gap-4" suppressHydrationWarning>
                             <Link href={`/products/${product.slug}`} className="flex-1">
-                                <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />} className="rounded-2xl h-14 glow-cta">
-                                    Add to Cart
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                                    <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />} className="rounded-2xl h-14 glow-cta">
+                                        Add to Cart
+                                    </Button>
+                                </motion.div>
                             </Link>
                             <Link href={`/products/${product.slug}`} className="flex-1">
-                                <Button variant="outline" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-2xl h-14 border-2">
-                                    View Details
-                                </Button>
+                                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
+                                    <Button variant="outline" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-2xl h-14 border-2">
+                                        View Details
+                                    </Button>
+                                </motion.div>
                             </Link>
                         </div>
 

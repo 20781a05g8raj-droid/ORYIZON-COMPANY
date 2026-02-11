@@ -6,63 +6,43 @@ import Link from 'next/link';
 import { ArrowRight, Leaf, Shield, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { BeamBorder } from '@/components/ui/animations/BeamBorder';
+import { FloatingElements } from '@/components/ui/animations/FloatingElements';
 import { CERTIFICATIONS } from '@/lib/constants';
 
-// Pre-defined positions for floating leaves (avoids hydration mismatch)
-const floatingLeaves = [
-    { left: 5, top: 60, delay: 0, duration: 15, xOffset: 20 },
-    { left: 15, top: 75, delay: 1, duration: 12, xOffset: 40 },
-    { left: 25, top: 55, delay: 2, duration: 18, xOffset: 15 },
-    { left: 35, top: 80, delay: 0.5, duration: 14, xOffset: 55 },
-    { left: 45, top: 65, delay: 3, duration: 16, xOffset: 30 },
-    { left: 55, top: 70, delay: 1.5, duration: 13, xOffset: 45 },
-    { left: 65, top: 85, delay: 2.5, duration: 17, xOffset: 25 },
-    { left: 75, top: 60, delay: 0.8, duration: 15, xOffset: 50 },
-    { left: 85, top: 75, delay: 1.8, duration: 14, xOffset: 35 },
-    { left: 95, top: 65, delay: 3.5, duration: 16, xOffset: 60 },
-];
-
 export function HeroSection() {
+    // Staggered 3D text reveal variants
+    const headlineWords = ['Organic', 'Moringa', 'Powder –'];
+    const sublineWords = ['Natural', 'Superfood', 'for', 'Daily', 'Health'];
+
     return (
         <section
             className="relative min-h-[100svh] flex items-center justify-center overflow-hidden bg-gradient-to-br from-[#1A3009] via-[#2D5016] to-[#4A7C23]"
+            style={{ perspective: '1200px' }}
         >
-            {/* Animated Background Elements */}
-            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none">
-                {floatingLeaves.map((leaf, i) => (
-                    <div
-                        key={i}
-                        className="leaf text-3xl md:text-6xl absolute opacity-20 md:opacity-30"
-                        style={{
-                            left: `${leaf.left}%`,
-                            top: `${leaf.top}%`,
-                            animationDelay: `${leaf.delay}s`,
-                            animationDuration: `${leaf.duration}s`,
-                            willChange: 'transform, opacity'
-                        }}
-                    >
-                        🍃
-                    </div>
-                ))}
-            </div>
+            {/* 3D Floating Particles */}
+            <FloatingElements
+                count={14}
+                emojis={['🍃', '✨', '🌿', '💫', '🌱']}
+                variant="dark"
+            />
 
-            {/* Gradient Overlay */}
+            {/* Gradient Overlay with depth */}
             <div
                 className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20 md:from-black/30 md:to-black/10"
                 suppressHydrationWarning
             />
 
-            {/* Decorative glow orbs — mobile only */}
-            <div className="absolute top-1/4 left-1/4 w-64 h-64 bg-[var(--color-accent)]/10 rounded-full blur-3xl md:hidden" suppressHydrationWarning />
-            <div className="absolute bottom-1/3 right-1/4 w-48 h-48 bg-emerald-400/10 rounded-full blur-3xl md:hidden" suppressHydrationWarning />
+            {/* Decorative glow orbs */}
+            <div className="absolute top-1/4 left-1/4 w-64 h-64 md:w-96 md:h-96 bg-[var(--color-accent)]/10 rounded-full blur-3xl animate-pulse" suppressHydrationWarning />
+            <div className="absolute bottom-1/3 right-1/4 w-48 h-48 md:w-80 md:h-80 bg-emerald-400/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: '1s' }} suppressHydrationWarning />
 
             {/* Content Container */}
             <div className="relative z-10 w-full max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-20 md:py-24 flex flex-col items-center text-center" suppressHydrationWarning>
-                {/* Badge */}
+                {/* Badge with 3D entrance */}
                 <motion.div
-                    initial={{ opacity: 0, scale: 0.9 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.5 }}
+                    initial={{ opacity: 0, scale: 0.8, rotateX: 40 }}
+                    animate={{ opacity: 1, scale: 1, rotateX: 0 }}
+                    transition={{ duration: 0.7, type: 'spring', stiffness: 120 }}
                     className="inline-flex items-center gap-2.5 px-5 py-2.5 rounded-full bg-white/10 backdrop-blur-xl text-white/90 text-[11px] md:text-sm font-semibold mb-8 md:mb-10 border border-white/15 shadow-2xl"
                     suppressHydrationWarning
                 >
@@ -70,24 +50,51 @@ export function HeroSection() {
                     <span className="tracking-wide">Premium 100% Certified Organic Moringa</span>
                 </motion.div>
 
-                {/* Headline */}
-                <motion.h1
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.2 }}
-                    className="text-[2rem] leading-[1.15] xs:text-4xl md:text-6xl lg:text-8xl font-bold text-white mb-5 md:mb-8 md:leading-[1.05]"
-                    style={{ fontFamily: "'Playfair Display', Georgia, serif" }}
-                    suppressHydrationWarning
-                >
-                    Organic Moringa Powder –<br />
-                    <span className="text-[var(--color-accent)] drop-shadow-lg">Natural Superfood for Daily Health</span>
-                </motion.h1>
+                {/* Headline with 3D staggered word reveal */}
+                <div className="mb-2 md:mb-4 perspective-container" style={{ fontFamily: "'Playfair Display', Georgia, serif" }} suppressHydrationWarning>
+                    <div className="flex flex-wrap justify-center gap-x-3 md:gap-x-5">
+                        {headlineWords.map((word, i) => (
+                            <motion.span
+                                key={i}
+                                initial={{ opacity: 0, y: 50, rotateX: 40 }}
+                                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                                transition={{
+                                    duration: 0.8,
+                                    delay: 0.2 + i * 0.12,
+                                    type: 'spring',
+                                    stiffness: 80,
+                                }}
+                                className="text-[2rem] leading-[1.15] xs:text-4xl md:text-6xl lg:text-8xl font-bold text-white inline-block"
+                            >
+                                {word}
+                            </motion.span>
+                        ))}
+                    </div>
+                    <div className="flex flex-wrap justify-center gap-x-3 md:gap-x-5 mt-1 md:mt-2">
+                        {sublineWords.map((word, i) => (
+                            <motion.span
+                                key={i}
+                                initial={{ opacity: 0, y: 50, rotateX: 40 }}
+                                animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                                transition={{
+                                    duration: 0.8,
+                                    delay: 0.5 + i * 0.1,
+                                    type: 'spring',
+                                    stiffness: 80,
+                                }}
+                                className="text-[2rem] leading-[1.15] xs:text-4xl md:text-6xl lg:text-8xl font-bold text-[var(--color-accent)] drop-shadow-lg inline-block"
+                            >
+                                {word}
+                            </motion.span>
+                        ))}
+                    </div>
+                </div>
 
                 {/* Subheadline */}
                 <motion.p
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.8, delay: 0.4 }}
+                    initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
+                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                    transition={{ duration: 0.8, delay: 0.8 }}
                     className="text-[15px] leading-relaxed sm:text-lg md:text-2xl text-white/75 max-w-3xl mx-auto mb-10 md:mb-14 md:leading-relaxed"
                     suppressHydrationWarning
                 >
@@ -95,11 +102,11 @@ export function HeroSection() {
                     dried moringa leaves to support immunity, energy, and overall wellness.
                 </motion.p>
 
-                {/* Key Benefits — Glass pills on mobile */}
+                {/* Key Benefits — Glass pills with 3D entrance */}
                 <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ duration: 1, delay: 0.6 }}
+                    transition={{ duration: 1, delay: 1 }}
                     className="flex flex-wrap justify-center gap-3 md:gap-10 mb-10 md:mb-16"
                     suppressHydrationWarning
                 >
@@ -110,10 +117,11 @@ export function HeroSection() {
                     ].map((item, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, y: 10 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ delay: 0.7 + index * 0.15 }}
-                            className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/8 backdrop-blur-xl border border-white/10 text-white/90 text-sm md:text-lg font-medium md:bg-transparent md:border-none md:backdrop-blur-none md:px-0 md:py-0"
+                            initial={{ opacity: 0, y: 20, scale: 0.9 }}
+                            animate={{ opacity: 1, y: 0, scale: 1 }}
+                            transition={{ delay: 1.1 + index * 0.15, type: 'spring', stiffness: 150 }}
+                            whileHover={{ scale: 1.08, y: -4 }}
+                            className="flex items-center gap-2.5 px-4 py-2.5 rounded-2xl bg-white/8 backdrop-blur-xl border border-white/10 text-white/90 text-sm md:text-lg font-medium md:bg-transparent md:border-none md:backdrop-blur-none md:px-0 md:py-0 cursor-default transition-all"
                             suppressHydrationWarning
                         >
                             <span className="text-[var(--color-accent)] md:text-xl">{item.icon}</span>
@@ -122,33 +130,37 @@ export function HeroSection() {
                     ))}
                 </motion.div>
 
-                {/* CTA Buttons */}
+                {/* CTA Buttons with 3D press effect */}
                 <motion.div
-                    initial={{ opacity: 0, y: 30 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 0.8 }}
+                    initial={{ opacity: 0, y: 30, rotateX: 15 }}
+                    animate={{ opacity: 1, y: 0, rotateX: 0 }}
+                    transition={{ duration: 0.6, delay: 1.2, type: 'spring' }}
                     className="flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-md md:max-w-none"
                     suppressHydrationWarning
                 >
                     <Link href="/products" className="w-full sm:w-auto">
                         <BeamBorder className="rounded-2xl p-[1px] w-full">
-                            <Button variant="accent" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl shadow-2xl shadow-gold/20 glow-cta" icon={<ArrowRight size={22} />} iconPosition="right">
-                                Shop Now
-                            </Button>
+                            <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                                <Button variant="accent" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl shadow-2xl shadow-gold/20 glow-cta" icon={<ArrowRight size={22} />} iconPosition="right">
+                                    Shop Now
+                                </Button>
+                            </motion.div>
                         </BeamBorder>
                     </Link>
                     <Link href="/about" className="w-full sm:w-auto">
-                        <Button variant="outline" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/40 backdrop-blur-sm transition-all">
-                            Learn More
-                        </Button>
+                        <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.97 }}>
+                            <Button variant="outline" size="lg" className="w-full sm:w-64 h-14 md:h-16 text-lg md:text-xl rounded-2xl border-2 border-white/20 text-white hover:bg-white/10 hover:border-white/40 backdrop-blur-sm transition-all">
+                                Learn More
+                            </Button>
+                        </motion.div>
                     </Link>
                 </motion.div>
 
-                {/* Trust Badges — Horizontal scroll on mobile */}
+                {/* Trust Badges — Horizontal scroll */}
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5, delay: 1 }}
+                    transition={{ duration: 0.5, delay: 1.4 }}
                     className="mt-14 md:mt-24 w-full"
                     suppressHydrationWarning
                 >
@@ -158,7 +170,8 @@ export function HeroSection() {
                                 key={cert.id}
                                 initial={{ opacity: 0, scale: 0.9 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 1.1 + index * 0.1 }}
+                                transition={{ delay: 1.5 + index * 0.1 }}
+                                whileHover={{ scale: 1.08, y: -3 }}
                                 className="flex-shrink-0 flex items-center gap-2.5 px-5 py-3 rounded-2xl bg-white/8 backdrop-blur-xl border border-white/10 transition-all hover:bg-white/15 hover:border-white/20 shadow-lg"
                                 suppressHydrationWarning
                             >
@@ -174,7 +187,7 @@ export function HeroSection() {
             <motion.div
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 1 }}
-                transition={{ duration: 1, delay: 1.5 }}
+                transition={{ duration: 1, delay: 2 }}
                 className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2"
                 suppressHydrationWarning
             >
