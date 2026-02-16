@@ -13,12 +13,14 @@ import {
     Download,
     Loader2,
     RefreshCw,
-    AlertCircle
+    AlertCircle,
+    Trash2
 } from 'lucide-react';
 import Link from 'next/link';
-import { getCustomers, getCustomerStats } from '@/lib/api/customers';
+import { getCustomers, getCustomerStats, deleteCustomer } from '@/lib/api/customers';
 import { formatDateTime } from '@/lib/utils';
 import type { Customer } from '@/types/database';
+import { toast } from 'react-hot-toast';
 
 interface CustomerWithStats extends Customer {
     order_count: number;
@@ -44,6 +46,23 @@ export default function CustomersPage() {
         avgLifetimeValue: 0
     });
     const [searchTerm, setSearchTerm] = useState('');
+
+    const handleDeleteCustomer = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this customer? This action cannot be undone.')) return;
+
+        try {
+            await deleteCustomer(id);
+            toast.success('Customer deleted successfully');
+            setCustomers(customers.filter(c => c.id !== id));
+
+            // Re-fetch stats
+            const statsData = await getCustomerStats();
+            setStats(statsData);
+        } catch (error) {
+            console.error('Error deleting customer:', error);
+            toast.error('Failed to delete customer');
+        }
+    };
 
     const fetchData = async () => {
         try {
@@ -236,8 +255,12 @@ export default function CustomersPage() {
                                                 <button className="p-2 hover:bg-gray-100 rounded-lg transition-colors text-gray-600" title="Email">
                                                     <Mail size={16} />
                                                 </button>
-                                                <button className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600" title="Block">
-                                                    <Ban size={16} />
+                                                <button
+                                                    onClick={() => handleDeleteCustomer(customer.id)}
+                                                    className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600"
+                                                    title="Delete Customer"
+                                                >
+                                                    <Trash2 size={16} />
                                                 </button>
                                             </div>
                                         </td>

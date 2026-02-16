@@ -12,7 +12,8 @@ export interface CustomerStats {
 export async function getCustomers(): Promise<(Customer & { order_count: number; total_spent: number; last_order_date: string | null })[]> {
     const { data: customers, error } = await supabase
         .from('customers')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
 
     if (error) throw error;
 
@@ -97,4 +98,14 @@ export async function getCustomerStats(): Promise<CustomerStats> {
         newThisMonth,
         avgLifetimeValue
     };
+}
+
+// Delete customer
+export async function deleteCustomer(id: string): Promise<void> {
+    const { error } = await supabase
+        .from('customers')
+        .delete()
+        .eq('id', id);
+
+    if (error) throw error;
 }

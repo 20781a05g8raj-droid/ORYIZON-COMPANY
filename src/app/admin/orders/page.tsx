@@ -17,10 +17,11 @@ import {
     X,
     Save,
     CheckCircle,
-    Calendar
+    Calendar,
+    Trash2
 } from 'lucide-react';
 import Link from 'next/link';
-import { getOrders, getOrderStats, updateOrder } from '@/lib/api/orders';
+import { getOrders, getOrderStats, updateOrder, deleteOrder } from '@/lib/api/orders';
 import { formatDateTime } from '@/lib/utils';
 import type { Order, OrderUpdate } from '@/types/database';
 import { toast } from 'react-hot-toast';
@@ -103,6 +104,23 @@ export default function OrdersPage() {
             payment_status: order.payment_status
         });
         setShowEditModal(true);
+    };
+
+    const handleDeleteOrder = async (id: string) => {
+        if (!confirm('Are you sure you want to delete this order? This action cannot be undone.')) return;
+
+        try {
+            await deleteOrder(id);
+            toast.success('Order deleted successfully');
+            setOrders(orders.filter(o => o.id !== id));
+
+            // Re-fetch stats to stay accurate
+            const statsData = await getOrderStats();
+            setStats(statsData);
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            toast.error('Failed to delete order');
+        }
     };
 
     const handleUpdateOrder = async () => {
@@ -304,6 +322,13 @@ export default function OrdersPage() {
                                                 >
                                                     <Eye size={16} />
                                                 </Link>
+                                                <button
+                                                    onClick={() => handleDeleteOrder(order.id)}
+                                                    className="p-2 hover:bg-red-50 rounded-lg transition-colors text-red-600"
+                                                    title="Delete Order"
+                                                >
+                                                    <Trash2 size={16} />
+                                                </button>
                                             </div>
                                         </td>
                                     </motion.tr>
@@ -413,6 +438,6 @@ export default function OrdersPage() {
                     </motion.div>
                 )}
             </AnimatePresence>
-        </div>
+        </div >
     );
 }
