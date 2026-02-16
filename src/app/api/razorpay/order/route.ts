@@ -11,8 +11,8 @@ export async function POST(request: Request) {
         }
 
         const razorpay = new Razorpay({
-            key_id: process.env.RAZORPAY_KEY_ID!,
-            key_secret: process.env.RAZORPAY_KEY_SECRET!,
+            key_id: 'rzp_test_SGhYXEkny3YQLb', // TEMPORARY: Hardcoded for Vercel testing
+            key_secret: 'i81B9xSVzb4F79OjohnoYygj', // TEMPORARY: Hardcoded for Vercel testing
         });
 
         const options = {

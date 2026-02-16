@@ -180,7 +180,7 @@ export default function CheckoutPage() {
         }
 
         const options = {
-            key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID, // Use public key here
+            key: 'rzp_test_SGhYXEkny3YQLb', // TEMPORARY: Hardcoded for Vercel testing
             amount: data.amount,
             currency: data.currency,
             name: "Oryizon",
