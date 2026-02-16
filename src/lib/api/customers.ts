@@ -102,6 +102,19 @@ export async function getCustomerStats(): Promise<CustomerStats> {
 
 // Delete customer
 export async function deleteCustomer(id: string): Promise<void> {
+    // First, unlink this customer from any orders (set customer_id to null)
+    // This is necessary because of Foreign Key constraints if ON DELETE SET NULL/CASCADE isn't set in DB
+    const { error: unlinkError } = await (supabase as any)
+        .from('orders')
+        .update({ customer_id: null })
+        .eq('customer_id', id);
+
+    if (unlinkError) {
+        console.error('Error unlinking customer orders:', unlinkError);
+        throw unlinkError;
+    }
+
+    // Now delete the customer
     const { error } = await supabase
         .from('customers')
         .delete()
