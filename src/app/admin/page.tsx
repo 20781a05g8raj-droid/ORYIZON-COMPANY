@@ -374,7 +374,12 @@ export default function AdminDashboard() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-500" suppressHydrationWarning>
-                                            {new Date(order.created_at).toLocaleDateString()}
+                                            {new Date(order.created_at).toLocaleString('en-IN', {
+                                                month: 'short',
+                                                day: 'numeric',
+                                                hour: '2-digit',
+                                                minute: '2-digit'
+                                            })}
                                         </td>
                                     </tr>
                                 ))

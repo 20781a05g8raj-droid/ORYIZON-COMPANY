@@ -17,6 +17,7 @@ import {
 } from 'lucide-react';
 import Link from 'next/link';
 import { getCustomers, getCustomerStats } from '@/lib/api/customers';
+import { formatDateTime } from '@/lib/utils';
 import type { Customer } from '@/types/database';
 
 interface CustomerWithStats extends Customer {
@@ -173,6 +174,7 @@ export default function CustomersPage() {
                                         Total Spent <ArrowUpDown size={14} />
                                     </button>
                                 </th>
+                                <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">Joined</th>
                                 <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">Last Order</th>
                                 <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">Status</th>
                                 <th className="text-left px-6 py-4 text-sm font-medium text-gray-600">Actions</th>
@@ -211,6 +213,9 @@ export default function CustomersPage() {
                                         <td className="px-6 py-4 text-sm text-gray-600">{customer.phone || '-'}</td>
                                         <td className="px-6 py-4 text-sm font-medium text-gray-900">{customer.order_count}</td>
                                         <td className="px-6 py-4 font-medium text-gray-900">₹{customer.total_spent.toLocaleString()}</td>
+                                        <td className="px-6 py-4 text-sm text-gray-600">
+                                            {customer.created_at ? formatDateTime(customer.created_at) : 'N/A'}
+                                        </td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
                                             {customer.last_order_date ? new Date(customer.last_order_date).toLocaleDateString() : 'Never'}
                                         </td>

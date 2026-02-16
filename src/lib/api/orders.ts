@@ -137,7 +137,7 @@ export async function getOrdersByStatus(status: string): Promise<Order[]> {
 
 // Get customer or create new
 export async function getOrCreateCustomer(customer: CustomerInsert): Promise<Customer> {
-    // Check if customer exists
+    // Check if customer exists by email
     const { data: existing } = await supabase
         .from('customers')
         .select('*')
@@ -148,8 +148,9 @@ export async function getOrCreateCustomer(customer: CustomerInsert): Promise<Cus
         return existing;
     }
 
-    // Sanitize payload to strictly match schema
-    // This prevents "metadata" or other unknown fields from causing PGRST204 errors
+    // Create new customer (Guest or Registered will be handled by trigger if auth.uid is present, 
+    // but here we just insert the basic info. The trigger might try to update user_id if valid)
+
     const safePayload = {
         email: customer.email,
         name: customer.name ?? null,
@@ -158,9 +159,10 @@ export async function getOrCreateCustomer(customer: CustomerInsert): Promise<Cus
         city: customer.city ?? null,
         state: customer.state ?? null,
         pincode: customer.pincode ?? null
+        // user_id will be null for guests, or linked via trigger if logged in
     };
 
-    console.log('Creating customer with sanitized payload:', JSON.stringify(safePayload));
+    console.log('Creating customer with payload:', JSON.stringify(safePayload));
 
     // Create new customer
     const { data, error } = await supabase
@@ -169,7 +171,11 @@ export async function getOrCreateCustomer(customer: CustomerInsert): Promise<Cus
         .select()
         .single();
 
-    if (error) throw error;
+    if (error) {
+        console.error('Error creating customer:', error);
+        throw error;
+    }
+
     return data as Customer;
 }
 

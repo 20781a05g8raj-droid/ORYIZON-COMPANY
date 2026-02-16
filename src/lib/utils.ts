@@ -40,6 +40,17 @@ export function formatDate(date: string): string {
     });
 }
 
+// Format date and time
+export function formatDateTime(date: string): string {
+    return new Date(date).toLocaleString('en-IN', {
+        year: 'numeric',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit',
+    });
+}
+
 // Calculate reading time
 export function calculateReadTime(content: string): number {
     const wordsPerMinute = 200;

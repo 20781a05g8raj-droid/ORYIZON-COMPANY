@@ -16,10 +16,12 @@ import {
     Edit,
     X,
     Save,
-    CheckCircle
+    CheckCircle,
+    Calendar
 } from 'lucide-react';
 import Link from 'next/link';
 import { getOrders, getOrderStats, updateOrder } from '@/lib/api/orders';
+import { formatDateTime } from '@/lib/utils';
 import type { Order, OrderUpdate } from '@/types/database';
 import { toast } from 'react-hot-toast';
 
@@ -284,7 +286,7 @@ export default function OrdersPage() {
                                             </span>
                                         </td>
                                         <td className="px-6 py-4 text-sm text-gray-600">
-                                            {new Date(order.created_at).toLocaleDateString()}
+                                            {formatDateTime(order.created_at)}
                                         </td>
                                         <td className="px-6 py-4">
                                             <div className="flex items-center gap-2">
