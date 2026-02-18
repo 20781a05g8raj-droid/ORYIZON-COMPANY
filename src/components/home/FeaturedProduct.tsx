@@ -2,57 +2,63 @@
 
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { Loader2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import Image from 'next/image';
-import { Star, ShoppingCart, ArrowRight, Loader2 } from 'lucide-react';
-import { TiltCard } from '@/components/ui/animations/TiltCard';
 import { getAllProducts as getLocalProducts } from '@/data/products';
 import { getFeaturedProducts } from '@/lib/api/products';
-import { formatPrice, calculateDiscount } from '@/lib/utils';
-import { Button } from '@/components/ui/Button';
-import { Badge } from '@/components/ui/Badge';
 import { ProductWithVariants } from '@/types/database';
+import { ProductCard } from '@/components/products/ProductCard';
+import { Button } from '@/components/ui/Button';
 
 export function FeaturedProduct() {
-    const [product, setProduct] = useState<ProductWithVariants | null>(null);
+    const [products, setProducts] = useState<ProductWithVariants[]>([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         async function fetchFeatured() {
             try {
                 // 1. Fetch API Products (Database)
-                const products = await getFeaturedProducts();
+                const apiProducts = await getFeaturedProducts();
 
-                if (products && products.length > 0) {
-                    const apiProduct = products[0];
+                // 2. Fetch Local Products (Filesystem Images)
+                const localProducts = getLocalProducts();
 
-                    // 2. Fetch Local Products (Filesystem Images)
-                    const localProducts = getLocalProducts();
-                    const localMatch = localProducts.find(p => p.slug === apiProduct.slug);
+                // 3. Process products to merge images
+                const processedProducts = apiProducts.map(apiProd => {
+                    const localMatch = localProducts.find(p => p.slug === apiProd.slug);
 
-                    // 3. Merge: Use API for data, but Local for Images if available
-                    let finalProduct = apiProduct;
-                    if (localMatch && localMatch.images && localMatch.images.length > 0) {
-                        finalProduct = {
-                            ...apiProduct,
-                            images: localMatch.images
-                        };
-                    } else if (apiProduct.images) {
-                        // Fallback sanitization for DB-only images
-                        finalProduct = {
-                            ...apiProduct,
-                            images: apiProduct.images.map(img => {
+                    // Prioritize API (Database) images
+                    if (apiProd.images && apiProd.images.length > 0) {
+                        return {
+                            ...apiProd,
+                            images: apiProd.images.map(img => {
                                 const sanitized = img.replace(/ /g, '-');
                                 if (sanitized.startsWith('http') || sanitized.startsWith('/')) return sanitized;
                                 return `/images/products/${sanitized}`;
                             })
                         };
+                    } else if (localMatch && localMatch.images && localMatch.images.length > 0) {
+                        // Fallback to local images
+                        return {
+                            ...apiProd,
+                            images: localMatch.images
+                        };
                     }
+                    return apiProd;
+                });
 
-                    setProduct(finalProduct);
-                }
+                // Filter for our specific moringa powder products if needed, or just take all featured
+                // The user specifically wants the 3 sizes: 100g, 250g, 500g
+                // We'll prioritize showing these if they exist, otherwise show all featured
+                const specificProducts = processedProducts.filter(p =>
+                    p.slug.includes('organic-moringa-powder') &&
+                    (p.slug.endsWith('100g') || p.slug.endsWith('250g') || p.slug.endsWith('500g'))
+                );
+
+                setProducts(specificProducts.length > 0 ? specificProducts : processedProducts.slice(0, 3));
+
             } catch (error) {
-                console.error('Failed to fetch featured product:', error);
+                console.error('Failed to fetch featured products:', error);
             } finally {
                 setLoading(false);
             }
@@ -62,7 +68,7 @@ export function FeaturedProduct() {
 
     if (loading) {
         return (
-            <section style={{ padding: '5rem 0', backgroundColor: '#F5F1E8' }}>
+            <section className="py-20 bg-[var(--color-secondary)]">
                 <div className="flex justify-center items-center h-96">
                     <Loader2 className="w-8 h-8 animate-spin text-emerald-600" />
                 </div>
@@ -70,195 +76,57 @@ export function FeaturedProduct() {
         );
     }
 
-    if (!product) return null;
-
-    // Check for 100g variant to display its price by default (lowest price point)
-    const variant100g = product.product_variants?.find(v => v.name.toLowerCase().includes('100g') || v.name.toLowerCase().includes('100 g'));
-
-    const displayPrice = variant100g ? variant100g.price : product.price;
-    const displayOriginalPrice = variant100g ? variant100g.original_price : product.original_price;
-
-    // Ensure images array exists
-    const images = product.images || [];
-    const mainImage = images.length > 0 ? images[0] : null;
-
-    const discount = displayOriginalPrice
-        ? calculateDiscount(displayOriginalPrice, displayPrice)
-        : 0;
+    if (products.length === 0) return null;
 
     return (
-        <section className="py-14 md:py-20 bg-[var(--color-secondary)]" suppressHydrationWarning>
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
-                <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center" suppressHydrationWarning>
-                    {/* Product Image with 3D tilt */}
+        <section className="py-16 md:py-24 bg-[var(--color-secondary)] relative overflow-hidden">
+            {/* Background Decor */}
+            <div className="absolute top-0 left-0 w-full h-full overflow-hidden pointer-events-none opacity-30">
+                <div className="absolute top-[-10%] right-[-5%] w-[500px] h-[500px] rounded-full bg-gradient-to-br from-[var(--color-primary-light)] to-transparent blur-3xl" />
+                <div className="absolute bottom-[-10%] left-[-5%] w-[500px] h-[500px] rounded-full bg-gradient-to-tr from-[var(--color-accent-light)] to-transparent blur-3xl opacity-50" />
+            </div>
+
+            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
+                <div className="text-center mb-12 md:mb-16">
                     <motion.div
-                        initial={{ opacity: 0, scale: 0.9, rotateY: -10 }}
-                        whileInView={{ opacity: 1, scale: 1, rotateY: 0 }}
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 80 }}
-                        className="relative"
+                        className="inline-block"
                     >
-                        <TiltCard tiltStrength={8} scale={1.03} className="rounded-3xl">
-                            <div className="relative aspect-square bg-white rounded-3xl overflow-hidden shadow-3d" suppressHydrationWarning>
-                                {mainImage ? (
-                                    <Image
-                                        src={mainImage}
-                                        alt="organic moringa powder by Oryizon for immunity and daily health"
-                                        fill
-                                        className="object-cover"
-                                        priority
-                                    />
-                                ) : (
-                                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)]">
-                                        <div className="text-7xl md:text-9xl animate-spin-slow">
-                                            🌿
-                                        </div>
-                                    </div>
-                                )}
-
-                                {/* Discount Badge */}
-                                {discount > 0 && (
-                                    <div className="absolute top-4 left-4 md:top-6 md:left-6">
-                                        <Badge variant="accent" size="md">
-                                            {discount}% OFF
-                                        </Badge>
-                                    </div>
-                                )}
-
-                                {/* Best Seller Badge */}
-                                <div className="absolute top-4 right-4 md:top-6 md:right-6">
-                                    <Badge variant="success" size="md">
-                                        ⭐ Best Seller
-                                    </Badge>
-                                </div>
-                            </div>
-                        </TiltCard>
-
-                        {/* Floating Price Tag — glass effect on mobile */}
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.5, rotate: -30 }}
-                            whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: 0.4, type: 'spring', stiffness: 150 }}
-                            whileHover={{ scale: 1.15, rotate: 10 }}
-                            className="absolute -bottom-4 -right-2 md:-right-4 w-20 h-20 md:w-24 md:h-24 bg-gradient-to-br from-[var(--color-accent)] to-[var(--color-accent-light)] rounded-full flex items-center justify-center text-white font-bold shadow-2xl shadow-gold/30 animate-float-slow z-10 ring-4 ring-white/20"
-                        >
-                            <div className="text-center">
-                                <div className="text-[10px] md:text-xs opacity-80">FROM</div>
-                                <div className="text-base md:text-lg">{formatPrice(displayPrice)}</div>
-                            </div>
-                        </motion.div>
-                    </motion.div>
-
-                    {/* Product Info */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30, rotateY: 5 }}
-                        whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 80, delay: 0.2 }}
-                        className="flex flex-col"
-                    >
-                        <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
-                            Featured Product
+                        <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm mb-3 block">
+                            Our Best Sellers
                         </span>
-
-                        <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]" suppressHydrationWarning>
-                            {product.name}
+                        <h2 className="font-heading text-3xl md:text-5xl font-bold text-[var(--color-text)] mb-6">
+                            Choose Your Perfect Size
                         </h2>
-
-                        {/* Rating */}
-                        <div className="flex items-center gap-3 mb-5 md:mb-6" suppressHydrationWarning>
-                            <div className="flex text-[var(--color-accent)]" suppressHydrationWarning>
-                                {[...Array(5)].map((_, i) => (
-                                    <Star
-                                        key={i}
-                                        size={18}
-                                        className="md:w-5 md:h-5"
-                                        fill={i < Math.round(Number(product.rating || 5)) ? 'currentColor' : 'none'}
-                                    />
-                                ))}
-                            </div>
-                            <span className="text-[var(--color-text-light)] text-sm md:text-base">
-                                {product.rating || 5} ({product.review_count || 0} reviews)
-                            </span>
-                        </div>
-
-                        {/* Description */}
-                        <p className="text-[var(--color-text-light)] text-[15px] md:text-lg mb-5 md:mb-8 leading-relaxed" suppressHydrationWarning>
-                            {product.short_description || product.description}
+                        <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-lg">
+                            Premium organic Moringa powder available in convenient packs to suit your needs.
+                            Start small or stock up for the whole family.
                         </p>
-
-                        {/* Key Benefits — as mini gradient-bordered cards on mobile */}
-                        {product.benefits && product.benefits.length > 0 && (
-                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 md:gap-3 mb-6 md:mb-8" suppressHydrationWarning>
-                                {product.benefits.slice(0, 4).map((benefit, index) => (
-                                    <motion.div
-                                        key={index}
-                                        initial={{ opacity: 0, x: -10 }}
-                                        whileInView={{ opacity: 1, x: 0 }}
-                                        viewport={{ once: true }}
-                                        transition={{ delay: index * 0.1 }}
-                                        className="flex items-center gap-3 p-3 md:p-0 rounded-xl md:rounded-none bg-white/60 md:bg-transparent border border-[var(--color-secondary)] md:border-none"
-                                        suppressHydrationWarning
-                                    >
-                                        <span className="w-6 h-6 rounded-full bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white flex items-center justify-center text-[10px] flex-shrink-0 shadow-sm">
-                                            ✓
-                                        </span>
-                                        <span className="text-sm text-[var(--color-text)] font-medium">{benefit}</span>
-                                    </motion.div>
-                                ))}
-                            </div>
-                        )}
-
-                        {/* Price */}
-                        <div className="flex items-baseline gap-3 md:gap-4 mb-6 md:mb-8" suppressHydrationWarning>
-                            <span className="font-heading text-3xl md:text-5xl font-bold text-[var(--color-primary)]">
-                                {formatPrice(displayPrice)}
-                            </span>
-                            {displayOriginalPrice && (
-                                <span className="text-lg md:text-2xl text-gray-400 line-through">
-                                    {formatPrice(displayOriginalPrice)}
-                                </span>
-                            )}
-                            {discount > 0 && (
-                                <Badge variant="success" className="px-3 py-1">Save {formatPrice(displayOriginalPrice! - displayPrice)}</Badge>
-                            )}
-                        </div>
-
-                        {/* CTAs */}
-                        <div className="flex flex-col sm:flex-row gap-3 md:gap-4" suppressHydrationWarning>
-                            <Link href={`/products/${product.slug}`} className="flex-1">
-                                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                                    <Button variant="primary" size="lg" fullWidth icon={<ShoppingCart size={20} />} className="rounded-2xl h-14 glow-cta">
-                                        Add to Cart
-                                    </Button>
-                                </motion.div>
-                            </Link>
-                            <Link href={`/products/${product.slug}`} className="flex-1">
-                                <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
-                                    <Button variant="outline" size="lg" fullWidth icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-2xl h-14 border-2">
-                                        View Details
-                                    </Button>
-                                </motion.div>
-                            </Link>
-                        </div>
-
-                        {/* Trust elements — glass pills on mobile */}
-                        <div className="flex flex-wrap gap-3 mt-6 md:mt-10" suppressHydrationWarning>
-                            {[
-                                { icon: '🚚', text: 'Free Shipping over ₹499' },
-                                { icon: '↩️', text: '7-Day Returns' },
-                                { icon: '🔒', text: 'Secure Checkout' },
-                            ].map((item, index) => (
-                                <span
-                                    key={index}
-                                    className="flex items-center gap-2 px-3.5 py-2 md:px-0 md:py-0 rounded-xl md:rounded-none bg-white/70 md:bg-transparent border border-[var(--color-secondary)] md:border-none text-xs md:text-sm text-[var(--color-text-light)] font-medium"
-                                >
-                                    {item.icon} {item.text}
-                                </span>
-                            ))}
-                        </div>
                     </motion.div>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                    {/* Sort by price likely? Or strict order 100 -> 250 -> 500. 
+                        We can sort them by price to ensure order: 100g < 250g < 500g */}
+                    {products
+                        .sort((a, b) => a.price - b.price)
+                        .map((product, index) => (
+                            <ProductCard
+                                key={product.id}
+                                product={product}
+                                priority={index === 1} // Prioritize middle image? or first?
+                            />
+                        ))}
+                </div>
+
+                <div className="mt-16 text-center">
+                    <Link href="/products">
+                        <Button variant="outline" size="lg" icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-full px-8">
+                            View All Products
+                        </Button>
+                    </Link>
                 </div>
             </div>
         </section>

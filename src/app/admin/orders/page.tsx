@@ -33,6 +33,7 @@ interface OrderStats {
     shipped: number;
     delivered: number;
     cancelled: number;
+    failed: number;
 }
 
 const statusColors: Record<string, { bg: string; text: string }> = {
@@ -41,6 +42,7 @@ const statusColors: Record<string, { bg: string; text: string }> = {
     shipped: { bg: 'bg-purple-100', text: 'text-purple-700' },
     delivered: { bg: 'bg-green-100', text: 'text-green-700' },
     cancelled: { bg: 'bg-red-100', text: 'text-red-700' },
+    failed: { bg: 'bg-red-50', text: 'text-red-600' },
 };
 
 const paymentColors: Record<string, { bg: string; text: string }> = {
@@ -60,7 +62,8 @@ export default function OrdersPage() {
         processing: 0,
         shipped: 0,
         delivered: 0,
-        cancelled: 0
+        cancelled: 0,
+        failed: 0
     });
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -230,6 +233,7 @@ export default function OrdersPage() {
                         <option>Shipped</option>
                         <option>Delivered</option>
                         <option>Cancelled</option>
+                        <option>Failed</option>
                     </select>
                     <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50">
                         <Filter size={18} />
@@ -290,6 +294,9 @@ export default function OrdersPage() {
                                             <div>
                                                 <p className="font-medium text-gray-900">{order.customer_name}</p>
                                                 <p className="text-sm text-gray-500">{order.customer_email}</p>
+                                                {order.customer_phone && (
+                                                    <p className="text-sm text-gray-500 font-mono">{order.customer_phone}</p>
+                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 font-medium text-gray-900">₹{order.total}</td>

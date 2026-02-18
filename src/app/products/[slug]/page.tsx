@@ -15,7 +15,7 @@ import { formatPrice, calculateDiscount } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
-import { ProductCard } from '@/components/ui/Card';
+import { ProductCard } from '@/components/products/ProductCard';
 import { ProductWithVariants, ProductVariant } from '@/types/database';
 import { getProductReviews, ProductReview } from '@/lib/api/reviews';
 import ReviewModal from '@/components/products/ReviewModal';
@@ -127,16 +127,17 @@ export default function ProductPage() {
         );
     }
 
-    // Determine images: Use Local Images if available, otherwise fallback to DB images (with sanitization)
+    // Determine images: Prioritize DB images, fallback to Local
     let images: string[] = [];
-    if (localImages.length > 0) {
-        images = localImages;
-    } else {
-        images = product.images?.map(img => {
+
+    if (product.images && product.images.length > 0) {
+        images = product.images.map(img => {
             const sanitized = img.replace(/ /g, '-');
             if (sanitized.startsWith('http') || sanitized.startsWith('/')) return sanitized;
             return `/images/products/${sanitized}`;
-        }) || [];
+        });
+    } else if (localImages.length > 0) {
+        images = localImages;
     }
 
     const benefits = product.benefits || [];
@@ -156,9 +157,7 @@ export default function ProductPage() {
 
     const handleAddToCart = () => {
         if (isOutOfStock) return;
-        // Map database product to CartItem structure expected by store
-        // We might need to adjust types in cartStore if they mismatch
-        // For now, mapping broadly
+
         const cartItemProduct = {
             id: product.id,
             name: product.name,
@@ -167,15 +166,24 @@ export default function ProductPage() {
             images: images,
             category: product.category,
             slug: product.slug,
-            // ... other fields if needed
         };
 
+        // If no variant is selected (standalone product), create a default one from product details
         const cartItemVariant = selectedVariant ? {
             id: selectedVariant.id,
             name: selectedVariant.name,
+            weight: (selectedVariant as any).weight || 'Standard',
             price: Number(selectedVariant.price),
             originalPrice: selectedVariant.original_price ? Number(selectedVariant.original_price) : undefined,
-        } : undefined;
+            inStock: selectedVariant.in_stock
+        } : {
+            id: product.id,
+            name: product.name,
+            weight: 'Standard',
+            price: Number(product.price),
+            originalPrice: product.original_price ? Number(product.original_price) : undefined,
+            inStock: product.in_stock
+        };
 
         addItem(cartItemProduct as any, cartItemVariant as any, quantity);
         openCart();
@@ -197,9 +205,18 @@ export default function ProductPage() {
         const cartItemVariant = selectedVariant ? {
             id: selectedVariant.id,
             name: selectedVariant.name,
+            weight: (selectedVariant as any).weight || 'Standard',
             price: Number(selectedVariant.price),
             originalPrice: selectedVariant.original_price ? Number(selectedVariant.original_price) : undefined,
-        } : undefined;
+            inStock: selectedVariant.in_stock
+        } : {
+            id: product.id,
+            name: product.name,
+            weight: 'Standard',
+            price: Number(product.price),
+            originalPrice: product.original_price ? Number(product.original_price) : undefined,
+            inStock: product.in_stock
+        };
 
         addItem(cartItemProduct as any, cartItemVariant as any, quantity);
         router.push('/checkout');
@@ -511,6 +528,7 @@ export default function ProductPage() {
 
                     {/* Tab Content Card */}
                     <div className="bg-white rounded-2xl sm:rounded-[2rem] p-5 sm:p-8 md:p-12 shadow-2xl shadow-emerald-900/5 border border-[var(--color-secondary)]/30" suppressHydrationWarning>
+                        {/* Benefits Content */}
                         {activeTab === 'benefits' && (
                             <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 sm:gap-12 md:gap-20">
                                 <div>
@@ -556,7 +574,7 @@ export default function ProductPage() {
                                     )}
                                     <div className="mt-8 sm:mt-12 p-4 sm:p-6 bg-[var(--color-primary)]/5 rounded-2xl sm:rounded-3xl border border-[var(--color-primary)]/10">
                                         <p className="text-xs sm:text-sm font-medium text-[var(--color-primary)] leading-relaxed italic">
-                                            "Our Moringa is sourced from organic family farms, ensuring maximum nutrient density."
+                                            &quot;Our Moringa is sourced from organic family farms, ensuring maximum nutrient density.&quot;
                                         </p>
                                     </div>
                                 </div>
@@ -640,7 +658,7 @@ export default function ProductPage() {
                                                         {new Date(review.created_at).toLocaleDateString()}
                                                     </span>
                                                 </div>
-                                                <p className="text-[var(--color-text)] leading-relaxed italic">"{review.comment}"</p>
+                                                <p className="text-[var(--color-text)] leading-relaxed italic">&quot;{review.comment}&quot;</p>
                                             </div>
                                         ))}
                                     </div>
@@ -685,7 +703,7 @@ export default function ProductPage() {
 
                         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8 md:gap-12" suppressHydrationWarning>
                             {relatedProducts.map((p) => (
-                                <ProductCard key={p.id} product={p as any} />
+                                <ProductCard key={p.id} product={p} />
                             ))}
                         </div>
                     </div>

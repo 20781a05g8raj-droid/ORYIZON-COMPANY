@@ -4,13 +4,9 @@ import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import {
     ArrowLeft,
-    Upload,
     Plus,
-    Trash2,
     Save,
-    Eye,
     X,
-    GripVertical,
     Loader2
 } from 'lucide-react';
 import Link from 'next/link';
@@ -24,6 +20,7 @@ import {
     deleteProductVariant
 } from '@/lib/api/products';
 import { Product, ProductVariant } from '@/types/database';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 // Extended type for UI handling
 type EditableVariant = Partial<ProductVariant> & {
@@ -52,12 +49,15 @@ export default function EditProductPage() {
         images: [],
     });
 
+    // SEO & Images State
+    const [imageAltTexts, setImageAltTexts] = useState<string[]>([]);
+    const [seoTitle, setSeoTitle] = useState('');
+    const [metaDescription, setMetaDescription] = useState('');
+    const [seoKeywords, setSeoKeywords] = useState('');
+
     // Variants State
     const [variants, setVariants] = useState<EditableVariant[]>([]);
     const [deletedVariantIds, setDeletedVariantIds] = useState<string[]>([]);
-
-    // Images State (Local handling before upload logic - simple URL list for now)
-    const [imageInput, setImageInput] = useState('');
 
     const tabs = ['General', 'Pricing', 'Images', 'Variants', 'SEO'];
 
@@ -85,6 +85,12 @@ export default function EditProductPage() {
                 original_price: data.original_price || 0,
                 images: data.images || [],
             });
+
+            // Load SEO & Extras
+            setImageAltTexts(data.image_alt_texts || []);
+            setSeoTitle(data.seo_title || '');
+            setMetaDescription(data.meta_description || '');
+            setSeoKeywords(data.keywords || '');
 
             // Map variants
             if (data.product_variants) {
@@ -152,10 +158,13 @@ export default function EditProductPage() {
             console.log('Updating main product...', productId);
             await updateProduct(productId, {
                 ...formData,
+                image_alt_texts: imageAltTexts,
+                seo_title: seoTitle,
+                meta_description: metaDescription,
+                keywords: seoKeywords,
                 updated_at: new Date().toISOString(),
             });
 
-            // 2. Process Variants
             // 2. Process Variants
             const variantPromises = variants.map(async (v) => {
                 const sku = v.sku === '' ? null : v.sku; // Convert empty SKU to null
@@ -222,10 +231,6 @@ export default function EditProductPage() {
                     </div>
                 </div>
                 <div className="flex items-center gap-3">
-                    {/* <button className="flex items-center gap-2 px-4 py-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors">
-                        <Eye size={18} />
-                        Preview
-                    </button> */}
                     <button
                         onClick={handleSave}
                         disabled={saving}
@@ -448,46 +453,47 @@ export default function EditProductPage() {
                     {/* Images Tab */}
                     {activeTab === 'Images' && (
                         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
-                            <p className="text-sm text-gray-500">
-                                Image management is currently simplified. Add direct URLs below.
-                            </p>
-                            <div className="flex gap-2">
+                            <ImageUpload
+                                images={formData.images || []}
+                                altTexts={imageAltTexts}
+                                onImagesChange={(newImages) => setFormData(prev => ({ ...prev, images: newImages }))}
+                                onAltTextsChange={setImageAltTexts}
+                            />
+                        </motion.div>
+                    )}
+
+                    {/* SEO Tab */}
+                    {activeTab === 'SEO' && (
+                        <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">SEO Title</label>
                                 <input
                                     type="text"
-                                    placeholder="https://example.com/image.jpg"
-                                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg"
-                                    value={imageInput}
-                                    onChange={(e) => setImageInput(e.target.value)}
+                                    value={seoTitle}
+                                    onChange={(e) => setSeoTitle(e.target.value)}
+                                    placeholder="Organic Moringa Powder | ORYIZON"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
                                 />
-                                <button
-                                    onClick={() => {
-                                        if (imageInput) {
-                                            setFormData(prev => ({ ...prev, images: [...(prev.images || []), imageInput] }));
-                                            setImageInput('');
-                                        }
-                                    }}
-                                    className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-200"
-                                >
-                                    Add
-                                </button>
                             </div>
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                                {formData.images?.map((img, idx) => (
-                                    <div key={idx} className="relative aspect-square bg-gray-100 rounded-lg overflow-hidden group">
-                                        <img src={img} alt="" className="w-full h-full object-cover" />
-                                        <button
-                                            onClick={() => {
-                                                setFormData(prev => ({
-                                                    ...prev,
-                                                    images: prev.images?.filter((_, i) => i !== idx)
-                                                }));
-                                            }}
-                                            className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <X size={14} />
-                                        </button>
-                                    </div>
-                                ))}
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Meta Description</label>
+                                <textarea
+                                    rows={3}
+                                    value={metaDescription}
+                                    onChange={(e) => setMetaDescription(e.target.value)}
+                                    placeholder="Premium organic moringa powder packed with nutrients..."
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500 resize-none"
+                                />
+                            </div>
+                            <div>
+                                <label className="block text-sm font-medium text-gray-700 mb-2">Keywords</label>
+                                <input
+                                    type="text"
+                                    value={seoKeywords}
+                                    onChange={(e) => setSeoKeywords(e.target.value)}
+                                    placeholder="moringa powder, organic superfood"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                                />
                             </div>
                         </motion.div>
                     )}

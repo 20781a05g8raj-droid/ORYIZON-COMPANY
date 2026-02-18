@@ -101,7 +101,7 @@ export function CartDrawer() {
                                 <div className="space-y-4">
                                     {items.map((item) => (
                                         <motion.div
-                                            key={`${item.product.id}-${item.variant.id}`}
+                                            key={`${item.product.id}-${item.variant?.id || item.product.id}`}
                                             layout
                                             initial={{ opacity: 0, y: 10 }}
                                             animate={{ opacity: 1, y: 0 }}
@@ -136,30 +136,30 @@ export function CartDrawer() {
                                             {/* Product Details */}
                                             <div className="flex-1 min-w-0">
                                                 <h4 className="font-medium text-sm line-clamp-1">{item.product.name}</h4>
-                                                <p className="text-xs text-[var(--color-text-light)]">{item.variant.name}</p>
+                                                <p className="text-xs text-[var(--color-text-light)]">{item.variant?.name || 'Standard'}</p>
                                                 <p className="font-semibold text-[var(--color-primary)] mt-1">
-                                                    {formatPrice(item.variant.price)}
+                                                    {formatPrice(item.variant?.price ?? item.product.price)}
                                                 </p>
 
                                                 {/* Quantity Controls */}
                                                 <div className="flex items-center justify-between mt-2">
                                                     <div className="flex items-center gap-2 bg-white rounded-lg">
                                                         <button
-                                                            onClick={() => updateQuantity(item.product.id, item.variant.id, item.quantity - 1)}
+                                                            onClick={() => updateQuantity(item.product.id, item.variant?.id || item.product.id, item.quantity - 1)}
                                                             className="p-1.5 hover:bg-[var(--color-secondary)] rounded-l-lg transition-colors"
                                                         >
                                                             <Minus size={14} />
                                                         </button>
                                                         <span className="w-8 text-center text-sm font-medium">{item.quantity}</span>
                                                         <button
-                                                            onClick={() => updateQuantity(item.product.id, item.variant.id, item.quantity + 1)}
+                                                            onClick={() => updateQuantity(item.product.id, item.variant?.id || item.product.id, item.quantity + 1)}
                                                             className="p-1.5 hover:bg-[var(--color-secondary)] rounded-r-lg transition-colors"
                                                         >
                                                             <Plus size={14} />
                                                         </button>
                                                     </div>
                                                     <button
-                                                        onClick={() => removeItem(item.product.id, item.variant.id)}
+                                                        onClick={() => removeItem(item.product.id, item.variant?.id || item.product.id)}
                                                         className="text-red-500 text-xs hover:underline"
                                                     >
                                                         Remove

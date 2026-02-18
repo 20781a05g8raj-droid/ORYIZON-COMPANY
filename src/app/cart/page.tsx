@@ -117,7 +117,7 @@ export default function CartPage() {
                                 <div className="divide-y">
                                     {items.map((item) => (
                                         <motion.div
-                                            key={`${item.product.id}-${item.variant.id}`}
+                                            key={`${item.product.id}-${item.variant?.id || item.product.id}`}
                                             layout
                                             initial={{ opacity: 0 }}
                                             animate={{ opacity: 1 }}
@@ -157,10 +157,10 @@ export default function CartPage() {
                                                         {item.product.name}
                                                     </Link>
                                                     <p className="text-sm text-[var(--color-text-light)]">
-                                                        {item.variant.name}
+                                                        {item.variant?.name || 'Standard'}
                                                     </p>
                                                     <button
-                                                        onClick={() => removeItem(item.product.id, item.variant.id)}
+                                                        onClick={() => removeItem(item.product.id, item.variant?.id || item.product.id)}
                                                         className="text-red-500 text-sm flex items-center gap-1 mt-2 hover:underline md:hidden"
                                                     >
                                                         <Trash2 size={14} />
@@ -173,14 +173,14 @@ export default function CartPage() {
                                             <div className="col-span-2 flex items-center justify-center mb-4 md:mb-0">
                                                 <div className="inline-flex items-center border border-[var(--color-secondary)] rounded-lg">
                                                     <button
-                                                        onClick={() => updateQuantity(item.product.id, item.variant.id, item.quantity - 1)}
+                                                        onClick={() => updateQuantity(item.product.id, item.variant?.id || item.product.id, item.quantity - 1)}
                                                         className="p-2 hover:bg-[var(--color-secondary)] transition-colors"
                                                     >
                                                         <Minus size={16} />
                                                     </button>
                                                     <span className="w-10 text-center font-medium">{item.quantity}</span>
                                                     <button
-                                                        onClick={() => updateQuantity(item.product.id, item.variant.id, item.quantity + 1)}
+                                                        onClick={() => updateQuantity(item.product.id, item.variant?.id || item.product.id, item.quantity + 1)}
                                                         className="p-2 hover:bg-[var(--color-secondary)] transition-colors"
                                                     >
                                                         <Plus size={16} />
@@ -190,17 +190,17 @@ export default function CartPage() {
 
                                             {/* Price */}
                                             <div className="col-span-2 text-center hidden md:block">
-                                                {formatPrice(item.variant.price)}
+                                                {formatPrice(item.variant?.price ?? item.product.price)}
                                             </div>
 
                                             {/* Total */}
                                             <div className="col-span-2 flex items-center justify-between md:justify-end gap-4">
                                                 <span className="md:hidden text-sm text-[var(--color-text-light)]">Total:</span>
                                                 <span className="font-semibold">
-                                                    {formatPrice(item.variant.price * item.quantity)}
+                                                    {formatPrice((item.variant?.price ?? item.product.price) * item.quantity)}
                                                 </span>
                                                 <button
-                                                    onClick={() => removeItem(item.product.id, item.variant.id)}
+                                                    onClick={() => removeItem(item.product.id, item.variant?.id || item.product.id)}
                                                     className="text-red-500 hover:text-red-600 hidden md:block"
                                                 >
                                                     <Trash2 size={18} />

@@ -98,10 +98,14 @@ export async function createOrder(
 }
 
 // Update order status
-export async function updateOrderStatus(id: string, status: string): Promise<Order> {
+export async function updateOrderStatus(id: string, status: string, payment_status?: string, payment_details?: any): Promise<Order> {
+    const updates: any = { status };
+    if (payment_status) updates.payment_status = payment_status;
+    if (payment_details) updates.notes = `Payment ID: ${payment_details.razorpay_payment_id}`;
+
     const { data, error } = await (supabase as any)
         .from('orders')
-        .update({ status })
+        .update(updates)
         .eq('id', id)
         .select()
         .single();
@@ -187,6 +191,7 @@ export async function getOrderStats(): Promise<{
     shipped: number;
     delivered: number;
     cancelled: number;
+    failed: number;
 }> {
     const { data, error } = await supabase
         .from('orders')
@@ -202,6 +207,7 @@ export async function getOrderStats(): Promise<{
         shipped: orders.filter(o => o.status === 'shipped').length,
         delivered: orders.filter(o => o.status === 'delivered').length,
         cancelled: orders.filter(o => o.status === 'cancelled').length,
+        failed: orders.filter(o => o.status === 'failed').length,
     };
 
     return stats;

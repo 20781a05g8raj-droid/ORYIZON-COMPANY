@@ -1,0 +1,23 @@
+
+> motion@0.1.0 lint
+> eslint src/app/products/page.tsx src/app/products/[slug]/page.tsx
+
+
+C:\Users\vikes\OneDrive\Desktop\motion\src\app\products\[slug]\page.tsx
+   10:5    warning  'Check' is defined but never used                                @typescript-eslint/no-unused-vars
+   10:30   warning  'Shield' is defined but never used                               @typescript-eslint/no-unused-vars
+   10:38   warning  'ChevronDown' is defined but never used                          @typescript-eslint/no-unused-vars
+   70:34   warning  'e' is defined but never used                                    @typescript-eslint/no-unused-vars
+  175:41   error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  188:36   error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  188:60   error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  208:41   error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  221:36   error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  221:60   error    Unexpected any. Specify a different type                         @typescript-eslint/no-explicit-any
+  577:45   error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  577:130  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  661:112  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+  661:129  error    `"` can be escaped with `&quot;`, `&ldquo;`, `&#34;`, `&rdquo;`  react/no-unescaped-entities
+
+✖ 14 problems (10 errors, 4 warnings)
+

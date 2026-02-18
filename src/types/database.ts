@@ -31,6 +31,10 @@ export interface Database {
                     review_count: number
                     created_at: string
                     updated_at: string
+                    seo_title: string | null
+                    meta_description: string | null
+                    keywords: string | null
+                    image_alt_texts: string[] | null
                 }
                 Insert: {
                     id?: string
@@ -52,6 +56,10 @@ export interface Database {
                     review_count?: number
                     created_at?: string
                     updated_at?: string
+                    seo_title?: string | null
+                    meta_description?: string | null
+                    keywords?: string | null
+                    image_alt_texts?: string[] | null
                 }
                 Update: {
                     id?: string
@@ -73,6 +81,10 @@ export interface Database {
                     review_count?: number
                     created_at?: string
                     updated_at?: string
+                    seo_title?: string | null
+                    meta_description?: string | null
+                    keywords?: string | null
+                    image_alt_texts?: string[] | null
                 }
             }
             product_variants: {

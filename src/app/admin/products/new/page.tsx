@@ -1,16 +1,11 @@
 'use client';
 
 import React, { useState } from 'react';
-import { motion } from 'framer-motion';
 import {
     ArrowLeft,
-    Upload,
     Plus,
     Trash2,
-    Save,
-    Eye,
-    X,
-    GripVertical
+    Save
 } from 'lucide-react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -18,6 +13,7 @@ import { createProduct, addProductVariant } from '@/lib/api/products';
 import { generateSlug } from '@/lib/utils';
 import toast from 'react-hot-toast';
 import { ProductVariantInsert } from '@/types/database';
+import ImageUpload from '@/components/admin/ImageUpload';
 
 interface ProductVariantState {
     id: string; // temporary id for UI
@@ -45,13 +41,13 @@ export default function NewProductPage() {
     // Pricing & Inventory (Main Product)
     const [price, setPrice] = useState<number | ''>('');
     const [originalPrice, setOriginalPrice] = useState<number | ''>('');
-    const [sku, setSku] = useState('');     // Not directly on product table in current schema, but good to have in mind
-    const [stock, setStock] = useState<number | ''>(''); // Not directly on product table
+    const [sku, setSku] = useState('');
+    const [stock, setStock] = useState<number | ''>('');
     const [inStock, setInStock] = useState(true);
 
     // Images
     const [images, setImages] = useState<string[]>([]);
-    const [imageInput, setImageInput] = useState('');
+    const [imageAltTexts, setImageAltTexts] = useState<string[]>([]);
 
     // SEO
     const [seoTitle, setSeoTitle] = useState('');
@@ -75,17 +71,6 @@ export default function NewProductPage() {
         if (name && !slug) {
             setSlug(generateSlug(name));
         }
-    };
-
-    const handleAddImage = () => {
-        if (imageInput.trim()) {
-            setImages([...images, imageInput.trim()]);
-            setImageInput('');
-        }
-    };
-
-    const removeImage = (index: number) => {
-        setImages(images.filter((_, i) => i !== index));
     };
 
     const addVariant = () => {
@@ -126,15 +111,17 @@ export default function NewProductPage() {
                 original_price: originalPrice ? Number(originalPrice) : null,
                 category: category.value,
                 in_stock: inStock,
-                featured: false, // Default
+                featured: false,
                 images: images,
-                // Using array-based data for now as simple placeholders if needed, 
-                // or you could parse 'tags' into benefits/ingredients
+                image_alt_texts: imageAltTexts,
                 benefits: [],
                 ingredients: [],
                 certifications: [],
                 rating: 5,
-                review_count: 0
+                review_count: 0,
+                seo_title: seoTitle,
+                meta_description: metaDescription,
+                keywords: seoKeywords
             };
 
             const newProduct = await createProduct(productData);
@@ -147,7 +134,6 @@ export default function NewProductPage() {
                             product_id: newProduct.id,
                             name: v.name,
                             price: Number(v.price),
-                            // original_price: null, // Add if UI supports it
                             in_stock: v.in_stock,
                             sku: v.sku || null
                         };
@@ -330,40 +316,12 @@ export default function NewProductPage() {
 
                     {/* Images Tab */}
                     <div className={activeTab === 'images' ? 'block' : 'hidden'}>
-                        <div className="border-2 border-dashed border-gray-200 rounded-xl p-10 text-center hover:border-emerald-400 transition-colors">
-                            <Upload className="mx-auto text-gray-400 mb-4" size={40} />
-                            <p className="text-gray-600 font-medium mb-4">Add Image URL</p>
-                            <div className="flex gap-2 max-w-md mx-auto">
-                                <input
-                                    type="text"
-                                    value={imageInput}
-                                    onChange={(e) => setImageInput(e.target.value)}
-                                    placeholder="https://example.com/image.jpg"
-                                    className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-500"
-                                />
-                                <button
-                                    onClick={handleAddImage}
-                                    className="px-4 py-2 bg-emerald-600 text-white rounded-lg hover:bg-emerald-700"
-                                >
-                                    Add
-                                </button>
-                            </div>
-                        </div>
-                        {images.length > 0 && (
-                            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-6">
-                                {images.map((img, idx) => (
-                                    <div key={idx} className="relative group aspect-square bg-gray-100 rounded-lg overflow-hidden">
-                                        <img src={img} alt={`Product ${idx}`} className="w-full h-full object-cover" />
-                                        <button
-                                            onClick={() => removeImage(idx)}
-                                            className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity"
-                                        >
-                                            <X size={14} />
-                                        </button>
-                                    </div>
-                                ))}
-                            </div>
-                        )}
+                        <ImageUpload
+                            images={images}
+                            altTexts={imageAltTexts}
+                            onImagesChange={setImages}
+                            onAltTextsChange={setImageAltTexts}
+                        />
                     </div>
 
                     {/* Variants Tab */}

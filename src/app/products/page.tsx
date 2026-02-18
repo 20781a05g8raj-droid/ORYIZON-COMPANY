@@ -4,51 +4,12 @@ import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getProducts } from '@/lib/api/products';
 import { getAllProducts as getLocalProducts } from '@/data/products';
-import { ProductCard } from '@/components/ui/Card';
+import { ProductCard } from '@/components/products/ProductCard';
 import { CERTIFICATIONS } from '@/lib/constants';
 import type { ProductWithVariants } from '@/types/database';
 import { Loader2 } from 'lucide-react';
 
-// Adapter function to convert Supabase product to existing ProductCard format
-function adaptProduct(product: ProductWithVariants) {
-    return {
-        id: product.id,
-        name: product.name,
-        slug: product.slug,
-        price: product.price,
-        originalPrice: product.original_price || undefined,
-        description: product.description || '',
-        shortDescription: product.short_description || product.description || '',
-        image: (() => {
-            const img = product.images?.[0];
-            if (!img) return '/images/products/product-1.png';
-            if (img.startsWith('http') || img.startsWith('/')) return img;
-            return `/images/products/${img}`;
-        })(),
-        images: product.images?.map(img => {
-            if (img.startsWith('http') || img.startsWith('/')) return img;
-            return `/images/products/${img}`;
-        }) || [],
-        category: product.category,
-        rating: product.rating,
-        reviewCount: product.review_count,
-        inStock: product.in_stock,
-        featured: product.featured,
-        benefits: product.benefits || [],
-        ingredients: (product as any).ingredients || [],
-        nutritionFacts: (product as any).nutrition_facts || [],
-        dosage: (product as any).dosage || { adults: '', elders: '', children: '' },
-        certifications: (product as any).certifications || [],
-        variants: product.product_variants?.map(v => ({
-            id: v.id,
-            name: v.name,
-            weight: v.name || '',
-            price: v.price,
-            originalPrice: v.original_price || undefined,
-            inStock: v.in_stock,
-        })) || [],
-    };
-}
+
 
 
 export default function ProductsPage() {
@@ -65,22 +26,29 @@ export default function ProductsPage() {
                 // 2. Fetch Local Products (Filesystem Images)
                 const localProducts = getLocalProducts();
 
-                // 3. Merge: Use API for data, but Local for Images if available
+                // 3. Merge: Prioritize API images, fallback to Local if API has none
                 const mergedProducts = apiProducts.map(apiProduct => {
                     const localMatch = localProducts.find(p => p.slug === apiProduct.slug);
+
+                    // If API has images, use them (ensure they are properly formatted)
+                    if (apiProduct.images && apiProduct.images.length > 0) {
+                        return {
+                            ...apiProduct,
+                            images: apiProduct.images.map(img => {
+                                if (img.startsWith('http') || img.startsWith('/')) return img;
+                                return `/images/products/${img}`;
+                            })
+                        };
+                    }
+
+                    // Fallback to local images if API has none
                     if (localMatch && localMatch.images && localMatch.images.length > 0) {
                         return {
                             ...apiProduct,
                             images: localMatch.images
                         };
                     }
-                    // Fallback sanitization for DB-only images
-                    if (apiProduct.images) {
-                        return {
-                            ...apiProduct,
-                            images: apiProduct.images.map(img => img.replace(/ /g, '-'))
-                        };
-                    }
+
                     return apiProduct;
                 });
 
@@ -191,7 +159,7 @@ export default function ProductsPage() {
                                     animate={{ opacity: 1, y: 0 }}
                                     transition={{ delay: index * 0.1 }}
                                 >
-                                    <ProductCard product={adaptProduct(product)} />
+                                    <ProductCard product={product} />
                                 </motion.div>
                             ))}
                         </div>

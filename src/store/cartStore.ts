@@ -50,8 +50,9 @@ export const useCartStore = create<CartState>()(
 
             addItem: (product: Product, variant: ProductVariant, quantity: number = 1) => {
                 set((state) => {
+                    // Safe check for existing item
                     const existingItemIndex = state.items.findIndex(
-                        (item) => item.product.id === product.id && item.variant.id === variant.id
+                        (item) => item.product.id === product.id && (item.variant?.id ?? item.product.id) === (variant?.id ?? product.id)
                     );
 
                     if (existingItemIndex > -1) {
@@ -69,7 +70,7 @@ export const useCartStore = create<CartState>()(
             removeItem: (productId: string, variantId: string) => {
                 set((state) => ({
                     items: state.items.filter(
-                        (item) => !(item.product.id === productId && item.variant.id === variantId)
+                        (item) => !(item.product.id === productId && (item.variant?.id ?? item.product.id) === variantId)
                     ),
                 }));
             },
@@ -82,7 +83,7 @@ export const useCartStore = create<CartState>()(
 
                 set((state) => ({
                     items: state.items.map((item) =>
-                        item.product.id === productId && item.variant.id === variantId
+                        item.product.id === productId && (item.variant?.id ?? item.product.id) === variantId
                             ? { ...item, quantity }
                             : item
                     ),
@@ -97,7 +98,10 @@ export const useCartStore = create<CartState>()(
 
             getTotalPrice: () => {
                 return get().items.reduce(
-                    (total, item) => total + item.variant.price * item.quantity,
+                    (total, item) => {
+                        const price = item.variant?.price ?? item.product.price ?? 0;
+                        return total + price * item.quantity;
+                    },
                     0
                 );
             },

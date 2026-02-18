@@ -10,7 +10,7 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import { Button } from '@/components/ui/Button';
 import { getShippingSettings, type ShippingSettings } from '@/lib/api/settings';
-import { createOrder, getOrCreateCustomer } from '@/lib/api/orders';
+import { createOrder, getOrCreateCustomer, updateOrderStatus } from '@/lib/api/orders';
 import { getProductBySlug as fetchProductBySlug } from '@/lib/api/products';
 import type { Order } from '@/types/database';
 import { toast } from 'react-hot-toast';
@@ -81,7 +81,7 @@ export default function CheckoutPage() {
         setStep(2);
     };
 
-    const processOrderCreation = async (paymentDetails: any = null) => {
+    const processOrderCreation = async (paymentDetails: any = null, isPending: boolean = false) => {
         try {
             // 1. Create or get customer
             await getOrCreateCustomer({
@@ -116,10 +116,10 @@ export default function CheckoutPage() {
                 return {
                     product_id: productId,
                     product_name: item.product.name,
-                    variant_name: item.variant.name,
+                    variant_name: item.variant?.name || 'Standard',
                     quantity: item.quantity,
-                    price: item.variant.price,
-                    total: item.variant.price * item.quantity
+                    price: item.variant?.price ?? item.product.price,
+                    total: (item.variant?.price ?? item.product.price) * item.quantity
                 };
             }));
 
@@ -137,8 +137,8 @@ export default function CheckoutPage() {
                 coupon_code: appliedCoupon ? appliedCoupon.code : null,
                 notes: paymentDetails ? `Payment ID: ${paymentDetails.razorpay_payment_id}` : '',
 
-                status: 'pending',
-                payment_status: paymentMethod === 'cod' ? 'pending' : 'paid',
+                status: 'pending', // Always start as pending
+                payment_status: paymentMethod === 'cod' ? 'pending' : (paymentDetails ? 'paid' : 'pending'),
                 shipping_address: shippingData.address,
                 city: shippingData.city,
                 state: shippingData.state,
@@ -146,25 +146,44 @@ export default function CheckoutPage() {
                 payment_method: paymentMethod
             }, orderItems);
 
+            if (isPending) {
+                return order; // Return order for Razorpay flow
+            }
+
             setCreatedOrder(order);
             setIsProcessing(false);
             setOrderComplete(true);
             clearCart();
             toast.success('Order placed successfully!');
+            return order;
         } catch (error: any) {
             console.error('Order creation failed:', error);
             setIsProcessing(false);
             toast.error(`Failed to place order: ${error.message || 'Unknown error'}`);
+            throw error;
         }
     };
 
     const handleRazorpayPayment = async () => {
+        // 1. Create Pending Order FIRST
+        let orderId: string | null = null;
+        try {
+            const order = await processOrderCreation(null, true); // true = isPending
+            if (!order) return;
+            orderId = order.id;
+        } catch (error) {
+            console.error('Failed to create pending order:', error);
+            toast.error('Could not initiate order. Please try again.');
+            return;
+        }
+
+        // 2. Create Razorpay Order
         const res = await fetch('/api/razorpay/order', {
             method: 'POST',
             body: JSON.stringify({
                 amount: finalTotal,
                 currency: 'INR',
-                receipt: `receipt_${Date.now()}`,
+                receipt: `rcpt_${orderId.slice(-20)}`,
             }),
             headers: {
                 'Content-Type': 'application/json',
@@ -185,8 +204,11 @@ export default function CheckoutPage() {
             currency: data.currency,
             name: "Oryizon",
             description: "Organic Moringa Products",
-            image: "/logo.png", // Add logo if available
+            image: "/logo.png",
             order_id: data.id,
+            notes: {
+                internal_order_id: orderId // Link Razorpay order to our DB order
+            },
             handler: async function (response: any) {
                 // Verify Payment
                 try {
@@ -205,14 +227,21 @@ export default function CheckoutPage() {
                     const verifyData = await verifyRes.json();
 
                     if (verifyData.success) {
-                        await processOrderCreation(response);
+                        // Update Order to PAID
+                        await updateOrderStatus(orderId!, 'processing', 'paid', response);
+                        setOrderComplete(true);
+                        clearCart();
+                        toast.success('Order placed successfully!');
                     } else {
+                        // Update to Failed (or keep pending)
+                        await updateOrderStatus(orderId!, 'pending', 'failed');
                         toast.error('Payment verification failed');
-                        setIsProcessing(false);
                     }
                 } catch (error) {
                     console.error('Verification error:', error);
+                    await updateOrderStatus(orderId!, 'pending', 'failed');
                     toast.error('Payment verification failed');
+                } finally {
                     setIsProcessing(false);
                 }
             },
@@ -222,11 +251,16 @@ export default function CheckoutPage() {
                 contact: shippingData.phone,
             },
             theme: {
-                color: "#16a34a", // Emerald-600
+                color: "#16a34a",
             },
             modal: {
-                ondismiss: function () {
+                ondismiss: async function () {
                     setIsProcessing(false);
+                    toast.error('Payment cancelled');
+                    // Mark as Failed/Cancelled if user closes modal
+                    if (orderId) {
+                        await updateOrderStatus(orderId, 'pending', 'failed');
+                    }
                 }
             }
         };
@@ -513,7 +547,7 @@ export default function CheckoutPage() {
                                 {/* Items */}
                                 <div className="space-y-4 max-h-60 overflow-y-auto mb-6">
                                     {items.map((item) => (
-                                        <div key={`${item.product.id}-${item.variant.id}`} className="flex gap-3">
+                                        <div key={`${item.product.id}-${item.variant?.id || item.product.id}`} className="flex gap-3">
                                             <div className="w-16 h-16 bg-[var(--color-cream)] rounded-lg flex-shrink-0 overflow-hidden relative">
                                                 {item.product.images?.[0] ? (
                                                     <img
@@ -539,10 +573,10 @@ export default function CheckoutPage() {
                                             </div>
                                             <div className="flex-1 min-w-0">
                                                 <p className="font-medium text-sm line-clamp-1">{item.product.name}</p>
-                                                <p className="text-xs text-[var(--color-text-light)]">{item.variant.name} × {item.quantity}</p>
+                                                <p className="text-xs text-[var(--color-text-light)]">{item.variant?.name || 'Standard'} × {item.quantity}</p>
                                             </div>
                                             <p className="font-medium text-sm">
-                                                {formatPrice(item.variant.price * item.quantity)}
+                                                {formatPrice((item.variant?.price ?? item.product.price) * item.quantity)}
                                             </p>
                                         </div>
                                     ))}
