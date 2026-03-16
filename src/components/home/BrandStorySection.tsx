@@ -7,8 +7,36 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Marquee } from '@/components/ui/animations/Marquee';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 export function BrandStorySection() {
+    // GSAP scroll reveal for image side
+    const imageRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.85,
+        y: 50,
+        duration: 0.9,
+        ease: 'power2.out',
+    });
+
+    // GSAP scroll reveal for content side
+    const contentRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.88,
+        y: 50,
+        duration: 0.9,
+        delay: 0.15,
+        ease: 'power2.out',
+    });
+
+    // GSAP stagger for journey steps
+    const stepsRef = useScrollRevealStagger<HTMLDivElement>({
+        scale: 0.88,
+        y: 30,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+        start: 'top 85%',
+    });
+
     return (
         <section className="pb-16 md:pb-24 bg-white overflow-hidden" suppressHydrationWarning>
             {/* Marquee Strip */}
@@ -24,14 +52,8 @@ export function BrandStorySection() {
 
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
                 <div className="grid lg:grid-cols-2 gap-10 md:gap-20 items-center" suppressHydrationWarning>
-                    {/* Image Side with 3D tilt */}
-                    <motion.div
-                        initial={{ opacity: 0, x: -30, rotateY: -8 }}
-                        whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 70 }}
-                        className="relative"
-                    >
+                    {/* Image Side — GSAP scroll reveal */}
+                    <div ref={imageRef} className="relative">
                         <TiltCard tiltStrength={6} scale={1.02} className="rounded-3xl">
                             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)] shadow-3d" suppressHydrationWarning>
                                 <div className="absolute inset-0 flex items-center justify-center">
@@ -59,7 +81,7 @@ export function BrandStorySection() {
                             </div>
                         </TiltCard>
 
-                        {/* Floating Card — glass effect with 3D entrance */}
+                        {/* Floating Card */}
                         <motion.div
                             initial={{ opacity: 0, scale: 0.8, y: 30, rotate: -5 }}
                             whileInView={{ opacity: 1, scale: 1, y: 0, rotate: 0 }}
@@ -81,16 +103,10 @@ export function BrandStorySection() {
                                 </div>
                             </div>
                         </motion.div>
-                    </motion.div>
+                    </div>
 
-                    {/* Content Side with 3D entrance */}
-                    <motion.div
-                        initial={{ opacity: 0, x: 30, rotateY: 5 }}
-                        whileInView={{ opacity: 1, x: 0, rotateY: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 70, delay: 0.2 }}
-                        className="flex flex-col pt-6 lg:pt-0"
-                    >
+                    {/* Content Side — GSAP scroll reveal */}
+                    <div ref={contentRef} className="flex flex-col pt-6 lg:pt-0">
                         <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
                             Our Story
                         </span>
@@ -114,20 +130,16 @@ export function BrandStorySection() {
                             </p>
                         </div>
 
-                        {/* Journey Steps — 3D staggered entrance */}
-                        <div className="grid grid-cols-2 gap-3 md:gap-6 mt-8 md:mt-10" suppressHydrationWarning>
+                        {/* Journey Steps — GSAP staggered scroll reveal */}
+                        <div ref={stepsRef} className="grid grid-cols-2 gap-3 md:gap-6 mt-8 md:mt-10" suppressHydrationWarning>
                             {[
                                 { step: '01', title: 'Harvest', desc: 'Hand-picked daily', gradient: 'from-emerald-500/10 to-emerald-500/5' },
                                 { step: '02', title: 'Process', desc: 'Gently air-dried', gradient: 'from-amber-500/10 to-amber-500/5' },
                                 { step: '03', title: 'Test', desc: 'Lab verified', gradient: 'from-violet-500/10 to-violet-500/5' },
                                 { step: '04', title: 'Pack', desc: 'Eco-sealed', gradient: 'from-teal-500/10 to-teal-500/5' },
-                            ].map((item, index) => (
+                            ].map((item) => (
                                 <motion.div
                                     key={item.step}
-                                    initial={{ opacity: 0, y: 30, rotateX: 15 }}
-                                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                                    viewport={{ once: true }}
-                                    transition={{ delay: 0.3 + index * 0.12, type: 'spring', stiffness: 100 }}
                                     whileHover={{ y: -4, scale: 1.03 }}
                                     className={`flex gap-3 md:gap-4 p-4 md:p-0 rounded-2xl md:rounded-none bg-gradient-to-br ${item.gradient} md:bg-none border border-[var(--color-secondary)]/50 md:border-none cursor-default transition-all`}
                                     suppressHydrationWarning
@@ -143,7 +155,7 @@ export function BrandStorySection() {
                             ))}
                         </div>
 
-                        {/* CTA with 3D press */}
+                        {/* CTA */}
                         <div className="mt-8 md:mt-10" suppressHydrationWarning>
                             <Link href="/about">
                                 <motion.div whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}>
@@ -153,7 +165,7 @@ export function BrandStorySection() {
                                 </motion.div>
                             </Link>
                         </div>
-                    </motion.div>
+                    </div>
                 </div>
             </div>
         </section>

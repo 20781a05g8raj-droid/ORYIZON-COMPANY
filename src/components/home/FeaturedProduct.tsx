@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
 import { Loader2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { getAllProducts as getLocalProducts } from '@/data/products';
@@ -9,10 +8,37 @@ import { getFeaturedProducts } from '@/lib/api/products';
 import { ProductWithVariants } from '@/types/database';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 export function FeaturedProduct() {
     const [products, setProducts] = useState<ProductWithVariants[]>([]);
     const [loading, setLoading] = useState(true);
+
+    // GSAP scroll reveal for header
+    const headerRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.92,
+        y: 30,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
+
+    // GSAP stagger for product grid
+    const gridRef = useScrollRevealStagger<HTMLDivElement>({
+        scale: 0.85,
+        y: 50,
+        duration: 0.85,
+        stagger: 0.15,
+        ease: 'power2.out',
+        start: 'top 80%',
+    });
+
+    // GSAP scroll reveal for CTA
+    const ctaRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.9,
+        y: 25,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
 
     useEffect(() => {
         async function fetchFeatured() {
@@ -47,9 +73,7 @@ export function FeaturedProduct() {
                     return apiProd;
                 });
 
-                // Filter for our specific moringa powder products if needed, or just take all featured
-                // The user specifically wants the 3 sizes: 100g, 250g, 500g
-                // We'll prioritize showing these if they exist, otherwise show all featured
+                // Filter for our specific moringa powder products if needed
                 const specificProducts = processedProducts.filter(p =>
                     p.slug.includes('organic-moringa-powder') &&
                     (p.slug.endsWith('100g') || p.slug.endsWith('250g') || p.slug.endsWith('500g'))
@@ -87,41 +111,35 @@ export function FeaturedProduct() {
             </div>
 
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
-                <div className="text-center mb-12 md:mb-16">
-                    <motion.div
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        className="inline-block"
-                    >
-                        <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm mb-3 block">
-                            Our Best Sellers
-                        </span>
-                        <h2 className="font-heading text-3xl md:text-5xl font-bold text-[var(--color-text)] mb-6">
-                            Choose Your Perfect Size
-                        </h2>
-                        <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-lg">
-                            Premium organic Moringa powder available in convenient packs to suit your needs.
-                            Start small or stock up for the whole family.
-                        </p>
-                    </motion.div>
+                {/* Header — GSAP scroll reveal */}
+                <div ref={headerRef} className="text-center mb-12 md:mb-16">
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm mb-3 block">
+                        Our Best Sellers
+                    </span>
+                    <h2 className="font-heading text-3xl md:text-5xl font-bold text-[var(--color-text)] mb-6">
+                        Choose Your Perfect Size
+                    </h2>
+                    <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-lg">
+                        Premium organic Moringa powder available in convenient packs to suit your needs.
+                        Start small or stock up for the whole family.
+                    </p>
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                    {/* Sort by price likely? Or strict order 100 -> 250 -> 500. 
-                        We can sort them by price to ensure order: 100g < 250g < 500g */}
+                {/* Product Grid — GSAP staggered scroll reveal */}
+                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
                     {products
                         .sort((a, b) => a.price - b.price)
                         .map((product, index) => (
                             <ProductCard
                                 key={product.id}
                                 product={product}
-                                priority={index === 1} // Prioritize middle image? or first?
+                                priority={index === 1}
                             />
                         ))}
                 </div>
 
-                <div className="mt-16 text-center">
+                {/* CTA — GSAP scroll reveal */}
+                <div ref={ctaRef} className="mt-16 text-center">
                     <Link href="/products">
                         <Button variant="outline" size="lg" icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-full px-8">
                             View All Products

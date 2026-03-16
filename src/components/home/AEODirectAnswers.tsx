@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { motion } from 'framer-motion';
 import { MessageCircleQuestion, ShieldCheck } from 'lucide-react';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 const aeoQuestions = [
     {
@@ -22,33 +22,42 @@ const aeoQuestions = [
 ];
 
 export function AEODirectAnswers() {
+    // GSAP scroll reveal for header
+    const headerRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.92,
+        y: 30,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
+
+    // GSAP stagger reveal for answer cards
+    const cardsRef = useScrollRevealStagger<HTMLDivElement>({
+        scale: 0.85,
+        y: 50,
+        duration: 0.85,
+        stagger: 0.15,
+        ease: 'power2.out',
+        start: 'top 80%',
+    });
+
     return (
         <section className="py-16 md:py-24 bg-gradient-to-br from-[var(--color-cream)] to-white" id="moringa-facts">
             <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
-                {/* Section Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-10 md:mb-16"
-                >
+                {/* Section Header — GSAP scroll reveal */}
+                <div ref={headerRef} className="text-center mb-10 md:mb-16">
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
                         Know Your Superfood
                     </span>
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-[15px] md:text-lg mt-3 leading-relaxed">
                         Get quick answers to the most searched questions about moringa powder.
                     </p>
-                </motion.div>
+                </div>
 
-                {/* AEO Answer Cards */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                {/* AEO Answer Cards — GSAP staggered scroll reveal */}
+                <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
                     {aeoQuestions.map((item, index) => (
-                        <motion.article
+                        <article
                             key={index}
-                            initial={{ opacity: 0, y: 30 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.15 }}
                             className="bg-white rounded-3xl p-6 md:p-10 shadow-premium gradient-border-top hover:shadow-xl transition-all duration-300"
                         >
                             {/* Icon */}
@@ -61,11 +70,11 @@ export function AEODirectAnswers() {
                                 {item.question}
                             </h2>
 
-                            {/* Direct answer paragraph — optimized for featured snippets */}
+                            {/* Direct answer paragraph */}
                             <p className="text-[var(--color-text-light)] text-[15px] md:text-lg leading-relaxed">
                                 {item.answer}
                             </p>
-                        </motion.article>
+                        </article>
                     ))}
                 </div>
             </div>

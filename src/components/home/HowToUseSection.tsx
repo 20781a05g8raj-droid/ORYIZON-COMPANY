@@ -4,21 +4,46 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { HOW_TO_USE } from '@/lib/constants';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 export function HowToUseSection() {
+    // GSAP scroll reveal for header
+    const headerRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.92,
+        y: 40,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
+
+    // GSAP stagger reveal for step cards
+    const stepsRef = useScrollRevealStagger<HTMLDivElement>({
+        scale: 0.85,
+        y: 60,
+        duration: 0.85,
+        stagger: 0.15,
+        ease: 'power2.out',
+        start: 'top 82%',
+    });
+
+    // GSAP scroll reveal for the dosage info card
+    const dosageRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.88,
+        y: 40,
+        duration: 0.8,
+        ease: 'power2.out',
+    });
+
     return (
         <section className="py-16 md:py-24 bg-white" suppressHydrationWarning>
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
-                {/* Section Header with 3D entrance */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30, rotateX: 10 }}
-                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-12 md:mb-20 perspective-container"
+                {/* Section Header — GSAP scroll reveal */}
+                <div
+                    ref={headerRef}
+                    className="text-center mb-12 md:mb-20"
                     suppressHydrationWarning
                 >
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
-                        Simple & Versatile
+                        Simple &amp; Versatile
                     </span>
                     <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]">
                         How to Use{' '}
@@ -29,74 +54,58 @@ export function HowToUseSection() {
                         smoothies, juice, or adding it to meals. Regular daily use helps
                         support nutrition and overall health.
                     </p>
-                </motion.div>
+                </div>
 
-                {/* Steps with 3D TiltCards */}
+                {/* Steps — GSAP staggered scroll reveal */}
                 <div className="relative" suppressHydrationWarning>
                     {/* Connection Line */}
                     <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary-light)] to-transparent -translate-y-1/2 z-0" suppressHydrationWarning />
 
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 relative z-10" suppressHydrationWarning>
+                    <div ref={stepsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 relative z-10" suppressHydrationWarning>
                         {HOW_TO_USE.map((step, index) => (
-                            <motion.div
-                                key={step.id}
-                                initial={{ opacity: 0, y: 50, rotateX: 20 }}
-                                whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                                viewport={{ once: true }}
-                                transition={{
-                                    delay: index * 0.15,
-                                    type: 'spring',
-                                    stiffness: 70,
-                                    damping: 15,
-                                }}
-                                className="relative h-full"
-                            >
+                            <div key={step.id} className="relative h-full">
                                 <TiltCard
                                     className="h-full rounded-3xl"
                                     tiltStrength={10}
                                     scale={1.04}
                                 >
-                                    <div className="bg-[var(--color-cream)] rounded-3xl p-8 md:p-10 text-center relative z-10 h-full border border-[var(--color-secondary)]/50 shadow-3d icon-3d-flip">
-                                        {/* Step Number with 3D pop */}
+                                    <div className={`${step.theme.bg} rounded-3xl p-8 md:p-10 text-center relative z-10 h-full backdrop-blur-sm icon-3d-flip`}>
+                                        {/* Step Number */}
                                         <motion.div
                                             whileHover={{ scale: 1.2, rotateZ: 10 }}
-                                            className="absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white rounded-full flex items-center justify-center font-bold text-sm shadow-xl shadow-primary/30 z-20"
+                                            className={`absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 ${step.theme.icon} rounded-full flex items-center justify-center font-bold text-sm shadow-xl z-20`}
                                             suppressHydrationWarning
                                         >
                                             {index + 1}
                                         </motion.div>
 
-                                        {/* Icon with 3D flip */}
+                                        {/* Icon */}
                                         <motion.div
                                             whileHover={{ scale: 1.15, rotateY: 180 }}
                                             transition={{ type: 'spring', stiffness: 200 }}
-                                            className="text-5xl md:text-6xl mb-6 inline-block icon-3d-target"
+                                            className="mb-6 inline-block icon-3d-target"
                                         >
-                                            {step.icon}
+                                            <div className={`w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full ${step.theme.icon} bg-opacity-10 flex items-center justify-center shadow-lg`}>
+                                                <span className="text-4xl md:text-5xl">{step.icon}</span>
+                                            </div>
                                         </motion.div>
 
-                                        <h3 className="font-heading text-xl md:text-2xl font-bold mb-3 text-[var(--color-text)]">
+                                        <h3 className={`font-heading text-xl md:text-2xl font-bold mb-3 ${step.theme.text}`}>
                                             {step.title}
                                         </h3>
 
-                                        <p className="text-[var(--color-text-light)] text-sm md:text-base leading-relaxed">
+                                        <p className={`${step.theme.text} opacity-80 text-sm md:text-base leading-relaxed`}>
                                             {step.description}
                                         </p>
                                     </div>
                                 </TiltCard>
-                            </motion.div>
+                            </div>
                         ))}
                     </div>
                 </div>
 
-                {/* Dosage Info with 3D entrance */}
-                <motion.div
-                    initial={{ opacity: 0, y: 40, rotateX: 10 }}
-                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                    viewport={{ once: true }}
-                    className="mt-16 md:mt-24"
-                    suppressHydrationWarning
-                >
+                {/* Dosage Info — GSAP scroll reveal */}
+                <div ref={dosageRef} className="mt-16 md:mt-24" suppressHydrationWarning>
                     <TiltCard tiltStrength={4} scale={1.01} className="rounded-3xl">
                         <div className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-light)] rounded-3xl p-8 md:p-12 text-white shadow-xl shadow-primary/10">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 text-center" suppressHydrationWarning>
@@ -115,7 +124,7 @@ export function HowToUseSection() {
                             </div>
                         </div>
                     </TiltCard>
-                </motion.div>
+                </div>
             </div>
         </section>
     );

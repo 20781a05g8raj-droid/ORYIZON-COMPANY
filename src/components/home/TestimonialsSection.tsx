@@ -8,11 +8,38 @@ import { getFeaturedTestimonials } from '@/lib/api/testimonials';
 import { Testimonial } from '@/types/database';
 import { AnimatedCounter } from '@/components/ui/animations/AnimatedCounter';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 export function TestimonialsSection() {
     const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
+
+    // GSAP scroll reveal for header
+    const headerRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.92,
+        y: 40,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
+
+    // GSAP scroll reveal for the testimonial card
+    const testimonialCardRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.88,
+        y: 40,
+        duration: 0.85,
+        ease: 'power2.out',
+    });
+
+    // GSAP stagger for stats
+    const statsRef = useScrollRevealStagger<HTMLDivElement>({
+        scale: 0.85,
+        y: 40,
+        duration: 0.8,
+        stagger: 0.1,
+        ease: 'power2.out',
+        start: 'top 82%',
+    });
 
     useEffect(() => {
         async function fetchTestimonials() {
@@ -55,12 +82,10 @@ export function TestimonialsSection() {
     return (
         <section className="py-16 md:py-24 bg-[var(--color-secondary)]/30 overflow-hidden" suppressHydrationWarning>
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
-                {/* Section Header with 3D entrance */}
-                <motion.div
-                    initial={{ opacity: 0, y: 30, rotateX: 10 }}
-                    whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
-                    viewport={{ once: true }}
-                    className="text-center mb-10 md:mb-20 perspective-container"
+                {/* Section Header — GSAP scroll reveal */}
+                <div
+                    ref={headerRef}
+                    className="text-center mb-10 md:mb-20"
                     suppressHydrationWarning
                 >
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
@@ -74,21 +99,17 @@ export function TestimonialsSection() {
                         Join thousands of satisfied customers who have transformed their health
                         with Moringa Pure.
                     </p>
-                </motion.div>
+                </div>
 
-                {/* Testimonial Carousel with 3D card */}
-                <div className="relative max-w-4xl mx-auto min-h-[380px] md:min-h-[400px]" suppressHydrationWarning>
+                {/* Testimonial Carousel — GSAP scroll reveal */}
+                <div ref={testimonialCardRef} className="relative max-w-4xl mx-auto min-h-[380px] md:min-h-[400px]" suppressHydrationWarning>
                     {/* Quote Icon */}
-                    <motion.div
-                        initial={{ scale: 0, rotateY: -180 }}
-                        whileInView={{ scale: 1, rotateY: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ type: 'spring', stiffness: 150, delay: 0.2 }}
+                    <div
                         className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 w-14 h-14 md:w-16 md:h-16 bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-light)] text-white rounded-full flex items-center justify-center z-10 shadow-xl"
                         suppressHydrationWarning
                     >
                         <Quote size={28} />
-                    </motion.div>
+                    </div>
 
                     {/* Main Testimonial Card */}
                     <TiltCard tiltStrength={4} scale={1.01} className="rounded-[2rem]">
@@ -197,21 +218,15 @@ export function TestimonialsSection() {
                     </div>
                 </div>
 
-                {/* Stats with AnimatedCounter */}
-                <div className="mt-12 md:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12" suppressHydrationWarning>
+                {/* Stats — GSAP staggered scroll reveal */}
+                <div ref={statsRef} className="mt-12 md:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12" suppressHydrationWarning>
                     {[
                         { value: '10,000+', label: 'Happy Customers', gradient: 'from-emerald-500 to-emerald-700' },
                         { value: '4.8/5', label: 'Average Rating', gradient: 'from-amber-500 to-amber-700' },
                         { value: '98%', label: 'Would Recommend', gradient: 'from-violet-500 to-violet-700' },
                         { value: '1,200+', label: 'Reviews', gradient: 'from-teal-500 to-teal-700' },
                     ].map((stat, index) => (
-                        <motion.div
-                            key={index}
-                            initial={{ opacity: 0, y: 30, scale: 0.9 }}
-                            whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.12, type: 'spring', stiffness: 100 }}
-                        >
+                        <div key={index}>
                             <TiltCard tiltStrength={12} scale={1.05} className="rounded-2xl">
                                 <div className="text-center p-5 md:p-8 rounded-2xl bg-white shadow-3d border border-[var(--color-secondary)]/50" suppressHydrationWarning>
                                     <AnimatedCounter
@@ -224,7 +239,7 @@ export function TestimonialsSection() {
                                     </p>
                                 </div>
                             </TiltCard>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
             </div>

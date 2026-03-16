@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 // SEO-targeted FAQ questions matching user's spec
 const seoFaqs = [
@@ -33,14 +34,38 @@ const seoFaqs = [
 export function FAQPreviewSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
+    // GSAP scroll reveal for header
+    const headerRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.92,
+        y: 30,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
+
+    // GSAP stagger for FAQ items
+    const faqListRef = useScrollRevealStagger<HTMLDivElement>({
+        scale: 0.9,
+        y: 30,
+        duration: 0.7,
+        stagger: 0.1,
+        ease: 'power2.out',
+        start: 'top 82%',
+    });
+
+    // GSAP scroll reveal for CTA
+    const ctaRef = useScrollReveal<HTMLDivElement>({
+        scale: 0.9,
+        y: 25,
+        duration: 0.7,
+        ease: 'power2.out',
+    });
+
     return (
         <section className="py-16 md:py-24 bg-[var(--color-secondary)]/50" suppressHydrationWarning>
             <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
-                {/* Section Header */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                {/* Section Header — GSAP scroll reveal */}
+                <div
+                    ref={headerRef}
                     className="text-center mb-10 md:mb-16"
                     suppressHydrationWarning
                 >
@@ -54,17 +79,13 @@ export function FAQPreviewSection() {
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-base md:text-lg">
                         Find answers to the most common questions about Moringa and our products.
                     </p>
-                </motion.div>
+                </div>
 
-                {/* FAQ Accordion */}
-                <div className="space-y-4" suppressHydrationWarning>
+                {/* FAQ Accordion — GSAP staggered scroll reveal */}
+                <div ref={faqListRef} className="space-y-4" suppressHydrationWarning>
                     {seoFaqs.map((faq, index) => (
-                        <motion.div
+                        <div
                             key={faq.id}
-                            initial={{ opacity: 0, y: 10 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
                             className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[var(--color-secondary)]"
                             suppressHydrationWarning
                         >
@@ -102,15 +123,13 @@ export function FAQPreviewSection() {
                                     </motion.div>
                                 )}
                             </AnimatePresence>
-                        </motion.div>
+                        </div>
                     ))}
                 </div>
 
-                {/* CTAs */}
-                <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
+                {/* CTAs — GSAP scroll reveal */}
+                <div
+                    ref={ctaRef}
                     className="text-center mt-10 md:mt-12 space-y-4"
                     suppressHydrationWarning
                 >
@@ -127,7 +146,7 @@ export function FAQPreviewSection() {
                             health blog
                         </Link>.
                     </p>
-                </motion.div>
+                </div>
             </div>
         </section>
     );
