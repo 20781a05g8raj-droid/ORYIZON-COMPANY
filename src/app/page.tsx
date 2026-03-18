@@ -24,9 +24,9 @@ export default function Home() {
     <>
       <StructuredData />
       <HeroSection />
+      <FeaturedProduct />
       <WhyChooseSection />
       <BenefitsSection />
-      <FeaturedProduct />
       <HowToUseSection />
       <AEODirectAnswers />
       <TestimonialsSection />

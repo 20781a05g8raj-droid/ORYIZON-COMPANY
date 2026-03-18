@@ -126,7 +126,7 @@ export function FeaturedProduct() {
                 </div>
 
                 {/* Product Grid — GSAP staggered scroll reveal */}
-                <div ref={gridRef} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
+                <div ref={gridRef} className="grid grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6 md:gap-10">
                     {products
                         .sort((a, b) => a.price - b.price)
                         .map((product, index) => (

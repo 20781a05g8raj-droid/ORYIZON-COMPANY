@@ -133,8 +133,8 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     </div>
 
                     {/* Content */}
-                    <div className="p-6 md:p-8 flex flex-col flex-grow relative z-20 -mt-8 bg-gradient-to-b from-transparent to-black/40">
-                        <div className="flex items-center gap-1.5 mb-3 drop-shadow-md">
+                    <div className="p-4 sm:p-6 md:p-8 flex flex-col flex-grow relative z-20 -mt-8 bg-gradient-to-b from-transparent to-black/40">
+                        <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-3 drop-shadow-md">
                             <Star className={`w-4 h-4 ${theme.accent}`} />
                             <span className="text-sm font-semibold text-stone-200">
                                 {product.rating || 4.8}
@@ -144,31 +144,31 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                             </span>
                         </div>
 
-                        <h3 className={`font-heading text-xl md:text-2xl font-bold ${theme.title} mb-3 line-clamp-2 min-h-[3.5rem] tracking-tight drop-shadow-md`}>
+                        <h3 className={`font-heading text-lg sm:text-xl md:text-2xl font-bold ${theme.title} mb-2 sm:mb-3 line-clamp-2 min-h-[3rem] sm:min-h-[3.5rem] tracking-tight drop-shadow-md`}>
                             {product.name}
                         </h3>
 
-                        <p className={`text-sm ${theme.desc} mb-6 line-clamp-2 flex-grow leading-relaxed`}>
+                        <p className={`text-xs sm:text-sm ${theme.desc} mb-4 sm:mb-6 line-clamp-2 flex-grow leading-relaxed hidden xs:block`}>
                             {product.short_description || product.description}
                         </p>
 
-                        <div className="mt-auto pt-4 border-t border-white/5">
-                            <div className="flex items-baseline gap-3 mb-5">
-                                <span className={`text-3xl font-bold font-heading ${theme.price} drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]`}>
+                        <div className="mt-auto pt-3 sm:pt-4 border-t border-white/5">
+                            <div className="flex flex-wrap items-baseline gap-2 sm:gap-3 mb-3 sm:mb-5">
+                                <span className={`text-lg sm:text-3xl font-bold font-heading ${theme.price} drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]`}>
                                     {formatPrice(displayPrice)}
                                 </span>
                                 {displayOriginalPrice && (
-                                    <span className={`text-sm font-medium line-through ${theme.originalPrice}`}>
+                                    <span className={`text-xs sm:text-sm font-medium line-through ${theme.originalPrice}`}>
                                         {formatPrice(displayOriginalPrice)}
                                     </span>
                                 )}
                             </div>
 
                             <button
-                                className={`w-full py-4 rounded-xl flex items-center justify-center gap-2 font-semibold tracking-wide transition-all duration-300 ${theme.buttonBase}`}
+                                className={`w-full py-2.5 sm:py-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 font-semibold tracking-wide transition-all duration-300 ${theme.buttonBase}`}
                             >
-                                <ShoppingCart size={20} className="drop-shadow-md" />
-                                <span className="drop-shadow-md">ADD TO CART</span>
+                                <ShoppingCart className="drop-shadow-md w-4 h-4 sm:w-5 sm:h-5" />
+                                <span className="drop-shadow-md text-[10px] sm:text-base">ADD TO CART</span>
                             </button>
                         </div>
                     </div>
