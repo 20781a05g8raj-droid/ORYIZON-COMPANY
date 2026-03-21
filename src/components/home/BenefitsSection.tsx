@@ -43,8 +43,8 @@ export function BenefitsSection() {
                                 scale={1.03}
                             >
                                 {benefit.image ? (
-                                    <div className="chamkila-glass group relative rounded-[2rem] hover:-translate-y-2 transition-all duration-300 icon-3d-flip w-full h-full overflow-hidden flex items-center justify-center bg-white/10">
-                                        <Image src={benefit.image} alt={benefit.title} width={800} height={800} className="w-full h-full object-cover aspect-square sm:aspect-[4/5]" />
+                                    <div className="chamkila-glass group relative rounded-[2rem] hover:-translate-y-2 transition-all duration-300 icon-3d-flip w-full h-full aspect-square overflow-hidden flex items-center justify-center bg-white/10">
+                                        <Image src={benefit.image} alt={benefit.title} width={800} height={800} className="w-full h-full object-contain" />
                                         <div className="absolute inset-0 rounded-[2rem] animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10" />
                                     </div>
                                 ) : (

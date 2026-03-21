@@ -65,8 +65,8 @@ export function HowToUseSection() {
                                     scale={1.04}
                                 >
                                     {step.image ? (
-                                        <div className="chamkila-glass group rounded-[2.5rem] relative z-10 h-full hover:-translate-y-2 transition-all duration-300 icon-3d-flip overflow-hidden">
-                                            <Image src={step.image} alt={step.title} width={800} height={800} className="w-full h-full object-cover aspect-square sm:aspect-[4/5]" />
+                                        <div className="chamkila-glass group rounded-[2.5rem] w-full h-full aspect-square relative z-10 hover:-translate-y-2 transition-all duration-300 icon-3d-flip overflow-hidden">
+                                            <Image src={step.image} alt={step.title} width={800} height={800} className="w-full h-full object-contain" />
                                             {/* Step Number overlay */}
                                             <motion.div
                                                 whileHover={{ scale: 1.2, rotateZ: 10 }}
