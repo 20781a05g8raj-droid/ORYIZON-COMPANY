@@ -8,28 +8,25 @@ import { getFeaturedProducts } from '@/lib/api/products';
 import { ProductWithVariants } from '@/types/database';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
 
 export function FeaturedProduct() {
     const [products, setProducts] = useState<ProductWithVariants[]>([]);
     const [loading, setLoading] = useState(true);
 
-    // GSAP scroll reveal for header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 30,
-        duration: 0.7,
-        ease: 'power2.out',
+    // GSAP scroll reveal for header (Text Translate)
+    const headerRef = useTextTranslateReveal<HTMLDivElement>({
+        direction: 'right',
+        distance: 40,
+        duration: 0.8,
+        ease: 'power3.out',
     });
 
     // GSAP stagger for product grid
-    const gridRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.85,
-        y: 50,
-        duration: 0.85,
+    const gridRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
         stagger: 0.15,
-        ease: 'power2.out',
-        start: 'top 80%',
+        duration: 0.9,
     });
 
     // GSAP scroll reveal for CTA
@@ -44,20 +41,35 @@ export function FeaturedProduct() {
         async function fetchFeatured() {
             try {
                 // 1. Fetch API Products (Database)
-                const apiProducts = await getFeaturedProducts();
+                let apiProducts: any[] = [];
+                try {
+                    apiProducts = await getFeaturedProducts();
+                } catch (err) {
+                    console.warn("API fetch failed, falling back to local products", err);
+                }
 
                 // 2. Fetch Local Products (Filesystem Images)
                 const localProducts = getLocalProducts();
+
+                if (!apiProducts || apiProducts.length === 0) {
+                    apiProducts = localProducts;
+                }
 
                 // 3. Process products to merge images
                 const processedProducts = apiProducts.map(apiProd => {
                     const localMatch = localProducts.find(p => p.slug === apiProd.slug);
 
+                    const merged = { ...apiProd };
+                    // Map local keys to API keys if they are missing
+                    if (!merged.original_price && apiProd.originalPrice) merged.original_price = apiProd.originalPrice;
+                    if (!merged.review_count && apiProd.reviewCount) merged.review_count = apiProd.reviewCount;
+                    if (!merged.short_description && apiProd.shortDescription) merged.short_description = apiProd.shortDescription;
+
                     // Prioritize API (Database) images
                     if (apiProd.images && apiProd.images.length > 0) {
                         return {
-                            ...apiProd,
-                            images: apiProd.images.map(img => {
+                            ...merged,
+                            images: apiProd.images.map((img: string) => {
                                 const sanitized = img.replace(/ /g, '-');
                                 if (sanitized.startsWith('http') || sanitized.startsWith('/')) return sanitized;
                                 return `/images/products/${sanitized}`;
@@ -66,11 +78,11 @@ export function FeaturedProduct() {
                     } else if (localMatch && localMatch.images && localMatch.images.length > 0) {
                         // Fallback to local images
                         return {
-                            ...apiProd,
+                            ...merged,
                             images: localMatch.images
                         };
                     }
-                    return apiProd;
+                    return merged;
                 });
 
                 // Filter for our specific moringa powder products if needed
@@ -79,10 +91,10 @@ export function FeaturedProduct() {
                     (p.slug.endsWith('100g') || p.slug.endsWith('250g') || p.slug.endsWith('500g'))
                 );
 
-                setProducts(specificProducts.length > 0 ? specificProducts : processedProducts.slice(0, 3));
+                setProducts((specificProducts.length > 0 ? specificProducts : processedProducts.slice(0, 3)) as ProductWithVariants[]);
 
             } catch (error) {
-                console.error('Failed to fetch featured products:', error);
+                console.error('Failed to load products completely:', error);
             } finally {
                 setLoading(false);
             }

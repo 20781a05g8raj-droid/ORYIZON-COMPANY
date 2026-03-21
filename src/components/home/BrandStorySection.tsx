@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
+import Image from 'next/image';
 import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Marquee } from '@/components/ui/animations/Marquee';
@@ -56,15 +57,13 @@ export function BrandStorySection() {
                     <div ref={imageRef} className="relative">
                         <TiltCard tiltStrength={6} scale={1.02} className="rounded-3xl">
                             <div className="relative aspect-[4/3] rounded-3xl overflow-hidden bg-gradient-to-br from-[var(--color-primary-light)] to-[var(--color-primary)] shadow-3d" suppressHydrationWarning>
-                                <div className="absolute inset-0 flex items-center justify-center">
-                                    <motion.div
-                                        animate={{ scale: [1, 1.1, 1], rotateZ: [0, 5, 0] }}
-                                        transition={{ duration: 6, repeat: Infinity, ease: 'easeInOut' }}
-                                        className="text-7xl md:text-9xl opacity-20"
-                                    >
-                                        🌳
-                                    </motion.div>
-                                </div>
+                                <Image 
+                                    src="/From%20Our%20Farm%20to%20Your%20Table.png" 
+                                    alt="From Our Farm to Your Table"
+                                    fill
+                                    className="object-cover transition-transform duration-700 hover:scale-105"
+                                    priority
+                                />
 
                                 {/* Decorative Elements */}
                                 <div className="absolute inset-0 bg-black/10 transition-opacity hover:opacity-0" />
@@ -88,7 +87,7 @@ export function BrandStorySection() {
                             viewport={{ once: true }}
                             transition={{ delay: 0.4, type: 'spring', stiffness: 120 }}
                             whileHover={{ scale: 1.08, rotate: 3 }}
-                            className="absolute -bottom-5 right-2 md:-right-10 glass-card rounded-2xl shadow-2xl p-4 md:p-6 max-w-[220px] md:max-w-xs z-10"
+                            className="absolute -bottom-5 right-2 md:-right-10 chamkila-glass rounded-2xl p-4 md:p-6 max-w-[220px] md:max-w-xs z-10 hover:-translate-y-1"
                             suppressHydrationWarning
                         >
                             <div className="flex items-center gap-3 md:gap-4" suppressHydrationWarning>

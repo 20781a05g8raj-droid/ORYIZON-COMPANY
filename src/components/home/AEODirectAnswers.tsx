@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { MessageCircleQuestion, ShieldCheck } from 'lucide-react';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
 
 const aeoQuestions = [
     {
@@ -23,26 +23,22 @@ const aeoQuestions = [
 
 export function AEODirectAnswers() {
     // GSAP scroll reveal for header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 30,
-        duration: 0.7,
-        ease: 'power2.out',
+    const headerRef = useTextTranslateReveal<HTMLDivElement>({
+        direction: 'left',
+        distance: 40,
+        duration: 0.8,
     });
 
     // GSAP stagger reveal for answer cards
-    const cardsRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.85,
-        y: 50,
-        duration: 0.85,
+    const cardsRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
         stagger: 0.15,
-        ease: 'power2.out',
-        start: 'top 80%',
+        duration: 0.9,
     });
 
     return (
-        <section className="py-16 md:py-24 bg-gradient-to-br from-[var(--color-cream)] to-white" id="moringa-facts">
-            <div className="max-w-5xl mx-auto px-5 sm:px-6 lg:px-8">
+        <section className="py-20 md:py-32 bg-gradient-to-br from-[var(--color-cream)] to-white" id="moringa-facts">
+            <div className="max-w-[80rem] mx-auto px-6 sm:px-8 lg:px-12">
                 {/* Section Header — GSAP scroll reveal */}
                 <div ref={headerRef} className="text-center mb-10 md:mb-16">
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
@@ -54,11 +50,11 @@ export function AEODirectAnswers() {
                 </div>
 
                 {/* AEO Answer Cards — GSAP staggered scroll reveal */}
-                <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-5 md:gap-8">
+                <div ref={cardsRef} className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12">
                     {aeoQuestions.map((item, index) => (
                         <article
                             key={index}
-                            className="bg-white rounded-3xl p-6 md:p-10 shadow-premium gradient-border-top hover:shadow-xl transition-all duration-300"
+                            className="chamkila-glass bg-white/70 rounded-[2rem] p-8 md:p-12 hover:-translate-y-2 transition-all duration-500"
                         >
                             {/* Icon */}
                             <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${item.color} flex items-center justify-center text-white mb-5 md:mb-6 shadow-lg`}>

@@ -8,7 +8,7 @@ import { getFeaturedTestimonials } from '@/lib/api/testimonials';
 import { Testimonial } from '@/types/database';
 import { AnimatedCounter } from '@/components/ui/animations/AnimatedCounter';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextRotateReveal } from '@/hooks/useScrollReveal';
 
 export function TestimonialsSection() {
     const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
@@ -16,29 +16,22 @@ export function TestimonialsSection() {
     const [loading, setLoading] = useState(true);
 
     // GSAP scroll reveal for header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 40,
-        duration: 0.7,
-        ease: 'power2.out',
+    const headerRef = useTextRotateReveal<HTMLDivElement>({
+        y: 50,
+        duration: 0.8,
     });
 
     // GSAP scroll reveal for the testimonial card
-    const testimonialCardRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.88,
-        y: 40,
-        duration: 0.85,
-        ease: 'power2.out',
+    const testimonialCardRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
+        duration: 0.9,
     });
 
     // GSAP stagger for stats
-    const statsRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.85,
-        y: 40,
-        duration: 0.8,
+    const statsRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
         stagger: 0.1,
-        ease: 'power2.out',
-        start: 'top 82%',
+        duration: 0.9,
     });
 
     useEffect(() => {
@@ -80,8 +73,8 @@ export function TestimonialsSection() {
     const currentTestimonial = testimonials[currentIndex];
 
     return (
-        <section className="py-16 md:py-24 bg-[var(--color-secondary)]/30 overflow-hidden" suppressHydrationWarning>
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <section className="py-20 md:py-32 bg-gradient-to-b from-[var(--color-secondary)]/30 to-white overflow-hidden" suppressHydrationWarning>
+            <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
                 {/* Section Header — GSAP scroll reveal */}
                 <div
                     ref={headerRef}
@@ -113,7 +106,7 @@ export function TestimonialsSection() {
 
                     {/* Main Testimonial Card */}
                     <TiltCard tiltStrength={4} scale={1.01} className="rounded-[2rem]">
-                        <div className="bg-white rounded-[2rem] shadow-3d p-6 md:p-12 pt-14 md:pt-20 overflow-hidden relative gradient-border-top" suppressHydrationWarning>
+                        <div className="chamkila-glass bg-white/70 rounded-[2rem] p-8 md:p-16 pt-16 md:pt-24 relative" suppressHydrationWarning>
                             <AnimatePresence mode="wait">
                                 <motion.div
                                     key={currentIndex}
@@ -219,7 +212,7 @@ export function TestimonialsSection() {
                 </div>
 
                 {/* Stats — GSAP staggered scroll reveal */}
-                <div ref={statsRef} className="mt-12 md:mt-24 grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-12" suppressHydrationWarning>
+                <div ref={statsRef} className="mt-16 md:mt-32 grid grid-cols-2 lg:grid-cols-4 gap-6 md:gap-14" suppressHydrationWarning>
                     {[
                         { value: '10,000+', label: 'Happy Customers', gradient: 'from-emerald-500 to-emerald-700' },
                         { value: '4.8/5', label: 'Average Rating', gradient: 'from-amber-500 to-amber-700' },
@@ -227,8 +220,8 @@ export function TestimonialsSection() {
                         { value: '1,200+', label: 'Reviews', gradient: 'from-teal-500 to-teal-700' },
                     ].map((stat, index) => (
                         <div key={index}>
-                            <TiltCard tiltStrength={12} scale={1.05} className="rounded-2xl">
-                                <div className="text-center p-5 md:p-8 rounded-2xl bg-white shadow-3d border border-[var(--color-secondary)]/50" suppressHydrationWarning>
+                            <TiltCard tiltStrength={12} scale={1.05} className="rounded-3xl">
+                                <div className="chamkila-glass text-center p-8 md:p-12 rounded-3xl bg-white/70 hover:-translate-y-1 transition-all duration-300" suppressHydrationWarning>
                                     <AnimatedCounter
                                         value={stat.value}
                                         className="font-heading text-2xl md:text-4xl lg:text-5xl font-bold text-[var(--color-primary)] mb-1 md:mb-2 block"

@@ -3,30 +3,21 @@
 import React from 'react';
 import { KEY_BENEFITS } from '@/lib/constants';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextReveal, useTextRotateReveal } from '@/hooks/useScrollReveal';
 
 export function BenefitsSection() {
-    // GSAP scroll reveal for header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 40,
-        duration: 0.7,
-        ease: 'power2.out',
-    });
+    // GSAP scroll reveal for header - Rotate Reveal
+    const headerRef = useTextRotateReveal<HTMLDivElement>();
 
     // GSAP stagger reveal for benefits grid
-    const gridRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.85,
-        y: 50,
-        duration: 0.8,
-        stagger: 0.1,
-        ease: 'power2.out',
-        start: 'top 82%',
+    const gridRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
+        stagger: 0.15,
     });
 
     return (
-        <section className="py-16 md:py-24 bg-white" id="benefits" suppressHydrationWarning>
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <section className="py-20 md:py-32 bg-white" id="benefits" suppressHydrationWarning>
+            <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
                 {/* Section Header — GSAP scroll reveal */}
                 <div ref={headerRef} className="text-center mb-10 md:mb-16">
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
@@ -42,15 +33,15 @@ export function BenefitsSection() {
                 </div>
 
                 {/* Benefits Grid — GSAP staggered scroll reveal */}
-                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 md:gap-8">
+                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-10">
                     {KEY_BENEFITS.map((benefit, index) => (
                         <div key={index}>
                             <TiltCard
-                                className="h-full rounded-2xl"
+                                className="h-full rounded-[2rem]"
                                 tiltStrength={8}
                                 scale={1.03}
                             >
-                                <div className={`group relative p-5 md:p-8 ${benefit.theme.bg} rounded-2xl h-full transition-all duration-300 icon-3d-flip`}>
+                                <div className={`chamkila-glass group relative p-8 md:p-10 lg:p-12 ${benefit.theme.bg} hover:-translate-y-2 rounded-[2rem] h-full transition-all duration-300 icon-3d-flip`}>
                                     {/* Gradient icon */}
                                     <div className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-2xl ${benefit.theme.icon} mb-4 md:mb-6 shadow-lg icon-3d-target transition-transform`}>
                                         <span className="text-2xl md:text-3xl">{benefit.icon}</span>

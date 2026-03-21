@@ -6,7 +6,9 @@ import Link from 'next/link';
 import { ArrowRight, Sparkles, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { FloatingElements } from '@/components/ui/animations/FloatingElements';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useScrollRevealStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
+import { useParallax } from '@/hooks/useParallax';
+
 
 export function CTASection() {
     // GSAP scroll reveal for badge
@@ -17,23 +19,22 @@ export function CTASection() {
         ease: 'power2.out',
     });
 
-    // GSAP scroll reveal for headline
-    const headlineRef = useScrollReveal<HTMLHeadingElement>({
-        scale: 0.88,
-        y: 40,
-        duration: 0.8,
+    // GSAP scroll reveal for headline - Left Translate Reveal
+    const headlineRef = useTextTranslateReveal<HTMLHeadingElement>({
+        direction: 'left',
+        distance: 50,
         delay: 0.1,
-        ease: 'power2.out',
     });
 
-    // GSAP scroll reveal for subtitle
-    const subtitleRef = useScrollReveal<HTMLParagraphElement>({
-        scale: 0.9,
-        y: 30,
-        duration: 0.7,
+    // GSAP scroll reveal for subtitle - Right Translate Reveal
+    const subtitleRef = useTextTranslateReveal<HTMLParagraphElement>({
+        direction: 'right',
+        distance: 50,
         delay: 0.2,
-        ease: 'power2.out',
     });
+
+    // Parallax background layer
+    const bgParallaxRef = useParallax<HTMLDivElement>({ speed: 0.7 });
 
     // GSAP stagger for benefit pills
     const pillsRef = useScrollRevealStagger<HTMLDivElement>({
@@ -65,17 +66,22 @@ export function CTASection() {
     });
 
     return (
-        <section className="py-16 md:py-24 bg-gradient-to-br from-[var(--color-primary)] via-[#2D5016] to-[#1A3009] relative overflow-hidden" suppressHydrationWarning>
-            {/* 3D Floating Particles */}
-            <FloatingElements
-                count={16}
-                emojis={['🍃', '✨', '🌿', '💫', '🌱']}
-                variant="dark"
-            />
+        <section className="py-16 md:py-24 bg-[#1A3009] relative overflow-hidden" suppressHydrationWarning>
+            {/* Parallax Background Layer */}
+            <div ref={bgParallaxRef} className="absolute left-0 w-full h-[150%] -top-[25%] z-0 pointer-events-none">
+                <div className="absolute inset-0 bg-gradient-to-br from-[var(--color-primary)] via-[#2D5016] to-[#1A3009]" />
+                
+                {/* 3D Floating Particles */}
+                <FloatingElements
+                    count={16}
+                    emojis={['🍃', '✨', '🌿', '💫', '🌱']}
+                    variant="dark"
+                />
 
-            {/* Background glow orbs */}
-            <div className="absolute top-1/4 right-0 w-72 h-72 bg-[var(--color-accent)]/8 rounded-full blur-3xl pointer-events-none animate-pulse" suppressHydrationWarning />
-            <div className="absolute bottom-0 left-0 w-56 h-56 bg-emerald-300/8 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: '1s' }} suppressHydrationWarning />
+                {/* Background glow orbs */}
+                <div className="absolute top-1/4 right-0 w-72 h-72 bg-[var(--color-accent)]/8 rounded-full blur-3xl pointer-events-none animate-pulse" suppressHydrationWarning />
+                <div className="absolute bottom-0 left-0 w-56 h-56 bg-emerald-300/8 rounded-full blur-3xl pointer-events-none animate-pulse" style={{ animationDelay: '1s' }} suppressHydrationWarning />
+            </div>
 
             <div className="relative z-10 max-w-5xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
                 <div className="text-center" suppressHydrationWarning>

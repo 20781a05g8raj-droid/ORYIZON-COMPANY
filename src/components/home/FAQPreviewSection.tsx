@@ -5,7 +5,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { ChevronDown, ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
+import { useParallax } from '@/hooks/useParallax';
+
 
 // SEO-targeted FAQ questions matching user's spec
 const seoFaqs = [
@@ -34,22 +36,21 @@ const seoFaqs = [
 export function FAQPreviewSection() {
     const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-    // GSAP scroll reveal for header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 30,
-        duration: 0.7,
-        ease: 'power2.out',
+    // GSAP scroll reveal for header - Left Translate Reveal
+    const headerRef = useTextTranslateReveal<HTMLDivElement>({
+        direction: 'left',
+        distance: 40,
+        duration: 0.8,
     });
 
+    // Parallax background layer
+    const bgParallaxRef = useParallax<HTMLDivElement>({ speed: 0.75 });
+
     // GSAP stagger for FAQ items
-    const faqListRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.9,
-        y: 30,
-        duration: 0.7,
+    const faqListRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 150,
         stagger: 0.1,
-        ease: 'power2.out',
-        start: 'top 82%',
+        duration: 0.8,
     });
 
     // GSAP scroll reveal for CTA
@@ -61,8 +62,12 @@ export function FAQPreviewSection() {
     });
 
     return (
-        <section className="py-16 md:py-24 bg-[var(--color-secondary)]/50" suppressHydrationWarning>
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <section className="py-16 md:py-24 relative overflow-hidden bg-white" suppressHydrationWarning>
+            {/* Parallax Background Layer */}
+            <div ref={bgParallaxRef} className="absolute left-0 w-full h-[150%] -top-[25%] z-0 pointer-events-none bg-[var(--color-secondary)]/50"></div>
+
+            <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 lg:px-8" suppressHydrationWarning>
+
                 {/* Section Header — GSAP scroll reveal */}
                 <div
                     ref={headerRef}
@@ -86,7 +91,7 @@ export function FAQPreviewSection() {
                     {seoFaqs.map((faq, index) => (
                         <div
                             key={faq.id}
-                            className="bg-white rounded-2xl overflow-hidden shadow-sm border border-[var(--color-secondary)]"
+                            className="chamkila-glass bg-white/80 rounded-2xl hover:-translate-y-1"
                             suppressHydrationWarning
                         >
                             <button

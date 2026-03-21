@@ -26,8 +26,8 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
             viewport={{ once: true }}
             whileHover={{ y: -5 }}
             className={`
-        group bg-white rounded-2xl overflow-hidden shadow-md hover:shadow-xl
-        transition-all duration-300
+        group bg-white/40 backdrop-blur-2xl border border-white/50 overflow-hidden shadow-[0_12px_40px_rgba(0,0,0,0.1)] hover:shadow-[0_24px_64px_rgba(0,0,0,0.2)] hover:-translate-y-2 rounded-3xl
+        transition-all duration-500
         ${featured ? 'md:flex md:items-center' : ''}
       `}
         >

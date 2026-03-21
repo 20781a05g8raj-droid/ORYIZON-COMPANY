@@ -95,7 +95,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             className="h-full"
         >
             <TiltCard tiltStrength={8} scale={1.03} className="h-full rounded-[2rem]">
-                <Link href={`/products/${product.slug}`} className={`block h-full ${theme.bg} rounded-[2rem] overflow-hidden shadow-2xl border hover:shadow-[0_20px_40px_-15px_rgba(0,0,0,0.8)] transition-all duration-500 flex flex-col group`}>
+                <Link href={`/products/${product.slug}`} className={`chamkila-glass block h-full ${theme.bg} rounded-[2rem] hover:-translate-y-2 flex flex-col group`}>
                     {/* Image Container */}
                     <div className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-t ${theme.imageBg}`}>
                         {/* Cinematic Vignette Overlay */}

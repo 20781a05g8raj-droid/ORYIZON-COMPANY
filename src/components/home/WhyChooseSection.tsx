@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextRotateReveal } from '@/hooks/useScrollReveal';
 
 const whyChoosePoints = [
     {
@@ -49,27 +49,19 @@ const whyChoosePoints = [
 ];
 
 export function WhyChooseSection() {
-    // GSAP scroll reveal for the header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 40,
-        duration: 0.7,
-        ease: 'power2.out',
-    });
+    // GSAP scroll reveal for the header - Rotate Reveal
+    const headerRef = useTextRotateReveal<HTMLDivElement>();
 
-    // GSAP stagger reveal for the card grid
-    const gridRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.85,
-        y: 40,
-        duration: 0.8,
-        stagger: 0.12,
-        ease: 'power2.out',
-        start: 'top 82%',
+    // GSAP stagger fly-in for the card grid
+    const gridRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
+        stagger: 0.15,
+        duration: 0.9,
     });
 
     return (
-        <section className="py-16 md:py-24 bg-[var(--color-cream)]" suppressHydrationWarning>
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <section className="py-20 md:py-32 bg-[var(--color-cream)]" suppressHydrationWarning>
+            <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
                 {/* Section Header — GSAP scroll reveal */}
                 <div ref={headerRef} className="text-center mb-10 md:mb-16">
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
@@ -82,15 +74,15 @@ export function WhyChooseSection() {
                 </div>
 
                 {/* Cards — GSAP staggered scroll reveal */}
-                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6" suppressHydrationWarning>
+                <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 gap-6 md:gap-10" suppressHydrationWarning>
                     {whyChoosePoints.map((point, index) => (
                         <div key={index}>
                             <TiltCard
-                                className="h-full rounded-2xl"
+                                className="h-full rounded-[2rem]"
                                 tiltStrength={7}
                                 scale={1.02}
                             >
-                                <div className={`flex items-start gap-4 p-5 md:p-8 ${point.theme.bg} rounded-2xl h-full transition-all duration-300 icon-3d-flip`}>
+                                <div className={`chamkila-glass flex items-start gap-5 p-8 md:p-10 lg:p-12 ${point.theme.bg} hover:-translate-y-2 rounded-[2rem] h-full transition-all duration-300 icon-3d-flip`}>
                                     {/* 3D gradient icon */}
                                     <div className={`w-12 h-12 md:w-14 md:h-14 rounded-2xl bg-gradient-to-br ${point.gradient} flex items-center justify-center flex-shrink-0 shadow-lg icon-3d-target`}>
                                         <span className={`text-xl md:text-2xl ${point.theme.iconText}`}>{point.icon}</span>

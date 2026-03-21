@@ -36,31 +36,31 @@ export function Button({
 
   const variants = {
     primary: `
-      bg-[var(--color-primary)] text-white
-      hover:bg-[var(--color-primary-light)]
+      bg-[var(--color-primary)]/90 backdrop-blur-md border border-white/20 text-white
+      hover:bg-[var(--color-primary)] hover:border-white/40
       focus:ring-[var(--color-primary)]
-      shadow-md hover:shadow-lg
+      shadow-[0_8px_32px_rgba(0,0,0,0.12)] hover:shadow-[0_8px_32px_rgba(0,0,0,0.2)]
     `,
     secondary: `
-      bg-[var(--color-secondary)] text-[var(--color-primary)]
-      hover:bg-[var(--color-cream)]
+      bg-[var(--color-secondary)]/90 backdrop-blur-md border border-[var(--color-primary)]/20 text-[var(--color-primary)]
+      hover:bg-[var(--color-cream)] hover:border-[var(--color-primary)]/40
       focus:ring-[var(--color-secondary)]
+      shadow-[0_4px_16px_rgba(0,0,0,0.05)] hover:shadow-[0_8px_24px_rgba(0,0,0,0.1)]
     `,
     outline: `
-      border-2 border-[var(--color-primary)] text-[var(--color-primary)]
-      hover:bg-[var(--color-primary)] hover:text-white
+      border-2 border-[var(--color-primary)]/50 backdrop-blur-sm text-[var(--color-primary)] bg-white/10
+      hover:bg-[var(--color-primary)] hover:text-white hover:border-[var(--color-primary)]
       focus:ring-[var(--color-primary)]
     `,
     ghost: `
-      text-[var(--color-primary)]
-      hover:bg-[var(--color-secondary)]
+      text-[var(--color-primary)] bg-transparent hover:backdrop-blur-md hover:bg-[var(--color-secondary)]/50
       focus:ring-[var(--color-primary)]
     `,
     accent: `
-      bg-[var(--color-accent)] text-white
-      hover:bg-[var(--color-accent-light)]
+      bg-[var(--color-accent)]/90 backdrop-blur-md border border-white/20 text-white
+      hover:bg-[var(--color-accent)] hover:border-white/40
       focus:ring-[var(--color-accent)]
-      shadow-md hover:shadow-gold
+      shadow-[0_8px_32px_rgba(255,215,0,0.15)] hover:shadow-gold
     `,
   };
 
@@ -72,8 +72,9 @@ export function Button({
 
   return (
     <motion.button
-      whileHover={{ scale: disabled || loading ? 1 : 1.02 }}
-      whileTap={{ scale: disabled || loading ? 1 : 0.98 }}
+      whileHover={{ scale: disabled || loading ? 1 : 1.05 }}
+      whileTap={{ scale: disabled || loading ? 1 : 0.95 }}
+      transition={{ type: "spring", stiffness: 400, damping: 17 }}
       className={`
         ${baseStyles}
         ${variants[variant]}

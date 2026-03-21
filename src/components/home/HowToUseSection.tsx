@@ -4,38 +4,32 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { HOW_TO_USE } from '@/lib/constants';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
+import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
 
 export function HowToUseSection() {
     // GSAP scroll reveal for header
-    const headerRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.92,
-        y: 40,
-        duration: 0.7,
-        ease: 'power2.out',
+    const headerRef = useTextTranslateReveal<HTMLDivElement>({
+        direction: 'right',
+        distance: 40,
+        duration: 0.8,
     });
 
     // GSAP stagger reveal for step cards
-    const stepsRef = useScrollRevealStagger<HTMLDivElement>({
-        scale: 0.85,
-        y: 60,
-        duration: 0.85,
+    const stepsRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
         stagger: 0.15,
-        ease: 'power2.out',
-        start: 'top 82%',
+        duration: 0.9,
     });
 
     // GSAP scroll reveal for the dosage info card
-    const dosageRef = useScrollReveal<HTMLDivElement>({
-        scale: 0.88,
-        y: 40,
-        duration: 0.8,
-        ease: 'power2.out',
+    const dosageRef = useCardFlyInStagger<HTMLDivElement>({
+        distance: 200,
+        duration: 0.9,
     });
 
     return (
-        <section className="py-16 md:py-24 bg-white" suppressHydrationWarning>
-            <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8" suppressHydrationWarning>
+        <section className="py-20 md:py-32 bg-[var(--color-secondary)]/20" suppressHydrationWarning>
+            <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
                 {/* Section Header — GSAP scroll reveal */}
                 <div
                     ref={headerRef}
@@ -61,15 +55,15 @@ export function HowToUseSection() {
                     {/* Connection Line */}
                     <div className="hidden lg:block absolute top-1/2 left-0 right-0 h-1 bg-gradient-to-r from-transparent via-[var(--color-primary-light)] to-transparent -translate-y-1/2 z-0" suppressHydrationWarning />
 
-                    <div ref={stepsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-12 relative z-10" suppressHydrationWarning>
+                    <div ref={stepsRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 md:gap-14 relative z-10" suppressHydrationWarning>
                         {HOW_TO_USE.map((step, index) => (
                             <div key={step.id} className="relative h-full">
                                 <TiltCard
-                                    className="h-full rounded-3xl"
+                                    className="h-full rounded-[2.5rem]"
                                     tiltStrength={10}
                                     scale={1.04}
                                 >
-                                    <div className={`${step.theme.bg} rounded-3xl p-8 md:p-10 text-center relative z-10 h-full backdrop-blur-sm icon-3d-flip`}>
+                                    <div className={`chamkila-glass ${step.theme.bg} rounded-[2.5rem] p-10 md:p-14 text-center relative z-10 h-full hover:-translate-y-2 transition-all duration-300 icon-3d-flip`}>
                                         {/* Step Number */}
                                         <motion.div
                                             whileHover={{ scale: 1.2, rotateZ: 10 }}
@@ -105,9 +99,9 @@ export function HowToUseSection() {
                 </div>
 
                 {/* Dosage Info — GSAP scroll reveal */}
-                <div ref={dosageRef} className="mt-16 md:mt-24" suppressHydrationWarning>
+                <div ref={dosageRef} className="mt-20 md:mt-32" suppressHydrationWarning>
                     <TiltCard tiltStrength={4} scale={1.01} className="rounded-3xl">
-                        <div className="bg-gradient-to-r from-[var(--color-primary)] to-[var(--color-primary-light)] rounded-3xl p-8 md:p-12 text-white shadow-xl shadow-primary/10">
+                        <div className="chamkila-glass bg-[var(--color-primary)]/90 rounded-3xl p-10 md:p-16 text-white">
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 md:gap-12 text-center" suppressHydrationWarning>
                                 <div>
                                     <h4 className="font-heading text-xl md:text-2xl font-bold mb-2">Adults</h4>
