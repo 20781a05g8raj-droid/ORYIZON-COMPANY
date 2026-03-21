@@ -64,39 +64,47 @@ export function HowToUseSection() {
                                     tiltStrength={10}
                                     scale={1.04}
                                 >
-                                    <div className={`chamkila-glass ${step.theme.bg} rounded-[2.5rem] p-10 md:p-14 text-center relative z-10 h-full hover:-translate-y-2 transition-all duration-300 icon-3d-flip`}>
-                                        {/* Step Number */}
-                                        <motion.div
-                                            whileHover={{ scale: 1.2, rotateZ: 10 }}
-                                            className={`absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 ${step.theme.icon} rounded-full flex items-center justify-center font-bold text-sm shadow-xl z-20`}
-                                            suppressHydrationWarning
-                                        >
-                                            {index + 1}
-                                        </motion.div>
+                                    {step.image ? (
+                                        <div className="chamkila-glass group rounded-[2.5rem] relative z-10 h-full hover:-translate-y-2 transition-all duration-300 icon-3d-flip overflow-hidden">
+                                            <Image src={step.image} alt={step.title} width={800} height={800} className="w-full h-full object-cover aspect-square sm:aspect-[4/5]" />
+                                            {/* Step Number overlay */}
+                                            <motion.div
+                                                whileHover={{ scale: 1.2, rotateZ: 10 }}
+                                                className={`absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 ${step.theme.icon} rounded-full flex items-center justify-center font-bold text-white shadow-xl z-20`}
+                                                suppressHydrationWarning
+                                            >
+                                                {index + 1}
+                                            </motion.div>
+                                        </div>
+                                    ) : (
+                                        <div className={`chamkila-glass ${step.theme.bg} rounded-[2.5rem] p-10 md:p-14 text-center relative z-10 h-full hover:-translate-y-2 transition-all duration-300 icon-3d-flip`}>
+                                            <motion.div
+                                                whileHover={{ scale: 1.2, rotateZ: 10 }}
+                                                className={`absolute -top-4 left-1/2 -translate-x-1/2 w-10 h-10 ${step.theme.icon} rounded-full flex items-center justify-center font-bold text-white shadow-xl z-20`}
+                                                suppressHydrationWarning
+                                            >
+                                                {index + 1}
+                                            </motion.div>
 
-                                        {/* Icon */}
-                                        <motion.div
-                                            whileHover={{ scale: 1.15, rotateY: 180 }}
-                                            transition={{ type: 'spring', stiffness: 200 }}
-                                            className="mb-6 inline-block icon-3d-target"
-                                        >
-                                            <div className={`w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full ${step.theme.icon} bg-opacity-10 flex items-center justify-center shadow-lg overflow-hidden relative`}>
-                                                {step.image ? (
-                                                    <Image src={step.image} alt={step.title} fill className="object-contain scale-[0.85]" sizes="96px" />
-                                                ) : (
+                                            <motion.div
+                                                whileHover={{ scale: 1.15, rotateY: 180 }}
+                                                transition={{ type: 'spring', stiffness: 200 }}
+                                                className="mb-6 inline-block icon-3d-target"
+                                            >
+                                                <div className={`w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full ${step.theme.icon} bg-opacity-10 flex items-center justify-center shadow-lg relative`}>
                                                     <span className="text-4xl md:text-5xl">{step.icon}</span>
-                                                )}
-                                            </div>
-                                        </motion.div>
+                                                </div>
+                                            </motion.div>
 
-                                        <h3 className={`font-heading text-xl md:text-2xl font-bold mb-3 ${step.theme.text}`}>
-                                            {step.title}
-                                        </h3>
+                                            <h3 className={`font-heading text-xl md:text-2xl font-bold mb-3 ${step.theme.text}`}>
+                                                {step.title}
+                                            </h3>
 
-                                        <p className={`${step.theme.text} opacity-80 text-sm md:text-base leading-relaxed`}>
-                                            {step.description}
-                                        </p>
-                                    </div>
+                                            <p className={`${step.theme.text} opacity-80 text-sm md:text-base leading-relaxed`}>
+                                                {step.description}
+                                            </p>
+                                        </div>
+                                    )}
                                 </TiltCard>
                             </div>
                         ))}

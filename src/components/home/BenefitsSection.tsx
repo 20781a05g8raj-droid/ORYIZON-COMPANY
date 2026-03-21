@@ -42,26 +42,29 @@ export function BenefitsSection() {
                                 tiltStrength={8}
                                 scale={1.03}
                             >
-                                <div className={`chamkila-glass group relative p-8 md:p-10 lg:p-12 ${benefit.theme.bg} hover:-translate-y-2 rounded-[2rem] h-full transition-all duration-300 icon-3d-flip`}>
-                                    {/* Gradient icon */}
-                                    <div className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-2xl ${benefit.theme.icon} mb-4 md:mb-6 shadow-lg icon-3d-target transition-transform overflow-hidden relative`}>
-                                        {benefit.image ? (
-                                            <Image src={benefit.image} alt={benefit.title} fill className="object-contain scale-[0.85]" sizes="64px" />
-                                        ) : (
-                                            <span className="text-2xl md:text-3xl">{benefit.icon}</span>
-                                        )}
+                                {benefit.image ? (
+                                    <div className="chamkila-glass group relative rounded-[2rem] hover:-translate-y-2 transition-all duration-300 icon-3d-flip w-full h-full overflow-hidden flex items-center justify-center bg-white/10">
+                                        <Image src={benefit.image} alt={benefit.title} width={800} height={800} className="w-full h-full object-cover aspect-square sm:aspect-[4/5]" />
+                                        <div className="absolute inset-0 rounded-[2rem] animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none z-10" />
                                     </div>
+                                ) : (
+                                    <div className={`chamkila-glass group relative p-8 md:p-10 lg:p-12 ${benefit.theme.bg} hover:-translate-y-2 rounded-[2rem] h-full transition-all duration-300 icon-3d-flip flex flex-col`}>
+                                        {/* Gradient icon */}
+                                        <div className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-2xl ${benefit.theme.icon} mb-4 md:mb-6 shadow-lg icon-3d-target transition-transform overflow-hidden relative`}>
+                                            <span className="text-2xl md:text-3xl">{benefit.icon}</span>
+                                        </div>
 
-                                    <h3 className={`font-heading text-lg md:text-xl font-bold ${benefit.theme.text} mb-2 md:mb-3`}>
-                                        {benefit.title}
-                                    </h3>
-                                    <p className={`text-[14px] md:text-base ${benefit.theme.text} opacity-80 leading-relaxed`}>
-                                        {benefit.description}
-                                    </p>
+                                        <h3 className={`font-heading text-lg md:text-xl font-bold ${benefit.theme.text} mb-2 md:mb-3`}>
+                                            {benefit.title}
+                                        </h3>
+                                        <p className={`text-[14px] md:text-base ${benefit.theme.text} opacity-80 leading-relaxed`}>
+                                            {benefit.description}
+                                        </p>
 
-                                    {/* Shimmer on hover */}
-                                    <div className="absolute inset-0 rounded-2xl animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
-                                </div>
+                                        {/* Shimmer on hover */}
+                                        <div className="absolute inset-0 rounded-2xl animate-shimmer opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none" />
+                                    </div>
+                                )}
                             </TiltCard>
                         </div>
                     ))}
