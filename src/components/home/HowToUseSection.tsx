@@ -3,6 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { HOW_TO_USE } from '@/lib/constants';
+import Image from 'next/image';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
 import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
 
@@ -79,8 +80,12 @@ export function HowToUseSection() {
                                             transition={{ type: 'spring', stiffness: 200 }}
                                             className="mb-6 inline-block icon-3d-target"
                                         >
-                                            <div className={`w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full ${step.theme.icon} bg-opacity-10 flex items-center justify-center shadow-lg`}>
-                                                <span className="text-4xl md:text-5xl">{step.icon}</span>
+                                            <div className={`w-20 h-20 md:w-24 md:h-24 mx-auto rounded-full ${step.theme.icon} bg-opacity-10 flex items-center justify-center shadow-lg overflow-hidden relative`}>
+                                                {step.image ? (
+                                                    <Image src={step.image} alt={step.title} fill className="object-contain scale-[0.85]" sizes="96px" />
+                                                ) : (
+                                                    <span className="text-4xl md:text-5xl">{step.icon}</span>
+                                                )}
                                             </div>
                                         </motion.div>
 

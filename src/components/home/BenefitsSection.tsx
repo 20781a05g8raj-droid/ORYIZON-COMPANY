@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { KEY_BENEFITS } from '@/lib/constants';
+import Image from 'next/image';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
 import { useScrollReveal, useCardFlyInStagger, useTextReveal, useTextRotateReveal } from '@/hooks/useScrollReveal';
 
@@ -43,8 +44,12 @@ export function BenefitsSection() {
                             >
                                 <div className={`chamkila-glass group relative p-8 md:p-10 lg:p-12 ${benefit.theme.bg} hover:-translate-y-2 rounded-[2rem] h-full transition-all duration-300 icon-3d-flip`}>
                                     {/* Gradient icon */}
-                                    <div className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-2xl ${benefit.theme.icon} mb-4 md:mb-6 shadow-lg icon-3d-target transition-transform`}>
-                                        <span className="text-2xl md:text-3xl">{benefit.icon}</span>
+                                    <div className={`w-14 h-14 md:w-16 md:h-16 flex items-center justify-center rounded-2xl ${benefit.theme.icon} mb-4 md:mb-6 shadow-lg icon-3d-target transition-transform overflow-hidden relative`}>
+                                        {benefit.image ? (
+                                            <Image src={benefit.image} alt={benefit.title} fill className="object-contain scale-[0.85]" sizes="64px" />
+                                        ) : (
+                                            <span className="text-2xl md:text-3xl">{benefit.icon}</span>
+                                        )}
                                     </div>
 
                                     <h3 className={`font-heading text-lg md:text-xl font-bold ${benefit.theme.text} mb-2 md:mb-3`}>

@@ -97,6 +97,7 @@ export const KEY_BENEFITS = [
         title: 'Natural Energy',
         description: 'Boost your energy levels naturally without caffeine crashes',
         icon: '⚡',
+        image: '/Natural Energy.png',
         color: '#FFD700',
         theme: {
             bg: 'bg-gradient-to-br from-amber-50/80 to-amber-100/50 border border-amber-200 shadow-lg shadow-amber-500/5',
@@ -109,6 +110,7 @@ export const KEY_BENEFITS = [
         title: 'Immune Support',
         description: 'Rich in antioxidants and vitamins to strengthen immunity',
         icon: '🛡️',
+        image: '/Immune Support.png',
         color: '#4A7C23',
         theme: {
             bg: 'bg-gradient-to-br from-emerald-50/80 to-emerald-100/50 border border-emerald-200 shadow-lg shadow-emerald-500/5',
@@ -121,6 +123,7 @@ export const KEY_BENEFITS = [
         title: 'Natural Detox',
         description: 'Helps cleanse and detoxify your body naturally',
         icon: '🧹',
+        image: '/Natural Detox.png',
         color: '#00CED1',
         theme: {
             bg: 'bg-gradient-to-br from-cyan-50/80 to-cyan-100/50 border border-cyan-200 shadow-lg shadow-cyan-500/5',
@@ -133,6 +136,7 @@ export const KEY_BENEFITS = [
         title: 'Complete Nutrition',
         description: '90+ nutrients, vitamins, and essential amino acids',
         icon: '🌿',
+        image: '/Complete Nutrition.png',
         color: '#32CD32',
         theme: {
             bg: 'bg-gradient-to-br from-green-50/80 to-green-100/50 border border-green-200 shadow-lg shadow-green-500/5',
@@ -145,6 +149,7 @@ export const KEY_BENEFITS = [
         title: 'Skin & Hair',
         description: 'Promotes healthy skin and strong hair growth',
         icon: '✨',
+        image: '/Skin & Hair.png',
         color: '#FF69B4',
         theme: {
             bg: 'bg-gradient-to-br from-rose-50/80 to-rose-100/50 border border-rose-200 shadow-lg shadow-rose-500/5',
@@ -157,6 +162,7 @@ export const KEY_BENEFITS = [
         title: 'Digestive Health',
         description: 'Supports healthy digestion and gut health',
         icon: '💪',
+        image: '/Digestive Health.png',
         color: '#FFA500',
         theme: {
             bg: 'bg-gradient-to-br from-orange-50/80 to-orange-100/50 border border-orange-200 shadow-lg shadow-orange-500/5',
@@ -173,6 +179,7 @@ export const HOW_TO_USE = [
         title: 'Mix in Water',
         description: 'Add 1 teaspoon to warm water or juice',
         icon: '🥤',
+        image: '/Mix in Water.png',
         theme: {
             bg: 'bg-gradient-to-br from-blue-50/80 to-blue-100/50 border border-blue-200 shadow-lg shadow-blue-500/5',
             icon: 'bg-gradient-to-br from-blue-400 to-indigo-500 text-white',
@@ -184,6 +191,7 @@ export const HOW_TO_USE = [
         title: 'Blend in Smoothie',
         description: 'Perfect addition to your morning smoothie',
         icon: '🍹',
+        image: '/Blend in Smoothie.png',
         theme: {
             bg: 'bg-gradient-to-br from-fuchsia-50/80 to-fuchsia-100/50 border border-fuchsia-200 shadow-lg shadow-fuchsia-500/5',
             icon: 'bg-gradient-to-br from-fuchsia-400 to-purple-500 text-white',
@@ -195,6 +203,7 @@ export const HOW_TO_USE = [
         title: 'Add to Food',
         description: 'Sprinkle over salads, soups, or curries',
         icon: '🥗',
+        image: '/Add to Food.png',
         theme: {
             bg: 'bg-gradient-to-br from-lime-50/80 to-lime-100/50 border border-lime-200 shadow-lg shadow-lime-500/5',
             icon: 'bg-gradient-to-br from-lime-400 to-green-500 text-white',
