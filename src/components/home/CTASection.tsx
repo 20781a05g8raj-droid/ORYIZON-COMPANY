@@ -6,7 +6,8 @@ import Link from 'next/link';
 import { ArrowRight, Sparkles, Check } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { FloatingElements } from '@/components/ui/animations/FloatingElements';
-import { useScrollReveal, useScrollRevealStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
+import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 import { useParallax } from '@/hooks/useParallax';
 
 
@@ -19,19 +20,7 @@ export function CTASection() {
         ease: 'power2.out',
     });
 
-    // GSAP scroll reveal for headline - Left Translate Reveal
-    const headlineRef = useTextTranslateReveal<HTMLHeadingElement>({
-        direction: 'left',
-        distance: 50,
-        delay: 0.1,
-    });
-
-    // GSAP scroll reveal for subtitle - Right Translate Reveal
-    const subtitleRef = useTextTranslateReveal<HTMLParagraphElement>({
-        direction: 'right',
-        distance: 50,
-        delay: 0.2,
-    });
+    // (headline now uses SplitTextReveal inline — no ref needed)
 
     // Parallax background layer
     const bgParallaxRef = useParallax<HTMLDivElement>({ speed: 0.7 });
@@ -96,20 +85,15 @@ export function CTASection() {
                         </span>
                     </div>
 
-                    {/* Headline — GSAP scroll reveal */}
-                    <h2
-                        ref={headlineRef}
-                        className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 md:mb-6"
-                    >
-                        Start Your Wellness Journey{' '}
-                        <span className="text-gradient-gold">Today</span>
+                    {/* Headline — SplitTextReveal */}
+                    <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-5 md:mb-6">
+                        <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={40} rotate className="text-white">
+                            Start Your Wellness Journey Today
+                        </SplitTextReveal>
                     </h2>
 
-                    {/* Subtitle — GSAP scroll reveal */}
-                    <p
-                        ref={subtitleRef}
-                        className="text-[15px] md:text-xl text-white/75 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed"
-                    >
+                    {/* Subtitle */}
+                    <p className="text-[15px] md:text-xl text-white/75 max-w-2xl mx-auto mb-8 md:mb-12 leading-relaxed">
                         Join thousands of health-conscious individuals who have transformed their
                         lives with the power of Moringa.
                     </p>

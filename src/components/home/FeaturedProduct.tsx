@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useState } from 'react';
+import { motion } from 'framer-motion';
 import { Loader2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { getAllProducts as getLocalProducts } from '@/data/products';
@@ -8,19 +9,12 @@ import { getFeaturedProducts } from '@/lib/api/products';
 import { ProductWithVariants } from '@/types/database';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
-import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
+import { useScrollReveal, useCardFlyInStagger } from '@/hooks/useScrollReveal';
 
 export function FeaturedProduct() {
     const [products, setProducts] = useState<ProductWithVariants[]>([]);
     const [loading, setLoading] = useState(true);
-
-    // GSAP scroll reveal for header (Text Translate)
-    const headerRef = useTextTranslateReveal<HTMLDivElement>({
-        direction: 'right',
-        distance: 40,
-        duration: 0.8,
-        ease: 'power3.out',
-    });
 
     // GSAP stagger for product grid
     const gridRef = useCardFlyInStagger<HTMLDivElement>({
@@ -123,13 +117,15 @@ export function FeaturedProduct() {
             </div>
 
             <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 relative z-10">
-                {/* Header — GSAP scroll reveal */}
-                <div ref={headerRef} className="text-center mb-12 md:mb-16">
+                {/* Header — SplitTextReveal */}
+                <div className="text-center mb-12 md:mb-16">
                     <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm mb-3 block">
                         Our Best Sellers
                     </span>
                     <h2 className="font-heading text-3xl md:text-5xl font-bold text-[var(--color-text)] mb-6">
-                        Choose Your Perfect Size
+                        <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={30} rotate>
+                            Choose Your Perfect Size
+                        </SplitTextReveal>
                     </h2>
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-lg">
                         Premium organic Moringa powder available in convenient packs to suit your needs.
@@ -153,9 +149,11 @@ export function FeaturedProduct() {
                 {/* CTA — GSAP scroll reveal */}
                 <div ref={ctaRef} className="mt-16 text-center">
                     <Link href="/products">
-                        <Button variant="outline" size="lg" icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-full px-8">
-                            View All Products
-                        </Button>
+                        <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                            <Button variant="outline" size="lg" icon={<ArrowRight size={20} />} iconPosition="right" className="rounded-full px-8">
+                                View All Products
+                            </Button>
+                        </motion.div>
                     </Link>
                 </div>
             </div>

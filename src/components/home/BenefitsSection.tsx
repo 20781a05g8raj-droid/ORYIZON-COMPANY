@@ -4,12 +4,10 @@ import React from 'react';
 import { KEY_BENEFITS } from '@/lib/constants';
 import Image from 'next/image';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useCardFlyInStagger, useTextReveal, useTextRotateReveal } from '@/hooks/useScrollReveal';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
+import { useCardFlyInStagger } from '@/hooks/useScrollReveal';
 
 export function BenefitsSection() {
-    // GSAP scroll reveal for header - Rotate Reveal
-    const headerRef = useTextRotateReveal<HTMLDivElement>();
-
     // GSAP stagger reveal for benefits grid
     const gridRef = useCardFlyInStagger<HTMLDivElement>({
         distance: 200,
@@ -19,14 +17,15 @@ export function BenefitsSection() {
     return (
         <section className="py-20 md:py-32 bg-white" id="benefits" suppressHydrationWarning>
             <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
-                {/* Section Header — GSAP scroll reveal */}
-                <div ref={headerRef} className="text-center mb-10 md:mb-16">
-                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
+                {/* Section Header — Split Text Reveal */}
+                <div className="text-center mb-10 md:mb-16">
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm block">
                         Pure Benefits
                     </span>
                     <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]">
-                        Health Benefits of{' '}
-                        <span className="text-[var(--color-primary)]">Moringa Powder</span>
+                        <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={30} rotate>
+                            Health Benefits of Moringa Powder
+                        </SplitTextReveal>
                     </h2>
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-[15px] md:text-lg leading-relaxed">
                         Moringa powder is a nutrient-dense superfood that helps support immunity, boost energy, and promote overall wellness naturally.

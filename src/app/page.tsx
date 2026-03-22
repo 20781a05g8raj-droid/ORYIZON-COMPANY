@@ -10,6 +10,7 @@ import { BrandStorySection } from '@/components/home/BrandStorySection';
 import { FAQPreviewSection } from '@/components/home/FAQPreviewSection';
 import { CTASection } from '@/components/home/CTASection';
 import { StructuredData } from '@/components/seo/StructuredData';
+import { SectionDividerWrapper } from '@/components/home/SectionDividerWrapper';
 
 export const metadata: Metadata = {
   title: 'Organic Moringa Powder for Daily Health & Immunity | Oryizon',
@@ -24,13 +25,20 @@ export default function Home() {
     <>
       <StructuredData />
       <HeroSection />
+      <SectionDividerWrapper variant="glow" />
       <FeaturedProduct />
+      <SectionDividerWrapper variant="dots" />
       <WhyChooseSection />
+      <SectionDividerWrapper />
       <BenefitsSection />
+      <SectionDividerWrapper variant="glow" />
       <HowToUseSection />
+      <SectionDividerWrapper />
       <AEODirectAnswers />
+      <SectionDividerWrapper variant="dots" />
       <TestimonialsSection />
       <BrandStorySection />
+      <SectionDividerWrapper variant="glow" />
       <FAQPreviewSection />
       <CTASection />
     </>

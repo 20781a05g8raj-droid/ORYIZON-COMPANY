@@ -8,6 +8,7 @@ import { ShoppingCart, Menu, X, Search, User, Sparkles } from 'lucide-react';
 import { NAV_ITEMS, SITE_CONFIG } from '@/lib/constants';
 import { useCartStore } from '@/store/cartStore';
 import { Button } from '@/components/ui/Button';
+import { MagneticButton } from '@/components/ui/animations/MagneticButton';
 import { usePathname } from 'next/navigation';
 
 export function Header() {
@@ -88,25 +89,26 @@ export function Header() {
                         {/* Desktop Navigation */}
                         <nav className="hidden lg:flex items-center gap-10">
                             {NAV_ITEMS.map((item) => (
-                                <Link
-                                    key={item.href}
-                                    href={item.href}
-                                    className={`
+                                <MagneticButton key={item.href} strength={15}>
+                                    <Link
+                                        href={item.href}
+                                        className={`
                     font-heading text-sm font-semibold tracking-wide transition-all duration-300 relative group py-2
                     ${showSolidHeader
-                                            ? 'text-[var(--color-text)] hover:text-[var(--color-primary)]'
-                                            : 'text-white hover:text-[var(--color-accent)]'
-                                        }
+                                                ? 'text-[var(--color-text)] hover:text-[var(--color-primary)]'
+                                                : 'text-white hover:text-[var(--color-accent)]'
+                                            }
                     ${pathname === item.href ? (showSolidHeader ? 'text-[var(--color-primary)]' : 'text-[var(--color-accent)]') : ''}
                   `}
-                                >
-                                    {item.label}
-                                    <span className={`
+                                    >
+                                        {item.label}
+                                        <span className={`
                     absolute bottom-0 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full
                     ${showSolidHeader ? 'bg-[var(--color-primary)]' : 'bg-[var(--color-accent)]'}
                     ${pathname === item.href ? 'w-full' : ''}
                   `} />
-                                </Link>
+                                    </Link>
+                                </MagneticButton>
                             ))}
                         </nav>
 

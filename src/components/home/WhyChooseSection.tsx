@@ -3,7 +3,8 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useCardFlyInStagger, useTextRotateReveal } from '@/hooks/useScrollReveal';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
+import { useScrollReveal, useCardFlyInStagger } from '@/hooks/useScrollReveal';
 
 const whyChoosePoints = [
     {
@@ -49,9 +50,6 @@ const whyChoosePoints = [
 ];
 
 export function WhyChooseSection() {
-    // GSAP scroll reveal for the header - Rotate Reveal
-    const headerRef = useTextRotateReveal<HTMLDivElement>();
-
     // GSAP stagger fly-in for the card grid
     const gridRef = useCardFlyInStagger<HTMLDivElement>({
         distance: 200,
@@ -62,14 +60,15 @@ export function WhyChooseSection() {
     return (
         <section className="py-20 md:py-32 bg-[var(--color-cream)]" suppressHydrationWarning>
             <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
-                {/* Section Header — GSAP scroll reveal */}
-                <div ref={headerRef} className="text-center mb-10 md:mb-16">
-                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
+                {/* Section Header — Split Text Reveal */}
+                <div className="text-center mb-10 md:mb-16">
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm block">
                         The Oryizon Difference
                     </span>
                     <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]">
-                        Why Choose{' '}
-                        <span className="text-[var(--color-primary)]">Oryizon Moringa?</span>
+                        <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={30} rotate>
+                            Why Choose Oryizon Moringa?
+                        </SplitTextReveal>
                     </h2>
                 </div>
 

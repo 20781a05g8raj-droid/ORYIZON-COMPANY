@@ -5,16 +5,10 @@ import { motion } from 'framer-motion';
 import { HOW_TO_USE } from '@/lib/constants';
 import Image from 'next/image';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useCardFlyInStagger, useTextTranslateReveal } from '@/hooks/useScrollReveal';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
+import { useCardFlyInStagger } from '@/hooks/useScrollReveal';
 
 export function HowToUseSection() {
-    // GSAP scroll reveal for header
-    const headerRef = useTextTranslateReveal<HTMLDivElement>({
-        direction: 'right',
-        distance: 40,
-        duration: 0.8,
-    });
-
     // GSAP stagger reveal for step cards
     const stepsRef = useCardFlyInStagger<HTMLDivElement>({
         distance: 200,
@@ -31,18 +25,15 @@ export function HowToUseSection() {
     return (
         <section className="py-20 md:py-32 bg-[var(--color-secondary)]/20" suppressHydrationWarning>
             <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
-                {/* Section Header — GSAP scroll reveal */}
-                <div
-                    ref={headerRef}
-                    className="text-center mb-12 md:mb-20"
-                    suppressHydrationWarning
-                >
-                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
+                {/* Section Header — Split Text Reveal */}
+                <div className="text-center mb-12 md:mb-20">
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm block">
                         Simple &amp; Versatile
                     </span>
                     <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]">
-                        How to Use{' '}
-                        <span className="text-[var(--color-primary)]">Moringa Powder Daily?</span>
+                        <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={30} rotate>
+                            How to Use Moringa Powder Daily?
+                        </SplitTextReveal>
                     </h2>
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-[15px] md:text-lg leading-relaxed">
                         You can consume moringa powder by mixing one teaspoon with warm water,

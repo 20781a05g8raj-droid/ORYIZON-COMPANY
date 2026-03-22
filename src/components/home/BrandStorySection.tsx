@@ -8,6 +8,7 @@ import { ArrowRight } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { Marquee } from '@/components/ui/animations/Marquee';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
 import { useScrollReveal, useScrollRevealStagger } from '@/hooks/useScrollReveal';
 
 export function BrandStorySection() {
@@ -111,8 +112,9 @@ export function BrandStorySection() {
                         </span>
 
                         <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-5 md:mb-6 text-[var(--color-text)]" suppressHydrationWarning>
-                            Bringing Nature&apos;s Best{' '}
-                            <span className="text-[var(--color-primary)]">To You</span>
+                            <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={30} rotate>
+                                Bringing Nature's Best To You
+                            </SplitTextReveal>
                         </h2>
 
                         <div className="space-y-4 text-[var(--color-text-light)] text-[15px] md:text-lg leading-relaxed" suppressHydrationWarning>

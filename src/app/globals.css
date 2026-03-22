@@ -606,3 +606,42 @@
   25% { left: 200%; }
   100% { left: 200%; }
 }
+
+/* ===== Custom Cursor (Desktop Only) ===== */
+@media (pointer: fine) {
+  *, *::before, *::after {
+    cursor: none !important;
+  }
+}
+
+/* ===== Lenis Smooth Scroll ===== */
+html.lenis, html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ===== Split Text Reveal Utilities ===== */
+.split-unit {
+  will-change: transform, opacity;
+}
+
+/* ===== Cursor Hover Targets ===== */
+.cursor-hover {
+  /* Elements with this class trigger cursor scale-up */
+}
+
+/* ===== Enhanced Scroll Progress Glow ===== */
+.scroll-progress-glow {
+  box-shadow: 0 0 10px rgba(196, 163, 90, 0.4), 0 0 20px rgba(196, 163, 90, 0.2);
+}

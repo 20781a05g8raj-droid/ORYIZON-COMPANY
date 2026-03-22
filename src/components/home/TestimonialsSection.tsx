@@ -8,18 +8,15 @@ import { getFeaturedTestimonials } from '@/lib/api/testimonials';
 import { Testimonial } from '@/types/database';
 import { AnimatedCounter } from '@/components/ui/animations/AnimatedCounter';
 import { TiltCard } from '@/components/ui/animations/TiltCard';
-import { useScrollReveal, useCardFlyInStagger, useTextRotateReveal } from '@/hooks/useScrollReveal';
+import { SplitTextReveal } from '@/components/ui/animations/SplitTextReveal';
+import { useCardFlyInStagger } from '@/hooks/useScrollReveal';
 
 export function TestimonialsSection() {
     const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
     const [currentIndex, setCurrentIndex] = useState(0);
     const [loading, setLoading] = useState(true);
 
-    // GSAP scroll reveal for header
-    const headerRef = useTextRotateReveal<HTMLDivElement>({
-        y: 50,
-        duration: 0.8,
-    });
+    // (header now uses SplitTextReveal inline — no ref needed)
 
     // GSAP scroll reveal for the testimonial card
     const testimonialCardRef = useCardFlyInStagger<HTMLDivElement>({
@@ -75,18 +72,15 @@ export function TestimonialsSection() {
     return (
         <section className="py-20 md:py-32 bg-gradient-to-b from-[var(--color-secondary)]/30 to-white overflow-hidden" suppressHydrationWarning>
             <div className="max-w-[85rem] mx-auto px-6 sm:px-8 lg:px-12" suppressHydrationWarning>
-                {/* Section Header — GSAP scroll reveal */}
-                <div
-                    ref={headerRef}
-                    className="text-center mb-10 md:mb-20"
-                    suppressHydrationWarning
-                >
-                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm">
+                {/* Section Header — Split Text Reveal */}
+                <div className="text-center mb-10 md:mb-20">
+                    <span className="text-[var(--color-accent)] font-semibold uppercase tracking-widest text-xs md:text-sm block">
                         Customer Love
                     </span>
                     <h2 className="font-heading text-[1.7rem] leading-tight sm:text-4xl md:text-5xl font-bold mt-2 mb-4 text-[var(--color-text)]">
-                        What Our Customers{' '}
-                        <span className="text-[var(--color-primary)]">Say</span>
+                        <SplitTextReveal mode="word" duration={0.6} stagger={0.08} yOffset={30} rotate>
+                            What Our Customers Say
+                        </SplitTextReveal>
                     </h2>
                     <p className="text-[var(--color-text-light)] max-w-2xl mx-auto text-[15px] md:text-lg leading-relaxed">
                         Join thousands of satisfied customers who have transformed their health
