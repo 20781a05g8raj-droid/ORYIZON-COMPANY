@@ -261,17 +261,19 @@ export default function ProductPage() {
                                 key={activeImage}
                                 initial={{ opacity: 0, scale: 0.98 }}
                                 animate={{ opacity: 1, scale: 1 }}
-                                className="aspect-[4/5] sm:aspect-square bg-[var(--color-cream)] rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] overflow-hidden relative shadow-2xl shadow-black/5 group"
+                                className="aspect-square sm:aspect-square bg-[var(--color-cream)] rounded-2xl sm:rounded-3xl lg:rounded-[2.5rem] overflow-hidden relative shadow-2xl shadow-black/5 p-4 sm:p-6 flex items-center justify-center group"
                                 suppressHydrationWarning
                             >
                                 {images[activeImage] ? (
-                                    <Image
-                                        src={images[activeImage]}
-                                        alt={product.name}
-                                        fill
-                                        className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                        priority
-                                    />
+                                    <div className="relative w-full h-full">
+                                        <Image
+                                            src={images[activeImage]}
+                                            alt={product.name}
+                                            fill
+                                            className="object-contain transition-transform duration-700 group-hover:scale-105"
+                                            priority
+                                        />
+                                    </div>
                                 ) : (
                                     <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-[var(--color-cream)] to-white">
                                         <span className="text-6xl sm:text-8xl md:text-9xl animate-spin-slow">🌿</span>

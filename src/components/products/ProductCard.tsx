@@ -97,20 +97,21 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <TiltCard tiltStrength={8} scale={1.03} className="h-full rounded-[2rem]">
                 <Link href={`/products/${product.slug}`} className={`chamkila-glass block h-full ${theme.bg} rounded-[2rem] hover:-translate-y-2 flex flex-col group`}>
                     {/* Image Container */}
-                    <div className={`relative aspect-[4/3] overflow-hidden bg-gradient-to-t ${theme.imageBg}`}>
-                        {/* Cinematic Vignette Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-10 mix-blend-multiply" />
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_20%,rgba(0,0,0,0.4)_120%)] z-10 pointer-events-none" />
+                    <div className={`relative aspect-square sm:aspect-[4/3] overflow-hidden bg-gradient-to-t ${theme.imageBg} p-2 sm:p-4 flex items-center justify-center`}>
+                        {/* Soft subtle glow/vignette overlay instead of heavy blacking out */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10 pointer-events-none" />
                         
                         {mainImage ? (
-                            <Image
-                                src={mainImage}
-                                alt={product.name}
-                                fill
-                                className="object-cover transition-transform duration-700 group-hover:scale-110 z-0"
-                                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 33vw, 25vw"
-                                priority={priority}
-                            />
+                            <div className="relative w-full h-full">
+                                <Image
+                                    src={mainImage}
+                                    alt={product.name}
+                                    fill
+                                    className="object-contain sm:object-cover transition-transform duration-700 group-hover:scale-105 z-0"
+                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    priority={priority}
+                                />
+                            </div>
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-0">
                                 <span className="text-5xl opacity-50 backdrop-blur-sm p-4 rounded-full">🌿</span>
@@ -118,14 +119,14 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                         )}
 
                         {/* Badges */}
-                        <div className="absolute top-4 left-4 flex flex-col gap-2 z-20">
+                        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-1.5 z-20">
                             {discount > 0 && (
-                                <span className={`px-3 py-1 text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md ${theme.badgeBg}`}>
+                                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md ${theme.badgeBg}`}>
                                     {discount}% OFF
                                 </span>
                             )}
                             {product.featured && (
-                                <span className="px-3 py-1 text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-stone-900/80 text-white border-stone-700">
+                                <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-stone-900/80 text-white border-stone-700">
                                     Best Seller
                                 </span>
                             )}
@@ -133,7 +134,7 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     </div>
 
                     {/* Content */}
-                    <div className="p-4 sm:p-6 md:p-8 flex flex-col flex-grow relative z-20 -mt-8 bg-gradient-to-b from-transparent to-black/40">
+                    <div className="p-3 sm:p-6 md:p-8 flex flex-col flex-grow relative z-20 bg-gradient-to-b from-transparent to-black/40">
                         <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-3 drop-shadow-md">
                             <Star className={`w-4 h-4 ${theme.accent}`} />
                             <span className="text-sm font-semibold text-stone-200">
