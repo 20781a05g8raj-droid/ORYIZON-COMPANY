@@ -1,7 +1,23 @@
 import { BlogPost } from '@/types';
 import { moringaDietContent } from './blog-moringa-diet';
+import { moringaWaterContent } from './blog-moringa-water';
 
 export const blogPosts: BlogPost[] = [
+    {
+        id: 'blog-water',
+        title: 'Moringa Water on Empty Stomach: 7-Day Routine & Proven Benefits',
+        slug: 'moringa-water-on-empty-stomach-benefits',
+        excerpt: 'Discover what happens when you drink Moringa water on an empty stomach every morning. Learn how this 7-day Ayurvedic routine accelerates metabolism, cleanses your gut, and gives you all-day clean energy.',
+        content: moringaWaterContent,
+        image: '/images/blog/moringa-hero.png',
+        author: 'Dr. Priya Sharma',
+        date: 'August 21, 2026',
+        readTime: '8 min read',
+        category: 'Health Benefits',
+        tags: ['moringa water', 'empty stomach', 'weight loss', 'detox', 'energy', 'ayurveda', 'digestion', 'organic moringa'],
+        icon: '🍵',
+        featured: true,
+    },
     {
         id: 'blog-1',
         title: '10 Amazing Health Benefits of Moringa Powder: Nature\'s Ultimate Superfood',
