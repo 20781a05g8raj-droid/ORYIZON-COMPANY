@@ -18,9 +18,21 @@ export default function sitemap(): MetadataRoute.Sitemap {
             priority: 0.9,
         },
         {
-            url: `${baseUrl}/products/organic-moringa-powder`,
+            url: `${baseUrl}/products/organic-moringa-powder-100g`,
             lastModified: new Date(),
-            changeFrequency: 'weekly',
+            changeFrequency: 'daily',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/products/organic-moringa-powder-250g`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.9,
+        },
+        {
+            url: `${baseUrl}/products/organic-moringa-powder-500g`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
             priority: 0.9,
         },
         {
