@@ -9,7 +9,7 @@ export const blogPosts: BlogPost[] = [
         slug: 'moringa-water-on-empty-stomach-benefits',
         excerpt: 'Discover what happens when you drink Moringa water on an empty stomach every morning. Learn how this 7-day Ayurvedic routine accelerates metabolism, cleanses your gut, and gives you all-day clean energy.',
         content: moringaWaterContent,
-        image: '/images/blog/moringa-hero.png',
+        image: '/images/blog/moringa-water-hero.jpg',
         author: 'Dr. Priya Sharma',
         date: 'August 21, 2026',
         readTime: '8 min read',

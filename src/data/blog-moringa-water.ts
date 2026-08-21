@@ -12,7 +12,7 @@ export const moringaWaterContent = `
     <p class="mb-0 text-[var(--color-text)] leading-relaxed">Drinking <a href="/products/organic-moringa-powder-250g" class="text-[var(--color-primary)] font-semibold hover:underline">organic Moringa powder</a> in lukewarm water first thing in the morning allows your digestive tract to absorb its 90+ bioavailable nutrients, antioxidants, and amino acids rapidly without competing with food digestion. This gentle morning ritual boosts metabolism, clears gut bloating, regulates blood sugar, and provides clean, sustained energy all day long.</p>
 </div>
 
-<img src="/images/blog/moringa-hero.png" alt="Glass of warm moringa detox water with fresh moringa leaves and ORYIZON organic moringa powder" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
+<img src="/images/blog/moringa-water-hero.jpg" alt="Glass of warm moringa detox water with fresh moringa leaves and lemon on wooden table" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
 
 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-4 mt-12 text-[var(--color-text)]">🔬 The Science: What Actually Happens in a Fasted State?</h2>
 
@@ -48,6 +48,8 @@ export const moringaWaterContent = `
         <div class="text-sm font-medium text-[var(--color-text-light)]">Caffeine, Sugar,<br/>or Additives</div>
     </div>
 </div>
+
+<img src="/images/blog/moringa-water-powder-recipe.jpg" alt="Wooden spoon scooping fresh vibrant organic green moringa powder from ORYIZON pouch" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
 
 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-6 mt-12 text-[var(--color-text)]">🌟 5 Proven Health Transformations You'll Experience</h2>
 
@@ -141,6 +143,8 @@ export const moringaWaterContent = `
     
     <p class="text-xs text-emerald-300/80 mb-0 font-medium">⚠️ <strong>Pro Tip:</strong> Do not mix Moringa in boiling water. High temperatures can destroy heat-sensitive antioxidants and enzymes. Lukewarm or room-temperature water keeps 100% of the active nutrients intact.</p>
 </div>
+
+<img src="/images/blog/moringa-water-lifestyle.jpg" alt="Healthy morning wellness routine with a warm cup of organic moringa tea and ORYIZON moringa powder pouch" class="w-full h-auto rounded-2xl my-8 shadow-lg" />
 
 <h2 class="font-heading text-2xl md:text-3xl font-bold mb-6 mt-12 text-[var(--color-text)]">⚖️ Dosage, Best Practices & Precautions</h2>
 
