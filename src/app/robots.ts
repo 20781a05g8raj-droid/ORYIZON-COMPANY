@@ -14,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
                 disallow: ['/admin/', '/api/', '/auth/'],
             },
         ],
-        sitemap: 'https://oryizon.com/sitemap.xml',
+        sitemap: 'https://www.oryizon.com/sitemap.xml',
     };
 }
