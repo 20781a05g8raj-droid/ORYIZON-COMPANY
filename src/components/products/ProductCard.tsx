@@ -97,17 +97,17 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             <TiltCard tiltStrength={8} scale={1.03} className="h-full rounded-[2rem]">
                 <Link href={`/products/${product.slug}`} className={`chamkila-glass block h-full ${theme.bg} rounded-[2rem] hover:-translate-y-2 flex flex-col group`}>
                     {/* Image Container */}
-                    <div className={`relative aspect-square sm:aspect-[4/3] overflow-hidden bg-gradient-to-t ${theme.imageBg} p-2 sm:p-4 flex items-center justify-center`}>
-                        {/* Soft subtle glow/vignette overlay instead of heavy blacking out */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10 pointer-events-none" />
+                    <div className={`relative aspect-square sm:aspect-[4/5] overflow-hidden bg-gradient-to-t ${theme.imageBg} p-4 sm:p-6 flex items-center justify-center`}>
+                        {/* Soft subtle glow/vignette overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10 pointer-events-none" />
                         
                         {mainImage ? (
-                            <div className="relative w-full h-full">
+                            <div className="relative w-full h-full flex items-center justify-center">
                                 <Image
                                     src={mainImage}
                                     alt={product.name}
                                     fill
-                                    className="object-contain sm:object-cover transition-transform duration-700 group-hover:scale-105 z-0"
+                                    className="object-contain p-1 sm:p-2 transition-transform duration-700 group-hover:scale-105 z-0 drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)]"
                                     sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                                     priority={priority}
                                 />
@@ -125,9 +125,19 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                                     {discount}% OFF
                                 </span>
                             )}
-                            {product.featured && (
+                            {product.slug.includes('250g') && !product.slug.includes('500g') && !product.name.includes('2x') && (
                                 <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-stone-900/80 text-white border-stone-700">
                                     Best Seller
+                                </span>
+                            )}
+                            {(product.slug.includes('500g') || product.name.includes('2x')) && (
+                                <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-emerald-950/80 text-emerald-300 border-emerald-700">
+                                    Combo Pack
+                                </span>
+                            )}
+                            {product.slug.includes('100g') && (
+                                <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-amber-950/80 text-amber-300 border-amber-700">
+                                    Trial Pack
                                 </span>
                             )}
                         </div>

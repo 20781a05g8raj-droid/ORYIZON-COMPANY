@@ -236,6 +236,5 @@ export const SHIPPING_INFO = {
 
 // Payment Methods
 export const PAYMENT_METHODS = [
-    'Razorpay (Cards, UPI, Netbanking)',
-    'Cash on Delivery',
+    'Razorpay (UPI, Cards, Netbanking)',
 ];

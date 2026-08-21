@@ -5,15 +5,16 @@ export const products: Product[] = [
         id: 'moringa-powder-100g',
         name: 'Organic Moringa Powder - 100g',
         slug: 'organic-moringa-powder-100g',
-        price: 299,
-        originalPrice: 499,
+        price: 199,
+        originalPrice: 299,
         description: `Experience the incredible power of nature with our premium Organic Moringa Powder (100g). Sourced directly from certified organic farms in South India, our Moringa leaves are carefully harvested at peak nutrition and gently dried to preserve maximum potency.
 
 Perfect for trial or individual use, this 100g pack gives you a month's supply of essential nutrients.`,
         shortDescription: '100g Pack - Premium organic Moringa leaf powder for natural energy & immunity.',
         images: [
-            '/images/products/product-1.png',
-            '/images/products/product-2.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1787062267700-xk4tx9ykejj.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1771404349178-g6zm34ct8f7.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1787062577309-ckysk0nsfe9.jpg'
         ],
         category: 'Powder',
         variants: [],
@@ -50,15 +51,16 @@ Perfect for trial or individual use, this 100g pack gives you a month's supply o
         id: 'moringa-powder-250g',
         name: 'Organic Moringa Powder - 250g',
         slug: 'organic-moringa-powder-250g',
-        price: 999,
-        originalPrice: 1199,
+        price: 299,
+        originalPrice: 499,
         description: `Our best-selling 250g pack of Organic Moringa Powder. Ideal for regular users who want to maintain a consistent healthy lifestyle.
 
 Contains over 90 nutrients, including essential vitamins, minerals, and amino acids.`,
         shortDescription: '250g Pack - Best Value Organic Moringa Leaf Powder.',
         images: [
-            '/images/products/product-1.png',
-            '/images/products/product-2.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1787062267700-xk4tx9ykejj.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1771404349178-g6zm34ct8f7.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1787062577309-ckysk0nsfe9.jpg'
         ],
         category: 'Powder',
         variants: [],
@@ -93,23 +95,25 @@ Contains over 90 nutrients, including essential vitamins, minerals, and amino ac
     },
     {
         id: 'moringa-powder-500g',
-        name: 'Organic Moringa Powder - 500g',
+        name: 'Organic Moringa Powder - 2x 250g Packets',
         slug: 'organic-moringa-powder-500g',
-        price: 1799,
-        originalPrice: 2199,
-        description: `The 500g Family Pack of our premium Organic Moringa Powder. The most economical choice for families or power users who love their daily moringa boost.
+        price: 549,
+        originalPrice: 999,
+        description: `Our 500g Value Combo includes 2 individual 250g packets of premium Organic Moringa Powder. The most economical choice for families or regular users who love their daily moringa boost.
 
-Ensure your entire family gets their daily dose of greens and nutrition with this value pack.`,
-        shortDescription: '500g Family Pack - Maximum savings for daily nutrition.',
+Enjoy double the quantity with two separate 250g packs so your moringa stays fresh twice as long while giving you maximum savings.`,
+        shortDescription: '2 x 250g Packets (500g Total) - Value combo pack for maximum savings & freshness.',
         images: [
-            '/images/products/product-1.png',
-            '/images/products/product-2.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1787062267700-xk4tx9ykejj.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1771404349178-g6zm34ct8f7.png',
+            'https://dzrhervariifntnjwzxe.supabase.co/storage/v1/object/public/products/1787062577309-ckysk0nsfe9.jpg'
         ],
         category: 'Powder',
         variants: [],
         benefits: [
-            'Maximum savings',
-            'Ideal for families',
+            '2 Packets of 250g each (500g Total)',
+            'Maximum savings & longer freshness',
+            'Ideal for regular & family use',
             'Boosts natural energy levels',
             'Strengthens immune system',
         ],

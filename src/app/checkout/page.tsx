@@ -271,13 +271,7 @@ export default function CheckoutPage() {
 
     const handlePlaceOrder = async () => {
         setIsProcessing(true);
-
-        if (paymentMethod === 'online') {
-            await handleRazorpayPayment();
-        } else {
-            // Cash on Delivery
-            await processOrderCreation();
-        }
+        await handleRazorpayPayment();
     };
 
     if (items.length === 0 && !orderComplete) {
@@ -491,8 +485,7 @@ export default function CheckoutPage() {
 
                                     <div className="space-y-4 mb-8">
                                         {[
-                                            { id: 'online', label: 'Pay Online (Razorpay)', description: 'Credit/Debit Card, UPI, NetBanking', icon: '💳' },
-                                            { id: 'cod', label: 'Cash on Delivery', description: 'Pay when you receive', icon: '💵' },
+                                            { id: 'online', label: 'Online Payment (Razorpay)', description: 'UPI (GPay, PhonePe, Paytm), Cards, NetBanking', icon: '💳' },
                                         ].map((method) => (
                                             <label
                                                 key={method.id}
@@ -511,7 +504,10 @@ export default function CheckoutPage() {
                                                 />
                                                 <span className="text-2xl mt-1">{method.icon}</span>
                                                 <div className="flex-1">
-                                                    <span className="font-medium block">{method.label}</span>
+                                                    <div className="flex items-center justify-between">
+                                                        <span className="font-medium block">{method.label}</span>
+                                                        <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-semibold">100% Secure</span>
+                                                    </div>
                                                     <span className="text-sm text-gray-500">{method.description}</span>
                                                 </div>
                                                 {paymentMethod === method.id && (

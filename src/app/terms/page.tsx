@@ -53,7 +53,7 @@ export default function TermsPage() {
                         <li>By placing an order, you make an offer to purchase products</li>
                         <li>We reserve the right to accept or reject orders at our discretion</li>
                         <li>Payment must be completed at the time of order placement</li>
-                        <li>We accept major credit/debit cards, UPI, net banking, and Cash on Delivery</li>
+                        <li>We accept major credit/debit cards, UPI, and net banking via secure online payment</li>
                     </ul>
 
                     <h2>5. Shipping and Delivery</h2>
