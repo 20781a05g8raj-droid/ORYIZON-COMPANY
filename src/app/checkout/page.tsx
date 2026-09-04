@@ -461,83 +461,83 @@ export default function CheckoutPage() {
     }
 
     return (
-        <div className="min-h-screen pt-24 bg-[var(--color-cream)]" suppressHydrationWarning>
+        <div className="min-h-screen pt-20 sm:pt-24 bg-[var(--color-cream)] w-full max-w-full overflow-x-hidden" suppressHydrationWarning>
             <Script
                 id="razorpay-checkout-js"
                 src="https://checkout.razorpay.com/v1/checkout.js"
             />
             {/* Header */}
-            <section className="bg-white py-6 border-b">
+            <section className="bg-white py-4 sm:py-6 border-b w-full">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <Link href="/cart" className="inline-flex items-center gap-2 text-[var(--color-text-light)] hover:text-[var(--color-primary)] mb-4">
-                        <ChevronLeft size={20} />
+                    <Link href="/cart" className="inline-flex items-center gap-2 text-sm sm:text-base text-[var(--color-text-light)] hover:text-[var(--color-primary)] mb-3 sm:mb-4">
+                        <ChevronLeft size={18} />
                         Back to Cart
                     </Link>
-                    <h1 className="font-heading text-3xl font-bold">Checkout</h1>
+                    <h1 className="font-heading text-2xl sm:text-3xl font-bold">Checkout</h1>
 
                     {/* Steps */}
-                    <div className="flex items-center gap-4 mt-6">
-                        <div className={`flex items-center gap-2 ${step >= 1 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 1 ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-secondary)]'}`}>
+                    <div className="flex items-center gap-2 sm:gap-4 mt-4 sm:mt-6 max-w-md">
+                        <div className={`flex items-center gap-1.5 sm:gap-2 ${step >= 1 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>
+                            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${step >= 1 ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-secondary)]'}`}>
                                 {step > 1 ? '✓' : '1'}
                             </div>
-                            <span className="font-medium">Shipping</span>
+                            <span className="font-medium text-xs sm:text-sm">Shipping</span>
                         </div>
-                        <div className="flex-1 h-0.5 bg-[var(--color-secondary)]" />
-                        <div className={`flex items-center gap-2 ${step >= 2 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>
-                            <div className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-medium ${step >= 2 ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-secondary)]'}`}>
+                        <div className="flex-1 h-0.5 bg-[var(--color-secondary)] min-w-[20px]" />
+                        <div className={`flex items-center gap-1.5 sm:gap-2 ${step >= 2 ? 'text-[var(--color-primary)]' : 'text-[var(--color-text-muted)]'}`}>
+                            <div className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center text-xs sm:text-sm font-medium ${step >= 2 ? 'bg-[var(--color-primary)] text-white' : 'bg-[var(--color-secondary)]'}`}>
                                 2
                             </div>
-                            <span className="font-medium">Payment</span>
+                            <span className="font-medium text-xs sm:text-sm">Payment</span>
                         </div>
                     </div>
                 </div>
             </section>
 
             {/* Checkout Content */}
-            <section className="py-12">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-                    <div className="grid lg:grid-cols-3 gap-8">
+            <section className="py-6 sm:py-12 w-full">
+                <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+                    <div className="grid lg:grid-cols-3 gap-6 sm:gap-8">
                         {/* Forms */}
-                        <div className="lg:col-span-2">
+                        <div className="lg:col-span-2 w-full max-w-full">
                             {step === 1 && (
                                 <motion.div
-                                    initial={{ opacity: 0, x: -20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className="bg-white rounded-xl shadow-sm p-6"
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8 w-full max-w-full box-border"
                                 >
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <Truck className="text-[var(--color-primary)]" size={24} />
-                                        <h2 className="font-heading text-xl font-semibold">Shipping Information</h2>
+                                    <div className="flex items-center gap-2.5 sm:gap-3 mb-5 sm:mb-6">
+                                        <Truck className="text-[var(--color-primary)] flex-shrink-0" size={22} />
+                                        <h2 className="font-heading text-lg sm:text-xl font-semibold">Shipping Information</h2>
                                     </div>
 
-                                    <form onSubmit={handleShippingSubmit} className="space-y-6">
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">First Name *</label>
+                                    <form onSubmit={handleShippingSubmit} className="space-y-4 sm:space-y-6 w-full">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">First Name *</label>
                                                 <input
                                                     type="text"
                                                     required
                                                     value={shippingData.firstName}
                                                     onChange={(e) => setShippingData({ ...shippingData, firstName: e.target.value })}
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">Last Name *</label>
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">Last Name *</label>
                                                 <input
                                                     type="text"
                                                     required
                                                     value={shippingData.lastName}
                                                     onChange={(e) => setShippingData({ ...shippingData, lastName: e.target.value })}
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
                                         </div>
 
-                                        <div className="grid md:grid-cols-2 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">
+                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">
                                                     Email <span className="text-gray-400 font-normal text-xs">(Optional)</span>
                                                 </label>
                                                 <input
@@ -545,91 +545,93 @@ export default function CheckoutPage() {
                                                     value={shippingData.email}
                                                     onChange={(e) => setShippingData({ ...shippingData, email: e.target.value })}
                                                     placeholder="name@example.com (optional)"
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">Phone *</label>
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">Phone *</label>
                                                 <input
                                                     type="tel"
                                                     required
                                                     value={shippingData.phone}
                                                     onChange={(e) => setShippingData({ ...shippingData, phone: e.target.value })}
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
                                         </div>
 
-                                        <div>
-                                            <label className="block text-sm font-medium mb-2">Address *</label>
+                                        <div className="w-full">
+                                            <label className="block text-xs sm:text-sm font-medium mb-1.5">Address *</label>
                                             <input
                                                 type="text"
                                                 required
                                                 value={shippingData.address}
                                                 onChange={(e) => setShippingData({ ...shippingData, address: e.target.value })}
-                                                className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 placeholder="Street address, apartment, etc."
                                             />
                                         </div>
 
-                                        <div className="grid md:grid-cols-3 gap-4">
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">City *</label>
+                                        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4">
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">City *</label>
                                                 <input
                                                     type="text"
                                                     required
                                                     value={shippingData.city}
                                                     onChange={(e) => setShippingData({ ...shippingData, city: e.target.value })}
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">State *</label>
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">State *</label>
                                                 <input
                                                     type="text"
                                                     required
                                                     value={shippingData.state}
                                                     onChange={(e) => setShippingData({ ...shippingData, state: e.target.value })}
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
-                                            <div>
-                                                <label className="block text-sm font-medium mb-2">PIN Code *</label>
+                                            <div className="w-full">
+                                                <label className="block text-xs sm:text-sm font-medium mb-1.5">PIN Code *</label>
                                                 <input
                                                     type="text"
                                                     required
                                                     value={shippingData.pincode}
                                                     onChange={(e) => setShippingData({ ...shippingData, pincode: e.target.value })}
-                                                    className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
+                                                    className="w-full box-border px-3.5 py-2.5 sm:px-4 sm:py-3 text-sm sm:text-base border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
                                         </div>
 
-                                        <Button type="submit" variant="primary" size="lg" fullWidth>
-                                            Continue to Payment
-                                        </Button>
+                                        <div className="pt-2">
+                                            <Button type="submit" variant="primary" size="lg" fullWidth>
+                                                Continue to Payment
+                                            </Button>
+                                        </div>
                                     </form>
                                 </motion.div>
                             )}
 
                             {step === 2 && (
                                 <motion.div
-                                    initial={{ opacity: 0, x: 20 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    className="bg-white rounded-xl shadow-sm p-6"
+                                    initial={{ opacity: 0, y: 12 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 md:p-8 w-full max-w-full box-border"
                                 >
-                                    <div className="flex items-center gap-3 mb-6">
-                                        <CreditCard className="text-[var(--color-primary)]" size={24} />
-                                        <h2 className="font-heading text-xl font-semibold">Payment Method</h2>
+                                    <div className="flex items-center gap-2.5 sm:gap-3 mb-5 sm:mb-6">
+                                        <CreditCard className="text-[var(--color-primary)] flex-shrink-0" size={22} />
+                                        <h2 className="font-heading text-lg sm:text-xl font-semibold">Payment Method</h2>
                                     </div>
 
-                                    <div className="space-y-4 mb-8">
+                                    <div className="space-y-4 mb-6 sm:mb-8 w-full">
                                         {[
                                             { id: 'online', label: 'Online Payment (Razorpay)', description: 'UPI (GPay, PhonePe, Paytm), Cards, NetBanking', icon: '💳' },
                                         ].map((method) => (
                                             <label
                                                 key={method.id}
-                                                className={`flex items-start gap-4 p-4 border-2 rounded-xl cursor-pointer transition-colors ${paymentMethod === method.id
+                                                className={`flex items-start gap-3 sm:gap-4 p-3.5 sm:p-4 border-2 rounded-xl cursor-pointer transition-colors w-full box-border ${paymentMethod === method.id
                                                     ? 'border-[var(--color-primary)] bg-[var(--color-cream)]'
                                                     : 'border-[var(--color-secondary)] hover:border-[var(--color-primary-light)]'
                                                     }`}
@@ -642,23 +644,23 @@ export default function CheckoutPage() {
                                                     onChange={(e) => setPaymentMethod(e.target.value)}
                                                     className="sr-only"
                                                 />
-                                                <span className="text-2xl mt-1">{method.icon}</span>
-                                                <div className="flex-1">
-                                                    <div className="flex items-center justify-between">
-                                                        <span className="font-medium block">{method.label}</span>
-                                                        <span className="text-xs px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-semibold">100% Secure</span>
+                                                <span className="text-xl sm:text-2xl mt-0.5 sm:mt-1 flex-shrink-0">{method.icon}</span>
+                                                <div className="flex-1 min-w-0">
+                                                    <div className="flex flex-wrap items-center justify-between gap-1">
+                                                        <span className="font-medium text-sm sm:text-base block">{method.label}</span>
+                                                        <span className="text-[10px] sm:text-xs px-2 py-0.5 bg-emerald-100 text-emerald-800 rounded font-semibold whitespace-nowrap">100% Secure</span>
                                                     </div>
-                                                    <span className="text-sm text-gray-500">{method.description}</span>
+                                                    <span className="text-xs sm:text-sm text-gray-500 block mt-0.5">{method.description}</span>
                                                 </div>
                                                 {paymentMethod === method.id && (
-                                                    <Check size={20} className="text-[var(--color-primary)]" />
+                                                    <Check size={18} className="text-[var(--color-primary)] flex-shrink-0 mt-1" />
                                                 )}
                                             </label>
                                         ))}
                                     </div>
 
-                                    <div className="flex gap-4">
-                                        <Button variant="outline" onClick={() => setStep(1)} disabled={isProcessing}>
+                                    <div className="flex flex-col-reverse sm:flex-row gap-3 sm:gap-4">
+                                        <Button variant="outline" onClick={() => setStep(1)} disabled={isProcessing} className="w-full sm:w-auto">
                                             Back
                                         </Button>
                                         <Button
@@ -667,6 +669,7 @@ export default function CheckoutPage() {
                                             fullWidth
                                             loading={isProcessing}
                                             onClick={handlePlaceOrder}
+                                            className="w-full"
                                         >
                                             {isProcessing ? 'Processing...' : `Pay ${formatPrice(finalTotal)}`}
                                         </Button>
@@ -676,8 +679,8 @@ export default function CheckoutPage() {
                         </div>
 
                         {/* Order Summary */}
-                        <div className="lg:col-span-1">
-                            <div className="bg-white rounded-xl shadow-sm p-6 sticky top-28">
+                        <div className="lg:col-span-1 w-full max-w-full">
+                            <div className="bg-white rounded-xl sm:rounded-2xl shadow-sm p-4 sm:p-6 sticky top-24 sm:top-28 w-full box-border">
                                 <h2 className="font-heading text-xl font-semibold mb-6">Order Summary</h2>
 
                                 {/* Items */}
