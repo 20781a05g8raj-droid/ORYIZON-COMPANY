@@ -1,23 +1,33 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Search, Package, Truck, CheckCircle, Clock, MapPin, AlertCircle } from 'lucide-react';
+import { Search, Package, Truck, CheckCircle, Clock, MapPin, AlertCircle, Phone, MessageSquare } from 'lucide-react';
 import { Button } from '@/components/ui/Button';
 import { getOrderByNumber } from '@/lib/api/orders';
 import type { Order } from '@/types/database';
 
 export default function TrackOrderPage() {
     const [orderId, setOrderId] = useState('');
-    const [email, setEmail] = useState('');
+    const [identifier, setIdentifier] = useState(''); // Email or Phone
     const [isLoading, setIsLoading] = useState(false);
     const [orderStatus, setOrderStatus] = useState<any>(null);
     const [error, setError] = useState('');
 
+    useEffect(() => {
+        if (typeof window !== 'undefined') {
+            const params = new URLSearchParams(window.location.search);
+            const queryOrderId = params.get('orderId') || params.get('id');
+            const queryPhone = params.get('phone') || params.get('email');
+            if (queryOrderId) setOrderId(queryOrderId);
+            if (queryPhone) setIdentifier(queryPhone);
+        }
+    }, []);
+
     const handleTrack = async (e: React.FormEvent) => {
         e.preventDefault();
-        if (!orderId || !email) {
-            setError('Please enter both Order ID and Email.');
+        if (!orderId.trim() || !identifier.trim()) {
+            setError('Please enter both Order ID and your Email or Phone number.');
             return;
         }
 
@@ -26,16 +36,22 @@ export default function TrackOrderPage() {
         setOrderStatus(null);
 
         try {
-            const order = await getOrderByNumber(orderId);
+            const order = await getOrderByNumber(orderId.trim());
 
             if (!order) {
                 setError('Order not found. Please check your Order ID.');
                 return;
             }
 
-            // Verify email (case-insensitive)
-            if (order.customer_email.toLowerCase() !== email.toLowerCase()) {
-                setError('Email address does not match this order.');
+            // Verify email or phone (case-insensitive and clean phone numbers)
+            const cleanInput = identifier.trim().toLowerCase();
+            const isEmailMatch = order.customer_email && order.customer_email.toLowerCase() === cleanInput;
+            const cleanDigitsInput = cleanInput.replace(/\D/g, '');
+            const cleanOrderPhone = (order.customer_phone || '').replace(/\D/g, '');
+            const isPhoneMatch = cleanDigitsInput.length >= 10 && cleanOrderPhone.endsWith(cleanDigitsInput.slice(-10));
+
+            if (!isEmailMatch && !isPhoneMatch) {
+                setError('Email address or Phone number does not match this order.');
                 return;
             }
 
@@ -79,8 +95,8 @@ export default function TrackOrderPage() {
                 status: order.status,
                 date: new Date(order.created_at).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }),
                 eta: order.status === 'delivered' ? 'Delivered' : eta,
-                carrier: 'Standard Shipping', // Default since not in DB
-                trackingNumber: 'Not assigned yet', // Default since not in DB
+                carrier: 'Standard Express Shipping',
+                trackingNumber: order.order_number,
                 timeline: timeline
             });
 
@@ -129,15 +145,15 @@ export default function TrackOrderPage() {
                                 </div>
                             </div>
                             <div className="space-y-2">
-                                <label htmlFor="email" className="text-sm font-medium text-[#2C2C2C]">Email Address</label>
+                                <label htmlFor="identifier" className="text-sm font-medium text-[#2C2C2C]">Email or Phone Number</label>
                                 <div className="relative">
-                                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" size={20} />
+                                    <Phone className="absolute left-3 top-1/2 -translate-y-1/2 text-[#999999]" size={18} />
                                     <input
-                                        type="email"
-                                        id="email"
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        placeholder="Enter your email"
+                                        type="text"
+                                        id="identifier"
+                                        value={identifier}
+                                        onChange={(e) => setIdentifier(e.target.value)}
+                                        placeholder="Email or 10-digit Phone"
                                         className="w-full pl-10 pr-4 py-3 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2D5016] focus:border-transparent transition-all"
                                     />
                                 </div>
@@ -245,9 +261,31 @@ export default function TrackOrderPage() {
                                     </div>
                                 </div>
                                 <div>
-                                    <div className="text-sm text-[#999999] mb-1">Tracking Number</div>
-                                    <div className="font-medium text-[#2C2C2C]">{orderStatus.trackingNumber}</div>
+                                    <div className="text-sm text-[#999999] mb-1">Official Tracking Number</div>
+                                    <div className="font-mono font-bold text-emerald-700">{orderStatus.trackingNumber}</div>
                                 </div>
+                            </div>
+
+                            {/* WhatsApp Updates Card */}
+                            <div className="mt-6 p-4 rounded-xl bg-emerald-50 border border-emerald-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                                <div className="flex items-center gap-3 text-left">
+                                    <div className="w-9 h-9 rounded-lg bg-[#25D366] text-white flex items-center justify-center shrink-0">
+                                        <MessageSquare size={18} />
+                                    </div>
+                                    <div>
+                                        <p className="text-xs font-semibold text-gray-900">Need shipment help on WhatsApp?</p>
+                                        <p className="text-[11px] text-gray-600">Our customer support team is available to assist you.</p>
+                                    </div>
+                                </div>
+                                <a
+                                    href={`https://wa.me/918969124404?text=${encodeURIComponent(`Hi Oryizon Support, I am inquiring about my order #${orderStatus.id} (Tracking: ${orderStatus.trackingNumber}). Status: ${orderStatus.status}`)}`}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1.5 px-4 py-2 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-semibold rounded-lg transition-colors whitespace-nowrap"
+                                >
+                                    <MessageSquare size={14} />
+                                    Chat on WhatsApp
+                                </a>
                             </div>
                         </motion.div>
                     )}
