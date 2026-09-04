@@ -6,6 +6,7 @@ import { Loader2, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 import { getAllProducts as getLocalProducts } from '@/data/products';
 import { getFeaturedProducts } from '@/lib/api/products';
+import { getAllProductReviewStats } from '@/lib/api/reviews';
 import { ProductWithVariants } from '@/types/database';
 import { ProductCard } from '@/components/products/ProductCard';
 import { Button } from '@/components/ui/Button';
@@ -34,10 +35,16 @@ export function FeaturedProduct() {
     useEffect(() => {
         async function fetchFeatured() {
             try {
-                // 1. Fetch API Products (Database)
+                // 1. Fetch API Products (Database) & Real Review Stats
                 let apiProducts: any[] = [];
+                let reviewStats: Record<string, { rating: number; count: number }> = {};
                 try {
-                    apiProducts = await getFeaturedProducts();
+                    const [prods, stats] = await Promise.all([
+                        getFeaturedProducts(),
+                        getAllProductReviewStats()
+                    ]);
+                    apiProducts = prods;
+                    reviewStats = stats;
                 } catch (err) {
                     console.warn("API fetch failed, falling back to local products", err);
                 }
@@ -49,14 +56,19 @@ export function FeaturedProduct() {
                     apiProducts = localProducts;
                 }
 
-                // 3. Process products to merge images
+                // 3. Process products to merge images and real reviews
                 const processedProducts = apiProducts.map(apiProd => {
                     const localMatch = localProducts.find(p => p.slug === apiProd.slug);
+                    const realStat = reviewStats[apiProd.id];
 
                     const merged = { ...apiProd };
                     // Map local keys to API keys if they are missing
                     if (!merged.original_price && apiProd.originalPrice) merged.original_price = apiProd.originalPrice;
-                    if (!merged.review_count && apiProd.reviewCount) merged.review_count = apiProd.reviewCount;
+                    
+                    // Attach real review stats from database
+                    merged.rating = realStat ? realStat.rating : (apiProd.rating || 0);
+                    merged.review_count = realStat ? realStat.count : (apiProd.review_count || 0);
+
                     if (!merged.short_description && apiProd.shortDescription) merged.short_description = apiProd.shortDescription;
 
                     // Prioritize API (Database) images

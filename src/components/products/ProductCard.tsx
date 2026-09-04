@@ -145,15 +145,17 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
 
                     {/* Content */}
                     <div className="p-2.5 sm:p-5 md:p-6 flex flex-col flex-grow relative z-20 bg-gradient-to-b from-transparent to-black/40">
-                        <div className="flex items-center gap-1 mb-1 sm:mb-2 drop-shadow-md">
-                            <Star className={`w-3.5 h-3.5 ${theme.accent}`} />
-                            <span className="text-xs sm:text-sm font-semibold text-stone-200">
-                                {product.rating || 4.8}
-                            </span>
-                            <span className="text-[10px] sm:text-xs text-stone-400">
-                                ({product.review_count || 0})
-                            </span>
-                        </div>
+                        {product.review_count && product.review_count > 0 ? (
+                            <div className="flex items-center gap-1 mb-1 sm:mb-2 drop-shadow-md">
+                                <Star className={`w-3.5 h-3.5 ${theme.accent}`} />
+                                <span className="text-xs sm:text-sm font-semibold text-stone-200">
+                                    {Number(product.rating || 0).toFixed(1)}
+                                </span>
+                                <span className="text-[10px] sm:text-xs text-stone-400">
+                                    ({product.review_count})
+                                </span>
+                            </div>
+                        ) : null}
 
                         <h3 className={`font-heading text-sm sm:text-lg md:text-xl font-bold ${theme.title} mb-1 sm:mb-2 line-clamp-2 leading-tight tracking-tight drop-shadow-md`}>
                             {product.name}

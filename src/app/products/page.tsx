@@ -3,6 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { getProducts } from '@/lib/api/products';
+import { getAllProductReviewStats } from '@/lib/api/reviews';
 import { getAllProducts as getLocalProducts } from '@/data/products';
 import { ProductCard } from '@/components/products/ProductCard';
 import { CERTIFICATIONS } from '@/lib/constants';
@@ -20,20 +21,30 @@ export default function ProductsPage() {
     useEffect(() => {
         async function fetchProducts() {
             try {
-                // 1. Fetch API Products (Database)
-                const apiProducts = await getProducts();
+                // 1. Fetch API Products (Database) & Real Review Stats
+                const [apiProducts, reviewStats] = await Promise.all([
+                    getProducts(),
+                    getAllProductReviewStats()
+                ]);
 
                 // 2. Fetch Local Products (Filesystem Images)
                 const localProducts = getLocalProducts();
 
-                // 3. Merge: Prioritize API images, fallback to Local if API has none
+                // 3. Merge: Prioritize API images and real review stats
                 const mergedProducts = apiProducts.map(apiProduct => {
                     const localMatch = localProducts.find(p => p.slug === apiProduct.slug);
+                    const realStat = reviewStats[apiProduct.id];
+
+                    const productWithRealReviews = {
+                        ...apiProduct,
+                        rating: realStat ? realStat.rating : (apiProduct.rating || 0),
+                        review_count: realStat ? realStat.count : (apiProduct.review_count || 0)
+                    };
 
                     // If API has images, use them (ensure they are properly formatted)
                     if (apiProduct.images && apiProduct.images.length > 0) {
                         return {
-                            ...apiProduct,
+                            ...productWithRealReviews,
                             images: apiProduct.images.map(img => {
                                 if (img.startsWith('http') || img.startsWith('/')) return img;
                                 return `/images/products/${img}`;
@@ -44,12 +55,12 @@ export default function ProductsPage() {
                     // Fallback to local images if API has none
                     if (localMatch && localMatch.images && localMatch.images.length > 0) {
                         return {
-                            ...apiProduct,
+                            ...productWithRealReviews,
                             images: localMatch.images
                         };
                     }
 
-                    return apiProduct;
+                    return productWithRealReviews;
                 });
 
                 setProducts(mergedProducts);

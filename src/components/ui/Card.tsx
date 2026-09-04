@@ -95,15 +95,17 @@ export function ProductCard({ product, featured = false }: ProductCardProps) {
             {/* Content */}
             <div className={`p-5 ${featured ? 'md:w-1/2 md:p-8' : ''}`}>
                 {/* Rating */}
-                <div className="flex items-center gap-2 mb-2">
-                    <div className="flex items-center text-yellow-500">
-                        {'★'.repeat(Math.round(product.rating))}
-                        {'☆'.repeat(5 - Math.round(product.rating))}
+                {product.reviewCount && product.reviewCount > 0 ? (
+                    <div className="flex items-center gap-2 mb-2">
+                        <div className="flex items-center text-yellow-500">
+                            {'★'.repeat(Math.round(product.rating || 0))}
+                            {'☆'.repeat(5 - Math.round(product.rating || 0))}
+                        </div>
+                        <span className="text-sm text-[var(--color-text-light)]">
+                            ({product.reviewCount})
+                        </span>
                     </div>
-                    <span className="text-sm text-[var(--color-text-light)]">
-                        ({product.reviewCount})
-                    </span>
-                </div>
+                ) : null}
 
                 {/* Title */}
                 <Link href={`/products/${product.slug}`}>

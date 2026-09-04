@@ -17,7 +17,7 @@ import { Button } from '@/components/ui/Button';
 import { Badge } from '@/components/ui/Badge';
 import { ProductCard } from '@/components/products/ProductCard';
 import { ProductWithVariants, ProductVariant } from '@/types/database';
-import { getProductReviews, ProductReview } from '@/lib/api/reviews';
+import { getProductReviews, getAllProductReviewStats, ProductReview } from '@/lib/api/reviews';
 import ReviewModal from '@/components/products/ReviewModal';
 
 export default function ProductPage() {
@@ -74,11 +74,22 @@ export default function ProductPage() {
                     }
                 }
 
-                // 2. Fetch related products (e.g., random 3 for now, or same category in future)
-                const allProducts = await getProducts();
+                // 2. Fetch related products & real review stats
+                const [allProducts, reviewStats] = await Promise.all([
+                    getProducts(),
+                    getAllProductReviewStats()
+                ]);
                 const related = allProducts
                     .filter(p => p.id !== foundProduct.id)
-                    .slice(0, 3);
+                    .slice(0, 3)
+                    .map(p => {
+                        const realStat = reviewStats[p.id];
+                        return {
+                            ...p,
+                            rating: realStat ? realStat.rating : (p.rating || 0),
+                            review_count: realStat ? realStat.count : (p.review_count || 0)
+                        };
+                    });
                 setRelatedProducts(related);
             }
             setLoading(false);
