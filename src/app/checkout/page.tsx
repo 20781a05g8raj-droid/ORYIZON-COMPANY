@@ -267,6 +267,11 @@ export default function CheckoutPage() {
         };
 
         const paymentObject = new window.Razorpay(options);
+        paymentObject.on('payment.failed', function (response: any) {
+            console.error('Payment failed:', response.error);
+            toast.error(response.error?.description || 'Payment transaction failed');
+            setIsProcessing(false);
+        });
         paymentObject.open();
     };
 

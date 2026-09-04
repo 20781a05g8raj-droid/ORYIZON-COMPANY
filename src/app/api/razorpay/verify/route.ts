@@ -6,6 +6,10 @@ export async function POST(request: Request) {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await request.json();
 
+        if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature) {
+            return NextResponse.json({ error: 'Missing required payment verification details' }, { status: 400 });
+        }
+
         const key_secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET;
         if (!key_secret) {
             console.error('Razorpay secret missing in environment variables');

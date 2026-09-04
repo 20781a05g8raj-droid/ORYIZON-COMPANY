@@ -6,8 +6,8 @@ export async function POST(request: Request) {
     try {
         const { amount, currency = 'INR', receipt, notes } = await request.json();
 
-        if (!amount) {
-            return NextResponse.json({ error: 'Amount is required' }, { status: 400 });
+        if (!amount || amount < 1) {
+            return NextResponse.json({ error: 'Amount must be at least ₹1 (100 paise)' }, { status: 400 });
         }
 
         const key_id = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
