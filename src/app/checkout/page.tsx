@@ -315,10 +315,10 @@ export default function CheckoutPage() {
         const origin = typeof window !== 'undefined' ? window.location.origin : 'https://www.oryizon.com';
         const trackUrl = `${origin}/track-order?orderId=${encodeURIComponent(trackingId)}&phone=${encodeURIComponent(cleanPhone)}`;
 
-        const whatsappMessage = `🌿 *Oryizon Order Confirmation* 🌿\n\nHi *${shippingData.firstName}*, thank you for your order!\n\n📦 *Tracking ID:* ${trackingId}\n💰 *Amount:* ₹${finalTotal}\n📍 *Delivery Address:* ${shippingData.address}, ${shippingData.city}, ${shippingData.state} - ${shippingData.pincode}\n\n🚚 *Track Your Order Status Here:*\n${trackUrl}\n\nThank you for choosing Oryizon! 💚`;
+        const companyWhatsappNumber = '918969124404';
+        const whatsappMessage = `🌿 *New Order Placed - Oryizon* 🌿\n\n📦 *Tracking ID:* ${trackingId}\n👤 *Customer Name:* ${shippingData.firstName} ${shippingData.lastName}\n📞 *Customer Phone:* ${shippingData.phone}\n💰 *Amount:* ₹${finalTotal}\n📍 *Delivery Address:* ${shippingData.address}, ${shippingData.city}, ${shippingData.state} - ${shippingData.pincode}\n\n🚚 *Track Order Link:*\n${trackUrl}\n\nPlease confirm my order shipment updates on this WhatsApp. Thank you!`;
 
-        const whatsappCustomerUrl = `https://api.whatsapp.com/send?phone=91${cleanPhone}&text=${encodeURIComponent(whatsappMessage)}`;
-        const whatsappSupportUrl = `https://wa.me/918969124404?text=${encodeURIComponent(`Hi Oryizon Support, here is my order details:\n\nTracking ID: ${trackingId}\nName: ${shippingData.firstName} ${shippingData.lastName}\nPhone: ${shippingData.phone}\nAmount: ₹${finalTotal}`)}`;
+        const whatsappCompanyUrl = `https://wa.me/${companyWhatsappNumber}?text=${encodeURIComponent(whatsappMessage)}`;
 
         const handleCopyTracking = () => {
             if (navigator.clipboard && trackingId !== 'PENDING') {
@@ -385,28 +385,20 @@ export default function CheckoutPage() {
                                 </div>
                                 <div className="flex-1">
                                     <h4 className="font-semibold text-gray-900 text-sm">
-                                        Send Tracking Details to WhatsApp
+                                        Send Order & Tracking Details to WhatsApp
                                     </h4>
                                     <p className="text-xs text-gray-600 mt-0.5 mb-3">
-                                        Click below to send and save your tracking details directly on WhatsApp (+91 {cleanPhone || shippingData.phone}) for real-time delivery updates.
+                                        Click below to send your order details & Tracking ID directly to our WhatsApp support (+91 8969124404) for quick confirmation and live tracking updates.
                                     </p>
                                     <div className="flex flex-wrap gap-2">
                                         <a
-                                            href={whatsappCustomerUrl}
+                                            href={whatsappCompanyUrl}
                                             target="_blank"
                                             rel="noopener noreferrer"
                                             className="inline-flex items-center gap-2 px-4 py-2.5 bg-[#25D366] hover:bg-[#1EBE5D] text-white text-xs font-semibold rounded-xl transition-all shadow-sm"
                                         >
                                             <MessageSquare size={16} />
-                                            Send to My WhatsApp ({shippingData.phone})
-                                        </a>
-                                        <a
-                                            href={whatsappSupportUrl}
-                                            target="_blank"
-                                            rel="noopener noreferrer"
-                                            className="inline-flex items-center gap-1.5 px-3.5 py-2.5 bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 text-xs font-medium rounded-xl transition-colors"
-                                        >
-                                            Chat with Support
+                                            Send to Company WhatsApp (+91 8969124404)
                                         </a>
                                     </div>
                                 </div>

@@ -42,10 +42,10 @@ export function Footer() {
                 <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-12 md:py-16 relative z-10" suppressHydrationWarning>
                     <div className="flex flex-col lg:flex-row items-center justify-between gap-8 md:gap-10" suppressHydrationWarning>
                         <div className="text-center lg:text-left" suppressHydrationWarning>
-                            <h3 className="font-heading text-2xl md:text-4xl font-bold mb-2 md:mb-3">
-                                Join Our Wellness Community
+                            <h3 className="font-heading text-2xl md:text-4xl font-bold mb-2 md:mb-3 text-white tracking-tight">
+                                Join Our <span className="bg-gradient-to-r from-[#FDE047] via-[#EAB308] to-[#CA8A04] bg-clip-text text-transparent drop-shadow-sm">Wellness Community</span>
                             </h3>
-                            <p className="text-white/60 text-[15px] md:text-lg max-w-xl leading-relaxed">
+                            <p className="text-white/80 text-[15px] md:text-lg max-w-xl leading-relaxed">
                                 Subscribe for exclusive offers, premium health tips, and wellness updates.
                             </p>
                         </div>
