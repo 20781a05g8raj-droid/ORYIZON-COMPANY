@@ -141,29 +141,42 @@ export async function getOrdersByStatus(status: string): Promise<Order[]> {
 
 // Get customer or create new
 export async function getOrCreateCustomer(customer: CustomerInsert): Promise<Customer> {
-    // Check if customer exists by email
-    const { data: existing } = await supabase
-        .from('customers')
-        .select('*')
-        .eq('email', customer.email)
-        .single();
+    const emailToSearch = customer.email?.trim();
 
-    if (existing) {
-        return existing;
+    // Check if customer exists by email
+    if (emailToSearch) {
+        const { data: existing } = await supabase
+            .from('customers')
+            .select('*')
+            .eq('email', emailToSearch)
+            .maybeSingle();
+
+        if (existing) {
+            return existing;
+        }
     }
 
-    // Create new customer (Guest or Registered will be handled by trigger if auth.uid is present, 
-    // but here we just insert the basic info. The trigger might try to update user_id if valid)
+    // Check if customer exists by phone
+    if (customer.phone) {
+        const { data: existingPhone } = await supabase
+            .from('customers')
+            .select('*')
+            .eq('phone', customer.phone)
+            .maybeSingle();
+
+        if (existingPhone) {
+            return existingPhone;
+        }
+    }
 
     const safePayload = {
-        email: customer.email,
+        email: emailToSearch || (customer.phone ? `${customer.phone.replace(/\D/g, '')}@customer.oryizon.com` : `guest_${Date.now()}@customer.oryizon.com`),
         name: customer.name ?? null,
         phone: customer.phone ?? null,
         address: customer.address ?? null,
         city: customer.city ?? null,
         state: customer.state ?? null,
         pincode: customer.pincode ?? null
-        // user_id will be null for guests, or linked via trigger if logged in
     };
 
     console.log('Creating customer with payload:', JSON.stringify(safePayload));

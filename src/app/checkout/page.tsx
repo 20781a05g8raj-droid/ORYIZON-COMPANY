@@ -83,10 +83,13 @@ export default function CheckoutPage() {
 
     const processOrderCreation = async (paymentDetails: any = null, isPending: boolean = false) => {
         try {
+            const effectiveEmail = shippingData.email.trim() || 
+                (shippingData.phone ? `${shippingData.phone.replace(/\D/g, '')}@customer.oryizon.com` : 'customer@oryizon.com');
+
             // 1. Create or get customer
             await getOrCreateCustomer({
-                email: shippingData.email,
-                name: `${shippingData.firstName} ${shippingData.lastName}`,
+                email: effectiveEmail,
+                name: `${shippingData.firstName} ${shippingData.lastName}`.trim(),
                 phone: shippingData.phone,
                 address: shippingData.address,
                 city: shippingData.city,
@@ -125,8 +128,8 @@ export default function CheckoutPage() {
 
             // 3. Create order
             const order = await createOrder({
-                customer_name: `${shippingData.firstName} ${shippingData.lastName}`,
-                customer_email: shippingData.email,
+                customer_name: `${shippingData.firstName} ${shippingData.lastName}`.trim(),
+                customer_email: shippingData.email.trim() || effectiveEmail,
                 customer_phone: shippingData.phone,
 
                 // Cost Breakdown
@@ -247,8 +250,8 @@ export default function CheckoutPage() {
                 }
             },
             prefill: {
-                name: `${shippingData.firstName} ${shippingData.lastName}`,
-                email: shippingData.email,
+                name: `${shippingData.firstName} ${shippingData.lastName}`.trim(),
+                email: shippingData.email.trim() || undefined,
                 contact: shippingData.phone,
             },
             theme: {
@@ -405,12 +408,14 @@ export default function CheckoutPage() {
 
                                         <div className="grid md:grid-cols-2 gap-4">
                                             <div>
-                                                <label className="block text-sm font-medium mb-2">Email *</label>
+                                                <label className="block text-sm font-medium mb-2">
+                                                    Email <span className="text-gray-400 font-normal text-xs">(Optional)</span>
+                                                </label>
                                                 <input
                                                     type="email"
-                                                    required
                                                     value={shippingData.email}
                                                     onChange={(e) => setShippingData({ ...shippingData, email: e.target.value })}
+                                                    placeholder="name@example.com (optional)"
                                                     className="w-full px-4 py-3 border border-[var(--color-secondary)] rounded-lg focus:outline-none focus:border-[var(--color-primary)]"
                                                 />
                                             </div>
