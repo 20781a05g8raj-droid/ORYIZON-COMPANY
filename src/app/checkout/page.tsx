@@ -193,7 +193,8 @@ export default function CheckoutPage() {
         const data = await res.json();
 
         if (!data.id) {
-            toast.error('Could not create payment order');
+            console.error('Order creation failed:', data);
+            toast.error(data.error || 'Could not create payment order');
             setIsProcessing(false);
             return;
         }

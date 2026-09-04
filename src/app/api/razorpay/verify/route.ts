@@ -6,7 +6,7 @@ export async function POST(request: Request) {
     try {
         const { razorpay_order_id, razorpay_payment_id, razorpay_signature } = await request.json();
 
-        const key_secret = process.env.RAZORPAY_KEY_SECRET;
+        const key_secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET;
         if (!key_secret) {
             console.error('Razorpay secret missing in environment variables');
             return NextResponse.json({ error: 'Razorpay secret not configured' }, { status: 500 });

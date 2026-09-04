@@ -11,11 +11,17 @@ export async function POST(request: Request) {
         }
 
         const key_id = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
-        const key_secret = process.env.RAZORPAY_KEY_SECRET;
+        const key_secret = process.env.RAZORPAY_KEY_SECRET || process.env.RAZORPAY_SECRET;
 
         if (!key_id || !key_secret) {
-            console.error('Razorpay credentials missing in environment variables');
-            return NextResponse.json({ error: 'Razorpay keys not configured' }, { status: 500 });
+            const missing = [
+                !key_id ? 'RAZORPAY_KEY_ID' : null,
+                !key_secret ? 'RAZORPAY_KEY_SECRET' : null
+            ].filter(Boolean).join(', ');
+            console.error(`Razorpay credentials missing: ${missing}`);
+            return NextResponse.json({ 
+                error: `Razorpay keys not configured: ${missing} missing` 
+            }, { status: 500 });
         }
 
         const razorpay = new Razorpay({
@@ -38,8 +44,13 @@ export async function POST(request: Request) {
         });
     } catch (error: any) {
         console.error('Razorpay Order Creation Error:', error);
+        const errorMessage = 
+            error?.error?.description || 
+            error?.description || 
+            error?.message || 
+            'Payment order creation failed';
         return NextResponse.json(
-            { error: error.message || 'Something went wrong' },
+            { error: errorMessage },
             { status: 500 }
         );
     }
