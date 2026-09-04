@@ -94,10 +94,10 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
             transition={{ type: 'spring', stiffness: 300 }}
             className="h-full"
         >
-            <TiltCard tiltStrength={8} scale={1.03} className="h-full rounded-[2rem]">
-                <Link href={`/products/${product.slug}`} className={`chamkila-glass block h-full ${theme.bg} rounded-[2rem] hover:-translate-y-2 flex flex-col group`}>
+            <TiltCard tiltStrength={6} scale={1.02} className="h-full rounded-2xl sm:rounded-[2rem]">
+                <Link href={`/products/${product.slug}`} className={`chamkila-glass block h-full ${theme.bg} rounded-2xl sm:rounded-[2rem] hover:-translate-y-1.5 flex flex-col group transition-all duration-300`}>
                     {/* Image Container */}
-                    <div className={`relative aspect-square sm:aspect-[4/5] overflow-hidden bg-gradient-to-t ${theme.imageBg} p-4 sm:p-6 flex items-center justify-center`}>
+                    <div className={`relative aspect-[4/3] sm:aspect-square md:aspect-[4/5] overflow-hidden bg-gradient-to-t ${theme.imageBg} p-2.5 sm:p-5 flex items-center justify-center`}>
                         {/* Soft subtle glow/vignette overlay */}
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent z-10 pointer-events-none" />
                         
@@ -107,36 +107,36 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                                     src={mainImage}
                                     alt={product.name}
                                     fill
-                                    className="object-contain p-1 sm:p-2 transition-transform duration-700 group-hover:scale-105 z-0 drop-shadow-[0_10px_20px_rgba(0,0,0,0.3)]"
-                                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                                    className="object-contain p-0.5 sm:p-2 transition-transform duration-700 group-hover:scale-105 z-0 drop-shadow-[0_8px_16px_rgba(0,0,0,0.35)]"
+                                    sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 25vw"
                                     priority={priority}
                                 />
                             </div>
                         ) : (
                             <div className="absolute inset-0 flex items-center justify-center bg-black/50 z-0">
-                                <span className="text-5xl opacity-50 backdrop-blur-sm p-4 rounded-full">🌿</span>
+                                <span className="text-4xl sm:text-5xl opacity-50 backdrop-blur-sm p-3 rounded-full">🌿</span>
                             </div>
                         )}
 
                         {/* Badges */}
-                        <div className="absolute top-2 left-2 sm:top-4 sm:left-4 flex flex-col gap-1.5 z-20">
+                        <div className="absolute top-1.5 left-1.5 sm:top-3 sm:left-3 flex flex-col gap-1 z-20">
                             {discount > 0 && (
-                                <span className={`px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md ${theme.badgeBg}`}>
+                                <span className={`px-1.5 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md ${theme.badgeBg}`}>
                                     {discount}% OFF
                                 </span>
                             )}
                             {product.slug.includes('250g') && !product.slug.includes('500g') && !product.name.includes('2x') && (
-                                <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-stone-900/80 text-white border-stone-700">
+                                <span className="px-1.5 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-stone-900/90 text-white border-stone-700">
                                     Best Seller
                                 </span>
                             )}
                             {(product.slug.includes('500g') || product.name.includes('2x')) && (
-                                <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-emerald-950/80 text-emerald-300 border-emerald-700">
+                                <span className="px-1.5 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-emerald-950/90 text-emerald-300 border-emerald-700">
                                     Combo Pack
                                 </span>
                             )}
                             {product.slug.includes('100g') && (
-                                <span className="px-2 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-amber-950/80 text-amber-300 border-amber-700">
+                                <span className="px-1.5 sm:px-2.5 py-0.5 text-[9px] sm:text-[10px] font-bold tracking-wider uppercase rounded-full border backdrop-blur-md bg-amber-950/90 text-amber-300 border-amber-700">
                                     Trial Pack
                                 </span>
                             )}
@@ -144,42 +144,42 @@ export function ProductCard({ product, priority = false }: ProductCardProps) {
                     </div>
 
                     {/* Content */}
-                    <div className="p-3 sm:p-6 md:p-8 flex flex-col flex-grow relative z-20 bg-gradient-to-b from-transparent to-black/40">
-                        <div className="flex items-center gap-1 sm:gap-1.5 mb-2 sm:mb-3 drop-shadow-md">
-                            <Star className={`w-4 h-4 ${theme.accent}`} />
-                            <span className="text-sm font-semibold text-stone-200">
+                    <div className="p-2.5 sm:p-5 md:p-6 flex flex-col flex-grow relative z-20 bg-gradient-to-b from-transparent to-black/40">
+                        <div className="flex items-center gap-1 mb-1 sm:mb-2 drop-shadow-md">
+                            <Star className={`w-3.5 h-3.5 ${theme.accent}`} />
+                            <span className="text-xs sm:text-sm font-semibold text-stone-200">
                                 {product.rating || 4.8}
                             </span>
-                            <span className="text-xs text-stone-400">
+                            <span className="text-[10px] sm:text-xs text-stone-400">
                                 ({product.review_count || 0})
                             </span>
                         </div>
 
-                        <h3 className={`font-heading text-lg sm:text-xl md:text-2xl font-bold ${theme.title} mb-2 sm:mb-3 line-clamp-2 min-h-[3rem] sm:min-h-[3.5rem] tracking-tight drop-shadow-md`}>
+                        <h3 className={`font-heading text-sm sm:text-lg md:text-xl font-bold ${theme.title} mb-1 sm:mb-2 line-clamp-2 leading-tight tracking-tight drop-shadow-md`}>
                             {product.name}
                         </h3>
 
-                        <p className={`text-xs sm:text-sm ${theme.desc} mb-4 sm:mb-6 line-clamp-2 flex-grow leading-relaxed hidden xs:block`}>
+                        <p className={`text-xs ${theme.desc} mb-3 sm:mb-4 line-clamp-2 leading-relaxed hidden md:block`}>
                             {product.short_description || product.description}
                         </p>
 
-                        <div className="mt-auto pt-3 sm:pt-4 border-t border-white/5">
-                            <div className="flex flex-wrap items-baseline gap-2 sm:gap-3 mb-3 sm:mb-5">
-                                <span className={`text-lg sm:text-3xl font-bold font-heading ${theme.price} drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]`}>
+                        <div className="mt-auto pt-2 sm:pt-3 border-t border-white/10">
+                            <div className="flex flex-wrap items-baseline gap-1.5 sm:gap-2 mb-2 sm:mb-3">
+                                <span className={`text-base sm:text-2xl font-bold font-heading ${theme.price} drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]`}>
                                     {formatPrice(displayPrice)}
                                 </span>
                                 {displayOriginalPrice && (
-                                    <span className={`text-xs sm:text-sm font-medium line-through ${theme.originalPrice}`}>
+                                    <span className={`text-[11px] sm:text-xs font-medium line-through ${theme.originalPrice}`}>
                                         {formatPrice(displayOriginalPrice)}
                                     </span>
                                 )}
                             </div>
 
                             <button
-                                className={`w-full py-2.5 sm:py-4 rounded-xl flex items-center justify-center gap-1.5 sm:gap-2 font-semibold tracking-wide transition-all duration-300 ${theme.buttonBase}`}
+                                className={`w-full py-2 sm:py-3 rounded-lg sm:rounded-xl flex items-center justify-center gap-1 sm:gap-2 font-bold tracking-wide transition-all duration-300 active:scale-95 ${theme.buttonBase}`}
                             >
-                                <ShoppingCart className="drop-shadow-md w-4 h-4 sm:w-5 sm:h-5" />
-                                <span className="drop-shadow-md text-[10px] sm:text-base">ADD TO CART</span>
+                                <ShoppingCart className="drop-shadow-md w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                                <span className="drop-shadow-md text-[10px] sm:text-xs md:text-sm">ADD TO CART</span>
                             </button>
                         </div>
                     </div>
