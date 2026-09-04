@@ -199,7 +199,7 @@ export default function CheckoutPage() {
         }
 
         const options = {
-            key: 'rzp_test_SGhYXEkny3YQLb', // TEMPORARY: Hardcoded for Vercel testing
+            key: data.key_id || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
             amount: data.amount,
             currency: data.currency,
             name: "Oryizon",

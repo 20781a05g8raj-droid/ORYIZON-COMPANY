@@ -10,9 +10,17 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Amount is required' }, { status: 400 });
         }
 
+        const key_id = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
+        const key_secret = process.env.RAZORPAY_KEY_SECRET;
+
+        if (!key_id || !key_secret) {
+            console.error('Razorpay credentials missing in environment variables');
+            return NextResponse.json({ error: 'Razorpay keys not configured' }, { status: 500 });
+        }
+
         const razorpay = new Razorpay({
-            key_id: 'rzp_test_SGhYXEkny3YQLb', // TEMPORARY: Hardcoded for Vercel testing
-            key_secret: 'i81B9xSVzb4F79OjohnoYygj', // TEMPORARY: Hardcoded for Vercel testing
+            key_id,
+            key_secret,
         });
 
         const options = {
@@ -24,7 +32,10 @@ export async function POST(request: Request) {
 
         const order = await razorpay.orders.create(options);
 
-        return NextResponse.json(order);
+        return NextResponse.json({
+            ...order,
+            key_id,
+        });
     } catch (error: any) {
         console.error('Razorpay Order Creation Error:', error);
         return NextResponse.json(
