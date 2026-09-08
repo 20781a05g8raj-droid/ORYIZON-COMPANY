@@ -3,12 +3,13 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { supabase } from '@/lib/supabase';
-import { User, Package, MapPin, LogOut } from 'lucide-react';
+import { User as UserIcon, Package, LogOut } from 'lucide-react';
+import type { User as SupabaseUser } from '@supabase/supabase-js';
 import toast from 'react-hot-toast';
 
 export default function AccountPage() {
     const router = useRouter();
-    const [user, setUser] = useState<any>(null);
+    const [user, setUser] = useState<SupabaseUser | null>(null);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -30,7 +31,15 @@ export default function AccountPage() {
             try {
                 const { data: { session }, error } = await supabase.auth.getSession();
 
-                if (error) throw error;
+                if (error) {
+                    if (
+                        error.message?.includes('Refresh Token') ||
+                        error.message?.includes('refresh_token_not_found')
+                    ) {
+                        await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+                    }
+                    throw error;
+                }
 
                 if (!session) {
                     // Small delay to allow OAuth processing to finish if redirecting
@@ -46,8 +55,8 @@ export default function AccountPage() {
                     setUser(session.user);
                     setLoading(false);
                 }
-            } catch (error) {
-                console.error('Session check error:', error);
+            } catch {
+                // If token was invalid, redirect to login cleanly
                 if (mounted) router.push('/login');
             }
         };
@@ -106,7 +115,7 @@ export default function AccountPage() {
                         {/* Profile Section */}
                         <div className="space-y-6">
                             <h2 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
-                                <User className="text-emerald-600" size={20} />
+                                <UserIcon className="text-emerald-600" size={20} />
                                 Profile Details
                             </h2>
                             <div className="bg-gray-50 p-6 rounded-xl space-y-4">

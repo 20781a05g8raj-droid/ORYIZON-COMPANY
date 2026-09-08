@@ -39,8 +39,8 @@ export function Header() {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Hide Header on Admin pages
-    if (pathname?.startsWith('/admin')) {
+    // Hide Header on Admin pages and Product Detail pages (which have dedicated D2C header & announcement bar)
+    if (pathname?.startsWith('/admin') || (pathname?.startsWith('/products/') && pathname !== '/products')) {
         return null;
     }
 

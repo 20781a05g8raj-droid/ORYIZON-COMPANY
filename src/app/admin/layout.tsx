@@ -15,27 +15,35 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
     useEffect(() => {
         const checkAdmin = async () => {
-            const { data: { session } } = await supabase.auth.getSession();
-            const isAdmin = session?.user?.email === 'admin@oryizon.com';
+            try {
+                const { data: { session }, error } = await supabase.auth.getSession();
+                if (error && (error.message?.includes('Refresh Token') || error.message?.includes('refresh_token_not_found'))) {
+                    await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+                }
+                const isAdmin = session?.user?.email === 'admin@oryizon.com';
 
-            // Case 1: Login Page
-            if (pathname === '/admin/login') {
-                if (isAdmin) {
-                    router.push('/admin');
+                // Case 1: Login Page
+                if (pathname === '/admin/login') {
+                    if (isAdmin) {
+                        router.push('/admin');
+                        return;
+                    }
+                    setLoading(false);
                     return;
                 }
-                setLoading(false);
-                return;
-            }
 
-            // Case 2: Protected Admin Pages
-            if (!isAdmin) {
+                // Case 2: Protected Admin Pages
+                if (!isAdmin) {
+                    setIsUnauthorized(true);
+                    setLoading(false);
+                    return;
+                }
+
+                setLoading(false);
+            } catch {
                 setIsUnauthorized(true);
                 setLoading(false);
-                return;
             }
-
-            setLoading(false);
         };
 
         checkAdmin();

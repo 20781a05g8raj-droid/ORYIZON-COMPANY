@@ -32,11 +32,21 @@ export default function ReviewModal({ isOpen, onClose, productId, onSuccess }: R
 
         setSubmitting(true);
         try {
-            const { data: { session } } = await supabase.auth.getSession();
+            let userId: string | null = null;
+            try {
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                if (sessionError && (sessionError.message?.includes('Refresh Token') || sessionError.message?.includes('refresh_token_not_found'))) {
+                    await supabase.auth.signOut({ scope: 'local' }).catch(() => {});
+                } else {
+                    userId = session?.user?.id || null;
+                }
+            } catch {
+                userId = null;
+            }
 
             const { error } = await submitReview({
                 product_id: productId,
-                user_id: session?.user?.id || null,
+                user_id: userId,
                 user_name: userName,
                 rating,
                 comment,
@@ -50,9 +60,12 @@ export default function ReviewModal({ isOpen, onClose, productId, onSuccess }: R
             // Reset form
             setRating(5);
             setComment('');
-        } catch (error: any) {
+        } catch (error: unknown) {
             console.error('Submit review error:', error);
-            toast.error(error.message || 'Failed to submit review');
+            const msg = error && typeof error === 'object' && 'message' in error
+                ? String((error as { message: unknown }).message)
+                : 'Failed to submit review';
+            toast.error(msg);
         } finally {
             setSubmitting(false);
         }
