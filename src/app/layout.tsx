@@ -30,16 +30,28 @@ const inter = Inter({
 export const metadata: Metadata = {
   metadataBase: new URL("https://oryizon.com"),
   title: {
-    default: "Organic Moringa Powder for Daily Health & Immunity | Oryizon",
+    default: "Buy 100% Pure Organic Moringa Powder Online | Best Price | Oryizon",
     template: "%s | Oryizon",
   },
-  description: "Premium organic moringa powder rich in vitamins, minerals & antioxidants. Boost immunity, energy & overall wellness naturally with Oryizon.",
+  description: "Buy 100% pure organic moringa powder online at best price. Fresh moringa leaf powder (100g, 250g, 500g) sourced from organic farms. Fast delivery across India, Bihar & Nepal. Order now!",
   keywords: [
-    "moringa powder", "organic moringa powder", "moringa benefits",
-    "immunity booster", "natural superfood", "moringa for health",
-    "moringa oleifera", "plant protein", "ayurvedic supplement",
-    "daily wellness", "oryizon moringa", "moringa antioxidants",
-    "buy moringa powder online", "best moringa powder India",
+    "Buy organic moringa powder online",
+    "Pure moringa leaf powder 250g",
+    "Moringa powder 500g",
+    "Best organic moringa powder price",
+    "Moringa powder in Nepal",
+    "Moringa powder in Bihar",
+    "Moringa powder India",
+    "100% pure organic moringa powder",
+    "organic moringa oleifera leaf powder",
+    "moringa powder benefits",
+    "moringa powder price",
+    "pure moringa leaf powder 250g 500g",
+    "moringa immunity booster",
+    "moringa superfood online",
+    "buy moringa powder online India",
+    "moringa powder Patna Bihar",
+    "moringa powder Kathmandu Nepal",
   ],
   authors: [{ name: "Oryizon" }],
   creator: "Oryizon",
@@ -48,8 +60,8 @@ export const metadata: Metadata = {
     canonical: "https://oryizon.com",
   },
   openGraph: {
-    title: "Organic Moringa Powder for Daily Health & Immunity | Oryizon",
-    description: "Premium organic moringa powder rich in vitamins, minerals & antioxidants. Boost immunity, energy & overall wellness naturally with Oryizon.",
+    title: "Buy 100% Pure Organic Moringa Powder Online | Best Price | Oryizon",
+    description: "Buy 100% pure organic moringa powder online at best price. Fresh moringa leaf powder (100g, 250g, 500g) sourced from organic farms. Fast delivery across India, Bihar & Nepal. Order now!",
     url: "https://oryizon.com",
     siteName: "Oryizon",
     type: "website",
@@ -59,14 +71,14 @@ export const metadata: Metadata = {
         url: "/images/products/product-1.png",
         width: 1200,
         height: 630,
-        alt: "Organic moringa powder by Oryizon for immunity and daily health",
+        alt: "Buy 100% Pure Organic Moringa Powder online - Oryizon",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Organic Moringa Powder for Daily Health & Immunity | Oryizon",
-    description: "Premium organic moringa powder rich in vitamins, minerals & antioxidants. Boost immunity, energy & overall wellness naturally.",
+    title: "Buy 100% Pure Organic Moringa Powder Online | Oryizon",
+    description: "Buy 100% pure organic moringa powder online at best price. Delivering across India, Bihar & Nepal.",
     images: ["/images/products/product-1.png"],
   },
   robots: {
@@ -85,6 +97,45 @@ export const metadata: Metadata = {
   },
 };
 
+const orgJsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "@id": "https://oryizon.com/#organization",
+      "name": "Oryizon",
+      "url": "https://oryizon.com",
+      "logo": "https://oryizon.com/images/oryizon-logo.png",
+      "sameAs": [
+        "https://www.instagram.com/oryizon",
+        "https://www.facebook.com/oryizon"
+      ],
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+91 8969124404",
+        "contactType": "Customer Support",
+        "areaServed": ["IN", "NP"],
+        "availableLanguage": ["English", "Hindi"]
+      },
+      "description": "Premium 100% Pure Organic Moringa Powder producer delivering across India, Bihar & Nepal."
+    },
+    {
+      "@type": "WebSite",
+      "@id": "https://oryizon.com/#website",
+      "url": "https://oryizon.com",
+      "name": "Oryizon - Pure Organic Moringa Superfood",
+      "publisher": {
+        "@id": "https://oryizon.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://oryizon.com/products?search={search_term_string}",
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -92,6 +143,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className={`${playfair.variable} ${inter.variable}`} suppressHydrationWarning>
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
+        />
+      </head>
       <body className="antialiased" suppressHydrationWarning>
         <script
           dangerouslySetInnerHTML={{

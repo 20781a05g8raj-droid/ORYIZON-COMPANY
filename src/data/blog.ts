@@ -14,7 +14,22 @@ export const blogPosts: BlogPost[] = [
         date: 'August 21, 2026',
         readTime: '8 min read',
         category: 'Health Benefits',
-        tags: ['moringa water', 'empty stomach', 'weight loss', 'detox', 'energy', 'ayurveda', 'digestion', 'organic moringa'],
+        tags: [
+            'moringa water',
+            'empty stomach',
+            'weight loss',
+            'detox',
+            'energy',
+            'ayurveda',
+            'digestion',
+            'organic moringa',
+            'buy organic moringa powder online',
+            'pure moringa leaf powder 250g',
+            'moringa powder 500g',
+            'best organic moringa powder price',
+            'moringa powder in nepal',
+            'moringa powder in bihar',
+        ],
         icon: '🍵',
         featured: true,
     },
@@ -259,7 +274,44 @@ export const blogPosts: BlogPost[] = [
     </div>
 </div>
 
-<p class="mb-6 leading-relaxed">Want more creative recipe ideas? Check out our <a href="/blog/moringa-daily-diet-guide" class="text-[var(--color-primary)] font-semibold hover:underline">complete guide to including Moringa in your daily diet →</a></p>
+<h2 class="font-heading text-2xl md:text-3xl font-bold mb-4 mt-12 text-[var(--color-text)]">🛒 Where to Buy Pure Organic Moringa Powder Online (Bihar, India & Nepal)</h2>
+
+<p class="mb-4 leading-relaxed">If you are looking to <strong>buy organic moringa powder online</strong> with 100% purity guarantee, always choose certified organic, shade-dried leaves that retain maximum chlorophyll and active nutrients. At <strong>ORYIZON</strong>, we deliver fresh, chemical-free <strong>pure moringa leaf powder 250g / 500g</strong> directly to doorsteps across <strong>India (with express priority delivery across Bihar — Patna, Muzaffarpur, Gaya, Bhagalpur)</strong> and neighboring <strong>Nepal (Kathmandu, Pokhara, Biratnagar)</strong>.</p>
+
+<p class="mb-6 leading-relaxed">Here is our transparent pricing guide to help you find the <strong>best organic moringa powder price</strong> for your wellness routine:</p>
+
+<div class="overflow-x-auto my-8">
+    <table class="w-full text-left border-collapse rounded-xl overflow-hidden shadow-sm">
+        <thead>
+            <tr class="bg-[var(--color-primary)] text-white">
+                <th class="p-3 sm:p-4 font-semibold text-sm">Product Pack</th>
+                <th class="p-3 sm:p-4 font-semibold text-sm">Best Price</th>
+                <th class="p-3 sm:p-4 font-semibold text-sm">Recommended For</th>
+                <th class="p-3 sm:p-4 font-semibold text-sm">Order Online</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white text-sm">
+            <tr class="border-b border-gray-100 hover:bg-emerald-50/50 transition-colors">
+                <td class="p-3 sm:p-4 font-bold text-neutral-900">Pure Moringa Leaf Powder 250g</td>
+                <td class="p-3 sm:p-4 font-semibold text-emerald-800">₹299 <span class="line-through text-gray-400 text-xs">₹499</span></td>
+                <td class="p-3 sm:p-4 text-neutral-600">Most popular monthly supply for personal daily wellness</td>
+                <td class="p-3 sm:p-4"><a href="/products/organic-moringa-powder-250g" class="text-[var(--color-primary)] font-bold hover:underline">Buy 250g Online →</a></td>
+            </tr>
+            <tr class="border-b border-gray-100 bg-gray-50/50 hover:bg-emerald-50/50 transition-colors">
+                <td class="p-3 sm:p-4 font-bold text-neutral-900">Pure Moringa Leaf Powder 500g (2x 250g Value Pack)</td>
+                <td class="p-3 sm:p-4 font-semibold text-emerald-800">₹549 <span class="line-through text-gray-400 text-xs">₹999</span></td>
+                <td class="p-3 sm:p-4 text-neutral-600">Best price per gram & ideal family nutrition pack</td>
+                <td class="p-3 sm:p-4"><a href="/products/organic-moringa-powder-500g" class="text-[var(--color-primary)] font-bold hover:underline">Buy 500g Online →</a></td>
+            </tr>
+            <tr class="hover:bg-emerald-50/50 transition-colors">
+                <td class="p-3 sm:p-4 font-bold text-neutral-900">Organic Moringa Starter 100g</td>
+                <td class="p-3 sm:p-4 font-semibold text-emerald-800">₹199 <span class="line-through text-gray-400 text-xs">₹299</span></td>
+                <td class="p-3 sm:p-4 text-neutral-600">Beginners trial pouch & travel friendly</td>
+                <td class="p-3 sm:p-4"><a href="/products/organic-moringa-powder-100g" class="text-[var(--color-primary)] font-bold hover:underline">Buy 100g Online →</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
 
 <div class="bg-gradient-to-br from-[var(--color-primary)] to-[var(--color-primary-dark)] text-white p-6 sm:p-10 rounded-2xl my-10 relative overflow-hidden group">
     <div class="absolute top-0 right-0 w-72 h-72 bg-white/10 rounded-full -mr-36 -mt-36 blur-3xl group-hover:bg-white/20 transition-all duration-500"></div>
@@ -267,10 +319,13 @@ export const blogPosts: BlogPost[] = [
     <div class="relative z-10">
         <span class="text-4xl mb-4 block">🌿</span>
         <h3 class="font-heading text-2xl md:text-3xl font-bold mb-3">Ready to Transform Your Health?</h3>
-        <p class="mb-6 text-white/90 text-lg leading-relaxed">Experience the purest, 100% organic Moringa powder sourced directly from the Himalayas. Trusted by over 1,200+ happy customers.</p>
+        <p class="mb-6 text-white/90 text-lg leading-relaxed">Experience the purest, 100% organic Moringa powder sourced directly from the Himalayas. Trusted by over 1,200+ happy customers across India & Nepal.</p>
         <div class="flex flex-wrap gap-3">
-            <a href="/products/organic-moringa-powder" class="inline-block bg-white text-[var(--color-primary)] font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
-                Shop Moringa Powder
+            <a href="/products/organic-moringa-powder-250g" class="inline-block bg-white text-[var(--color-primary)] font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                Shop 250g Powder (₹299)
+            </a>
+            <a href="/products/organic-moringa-powder-500g" class="inline-block bg-emerald-800 text-white font-bold py-3 px-8 rounded-full shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-300">
+                Shop 500g Combo (₹549)
             </a>
             <a href="/products/moringa-capsules" class="inline-block bg-white/20 text-white font-bold py-3 px-8 rounded-full border border-white/30 hover:bg-white/30 hover:scale-105 transition-all duration-300">
                 Try Moringa Capsules
@@ -337,7 +392,21 @@ export const blogPosts: BlogPost[] = [
         date: 'February 10, 2026',
         readTime: '12 min read',
         category: 'Health Benefits',
-        tags: ['moringa', 'health', 'nutrition', 'superfood', 'ayurveda', 'immunity', 'organic'],
+        tags: [
+            'moringa',
+            'health',
+            'nutrition',
+            'superfood',
+            'ayurveda',
+            'immunity',
+            'organic',
+            'buy organic moringa powder online',
+            'pure moringa leaf powder 250g',
+            'moringa powder 500g',
+            'best organic moringa powder price',
+            'moringa powder in nepal',
+            'moringa powder in bihar',
+        ],
         icon: '🌿',
         featured: true,
     },
@@ -352,7 +421,23 @@ export const blogPosts: BlogPost[] = [
         date: 'February 10, 2026',
         readTime: '14 min read',
         category: 'Diet & Nutrition',
-        tags: ['moringa', 'diet', 'recipes', 'nutrition', 'superfood', 'wellness', 'healthy eating', 'moringa recipes', 'moringa smoothie'],
+        tags: [
+            'moringa',
+            'diet',
+            'recipes',
+            'nutrition',
+            'superfood',
+            'wellness',
+            'healthy eating',
+            'moringa recipes',
+            'moringa smoothie',
+            'buy organic moringa powder online',
+            'pure moringa leaf powder 250g',
+            'moringa powder 500g',
+            'best organic moringa powder price',
+            'moringa powder in nepal',
+            'moringa powder in bihar',
+        ],
         icon: '🍴',
         featured: true,
     },

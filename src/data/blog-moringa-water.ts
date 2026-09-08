@@ -182,6 +182,43 @@ export const moringaWaterContent = `
     </div>
 </div>
 
+<h2 class="font-heading text-2xl md:text-3xl font-bold mb-6 mt-12 text-[var(--color-text)]">🛒 Where to Buy Pure Organic Moringa Powder Online (India, Bihar & Nepal)</h2>
+
+<p class="mb-4 leading-relaxed">Finding authentic, lab-certified <strong>pure moringa leaf powder 250g or 500g</strong> can be challenging with so many adulterated powders on general marketplaces. If you are looking to <strong>buy organic moringa powder online</strong> with guaranteed harvest freshness, ORYIZON ships directly from organic farms to your doorstep with express delivery across India (including Patna, Gaya, Muzaffarpur, Bhagalpur across Bihar) as well as cross-border delivery to Kathmandu, Pokhara, and across Nepal.</p>
+
+<div class="overflow-x-auto my-8">
+    <table class="w-full text-left border-collapse rounded-xl overflow-hidden shadow-sm">
+        <thead>
+            <tr class="bg-[var(--color-primary)] text-white">
+                <th class="p-3 sm:p-4 font-semibold text-sm">Product Pack</th>
+                <th class="p-3 sm:p-4 font-semibold text-sm">Best Price</th>
+                <th class="p-3 sm:p-4 font-semibold text-sm">Recommended For</th>
+                <th class="p-3 sm:p-4 font-semibold text-sm">Action</th>
+            </tr>
+        </thead>
+        <tbody class="bg-white text-sm">
+            <tr class="border-b border-gray-100 hover:bg-emerald-50/50 transition-colors">
+                <td class="p-3 sm:p-4 font-bold text-neutral-900">Pure Moringa Leaf Powder 250g</td>
+                <td class="p-3 sm:p-4 font-semibold text-emerald-800">₹299 <span class="line-through text-gray-400 text-xs">₹499</span></td>
+                <td class="p-3 sm:p-4 text-neutral-600">Daily 1-person regimen (1-2 months supply)</td>
+                <td class="p-3 sm:p-4"><a href="/products/organic-moringa-powder-250g" class="text-[var(--color-primary)] font-bold hover:underline">Order 250g →</a></td>
+            </tr>
+            <tr class="border-b border-gray-100 bg-gray-50/50 hover:bg-emerald-50/50 transition-colors">
+                <td class="p-3 sm:p-4 font-bold text-neutral-900">Pure Moringa Leaf Powder 500g (2x 250g)</td>
+                <td class="p-3 sm:p-4 font-semibold text-emerald-800">₹549 <span class="line-through text-gray-400 text-xs">₹999</span></td>
+                <td class="p-3 sm:p-4 text-neutral-600">Best price for families & long-term savings</td>
+                <td class="p-3 sm:p-4"><a href="/products/organic-moringa-powder-500g" class="text-[var(--color-primary)] font-bold hover:underline">Order 500g →</a></td>
+            </tr>
+            <tr class="hover:bg-emerald-50/50 transition-colors">
+                <td class="p-3 sm:p-4 font-bold text-neutral-900">Organic Moringa Starter 100g</td>
+                <td class="p-3 sm:p-4 font-semibold text-emerald-800">₹199 <span class="line-through text-gray-400 text-xs">₹299</span></td>
+                <td class="p-3 sm:p-4 text-neutral-600">First-time trial & travel pack</td>
+                <td class="p-3 sm:p-4"><a href="/products/organic-moringa-powder-100g" class="text-[var(--color-primary)] font-bold hover:underline">Order 100g →</a></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
 <div class="bg-gradient-to-r from-[var(--color-cream)] to-white p-6 sm:p-8 rounded-2xl my-8 border border-[var(--color-secondary)]/30 text-center">
     <p class="text-xl sm:text-2xl font-heading font-bold mb-3 text-[var(--color-primary-dark)]">Ready to Experience the 7-Day Morning Miracle?</p>
     <p class="text-sm text-[var(--color-text-light)] max-w-xl mx-auto mb-6">Choose from our single packs or our family value combos with 100% secure checkout and express doorstep delivery.</p>
